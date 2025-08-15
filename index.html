@@ -1,461 +1,473 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Malla Curricular - Ingeniería en Telecomunicaciones</title>
-    <style>
-        :root {
-            --bg-color: #f5f5f5;
-            --text-color: #333;
-            --card-bg: #fff;
-            --header-bg: #2c3e50;
-            --header-text: #fff;
-            --course-color: #e1ff00; /* Color único para todos los cursos */
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Malla Interactiva – Ingeniería en Telecomunicaciones</title>
+  <style>
+    :root{
+      --bg:#0b1220;      /* fondo */
+      --panel:#0f172a;   /* paneles */
+      --card:#111827;    /* tarjetas */
+      --text:#e5e7eb;    /* texto base */
+      --muted:#9ca3af;   /* texto tenue */
+      --ok:#16a34a;
+      --warn:#f59e0b;
+      --bad:#ef4444;
+      --accent:#38bdf8;
+      --shadow:0 10px 25px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,"Helvetica Neue",Arial;
+      background:radial-gradient(1200px 600px at 10% -10%, #12213f 0%, transparent 60%),
+                 radial-gradient(1000px 600px at 100% 0%, #1a1635 0%, transparent 55%),
+                 var(--bg);
+      color:var(--text);
+    }
+    header{
+      position:sticky; top:0; z-index:50; backdrop-filter:saturate(1.2) blur(10px);
+      background:rgba(11,18,32,.7); border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .wrap{max-width:1300px; margin:0 auto; padding:18px 20px}
+    h1{margin:0; font-size:22px; font-weight:700; letter-spacing:.2px}
+    .sub{font-size:12px; color:var(--muted)}
 
-        .dark-mode {
-            --bg-color: #1a1a1a;
-            --text-color: #f0f0f0;
-            --card-bg: #2d2d2d;
-            --header-bg: #1a1a1a;
-            --header-text: #f0f0f0;
-        }
+    .toolbar{display:grid; grid-template-columns: 1fr auto auto auto; gap:10px; margin-top:10px}
+    .toolbar .group{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+    input[type="search"], select, button, .pill{
+      background:var(--panel); color:var(--text); border:1px solid rgba(255,255,255,.08);
+      border-radius:12px; padding:10px 12px; font-size:14px; box-shadow:var(--shadow);
+    }
+    input[type="search"]{width:100%}
+    button{cursor:pointer}
+    button:hover{border-color:rgba(255,255,255,.2)}
+    .pill{display:inline-flex; align-items:center; gap:8px}
+    .legend{display:flex; gap:8px; flex-wrap:wrap}
+    .badge{display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; font-size:12px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08)}
+    .dot{width:10px; height:10px; border-radius:999px; display:inline-block}
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 0;
-            transition: background-color 0.3s, color 0.3s;
-        }
+    .grid{position:relative; margin:18px auto; max-width:1300px; padding:18px}
+    .term-grid{display:grid; grid-template-columns: repeat(10, 1fr); gap:14px}
+    .col{background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+         border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:10px; box-shadow:var(--shadow)}
+    .col h3{margin:4px 4px 10px; font-size:14px; font-weight:700; letter-spacing:.3px}
+    .drop{display:grid; gap:10px}
 
-        header {
-            background-color: var(--header-bg);
-            color: var(--header-text);
-            padding: 1rem;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
+    .card{position:relative; background:var(--card); border:1px solid rgba(255,255,255,.08); border-radius:14px; padding:10px; box-shadow:var(--shadow);
+          transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease; cursor:pointer}
+    .card:hover{transform:translateY(-2px); border-color:rgba(255,255,255,.25)}
+    .card .name{font-size:13px; font-weight:600; line-height:1.2}
+    .meta{display:flex; gap:8px; margin-top:6px; flex-wrap:wrap}
+    .tag{font-size:11px; color:#d1d5db; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.08); border-radius:999px; padding:4px 8px}
+    .reqs{font-size:11px; color:var(--muted); margin-top:6px}
 
-        h1 {
-            margin: 0;
-            font-size: 1.8rem;
-        }
+    .card.completed{outline:2px solid var(--ok)}
+    .card.planned{outline:2px dashed var(--accent)}
+    .card.locked{opacity:.7}
 
-        .controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem;
-            background-color: var(--header-bg);
-            color: var(--header-text);
-        }
+    .mini{display:flex; align-items:center; justify-content:space-between; margin-top:6px; font-size:11px; color:var(--muted)}
+    .mini .sct{font-weight:700; color:#fef08a}
 
-        .toggle-container {
-            display: flex;
-            align-items: center;
-        }
+    .svg-links{position:absolute; inset:0; pointer-events:none}
+    .svg-links path{fill:none; stroke-width:2.5px; opacity:.8}
+    .svg-links path.prereq{stroke:var(--bad)}
+    .svg-links path.depend{stroke:var(--ok)}
 
-        .toggle-switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 30px;
-            margin-left: 10px;
-        }
+    .footer{max-width:1300px; margin:0 auto 40px; padding:0 20px; color:var(--muted); font-size:12px}
 
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
+    .switch{display:inline-flex; align-items:center; gap:8px; font-size:13px; color:var(--text)}
+    .switch input{accent-color:var(--accent)}
 
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 34px;
-        }
+    .toast{position:fixed; right:16px; bottom:16px; background:#111827; border:1px solid rgba(255,255,255,.1);
+           padding:10px 12px; border-radius:12px; font-size:13px; color:var(--text); box-shadow:var(--shadow); display:none}
 
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 22px;
-            width: 22px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-
-        input:checked + .slider {
-            background-color: #2196F3;
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(30px);
-        }
-
-        .grid-container {
-            display: flex;
-            flex-direction: column;
-            padding: 1rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .year-container {
-            margin-bottom: 2rem;
-        }
-
-        .year-title {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--text-color);
-        }
-
-        .semester-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 10px;
-            margin-bottom: 1.5rem;
-        }
-
-        .semester-title {
-            grid-column: 1 / -1;
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-            color: var(--text-color);
-        }
-
-        .course-card {
-            background-color: var(--course-color);
-            border-radius: 5px;
-            padding: 0.8rem;
-            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s;
-            position: relative;
-            overflow: hidden;
-            min-height: 80px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .course-card:hover {
-            transform: translateY(-3px);
-            cursor: pointer;
-        }
-
-        .course-card.locked {
-            opacity: 0.5;
-            filter: grayscale(70%);
-        }
-
-        .course-card.selected {
-            outline: 2px solid #4CAF50;
-        }
-
-        .course-name {
-            font-weight: bold;
-            margin-bottom: 0.3rem;
-            font-size: 0.8rem;
-            line-height: 1.1;
-        }
-
-        .course-code {
-            font-size: 0.7rem;
-            color: #555;
-            margin-bottom: 0.3rem;
-        }
-
-        .course-sct {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background-color: rgba(0, 0, 0, 0.1);
-            padding: 2px 5px;
-            border-radius: 8px;
-            font-size: 0.6rem;
-            font-weight: bold;
-        }
-
-        .stats {
-            margin-top: 1rem;
-            padding: 1rem;
-            background-color: var(--header-bg);
-            color: var(--header-text);
-            border-radius: 8px;
-            text-align: center;
-        }
-
-        .stats-item {
-            margin: 0.5rem 0;
-        }
-
-        @media (max-width: 768px) {
-            .semester-container {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            }
-        }
-    </style>
+    @media (max-width:1100px){
+      .term-grid{grid-template-columns: repeat(5, 1fr)}
+    }
+    @media (max-width:700px){
+      .toolbar{grid-template-columns: 1fr}
+      .term-grid{grid-template-columns: repeat(2, 1fr)}
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Malla Curricular - Ingeniería en Telecomunicaciones</h1>
-    </header>
-
-    <div class="controls">
-        <div class="toggle-container">
-            <span>Modo Oscuro</span>
-            <label class="toggle-switch">
-                <input type="checkbox" id="darkModeToggle">
-                <span class="slider"></span>
-            </label>
+  <header>
+    <div class="wrap">
+      <h1>Malla Interactiva — Ingeniería en Telecomunicaciones</h1>
+      <div class="sub">Archivo único (HTML + CSS + JS). Haz clic en cada asignatura para marcar <b>aprobada</b> o <b>planificada</b>. Pasa el cursor para ver prerrequisitos/dependencias.</div>
+      <div class="toolbar">
+        <div class="group">
+          <input id="search" type="search" placeholder="Buscar por nombre, código o área…" />
         </div>
-        <div class="stats">
-            <div class="stats-item">Total SCT: <span id="totalSCT">0</span></div>
-            <div class="stats-item">Cursos seleccionados: <span id="selectedCount">0</span></div>
+        <div class="group">
+          <label class="switch"><input id="toggle-reqs" type="checkbox" checked> Mostrar líneas</label>
+          <label class="switch"><input id="toggle-itins" type="checkbox" checked> Mostrar Itinerarios</label>
         </div>
+        <div class="group">
+          <select id="filter-area"><option value="">Todas las áreas</option></select>
+          <button id="clear">Limpiar selección</button>
+        </div>
+        <div class="group legend" id="legend"></div>
+      </div>
     </div>
+  </header>
 
-    <div class="grid-container" id="gridContainer">
-        <!-- Grid content will be added dynamically -->
-    </div>
+  <main class="grid">
+    <svg class="svg-links" id="wires"></svg>
+    <div class="term-grid" id="terms"></div>
+  </main>
 
-    <script>
-        // Data from the provided JSON (abreviado para el ejemplo)
-        const mallaData = {
-            "data": [
-                {
-                    "id": 1,
-                    "preRequisitos": [],
-                    "name": "Algebra Lineal",
-                    "code": "MATD113",
-                    "area": "Unidad Básica",
-                    "directas": 144,
-                    "sct": 3,
-                    "year": 1,
-                    "semestre": 1,
-                    "selected": false
-                },
-                // ... (otros cursos con el mismo formato)
-            ],
-            "mallaAreas": [
-                {
-                    "name": "Unidad Básica",
-                    "backgroundColor": "#e1ff00"
-                }
-                // ... (otras áreas)
-            ]
-        };
+  <div class="footer">
+    <p><b>Consejo:</b> Marca aprobadas para ver qué materias quedan <i>desbloqueadas</i>. Las líneas rojas indican prerrequisitos hacia la tarjeta; las verdes, dependencias que salen de ella.</p>
+    <p>Tu selección se guarda en <code>localStorage</code>. Puedes exportar/importar con clic derecho en el encabezado.</p>
+  </div>
 
-        // DOM elements
-        const gridContainer = document.getElementById('gridContainer');
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        const totalSCTElement = document.getElementById('totalSCT');
-        const selectedCountElement = document.getElementById('selectedCount');
+  <div class="toast" id="toast"></div>
 
-        // State
-        let selectedCourses = new Set();
-        let unlockedCourses = new Set();
+  <!-- Datos en crudo provistos por el usuario -->
+  <script id="dataset" type="application/json">{
+  "data": [
+    {"id":1,"preRequisitos":[],"name":"Algebra Lineal  MATD113","area":"Unidad Básica","directas":144,"sct":3,"year":1,"semestre":1,"selected":false},
+    {"id":2,"preRequisitos":[1,10],"name":"Ecuaciones Diferenciales Ordinarias MATD213","area":"Unidad Básica","directas":144,"sct":3,"year":1,"semestre":2,"selected":false},
+    {"id":3,"preRequisitos":[2,16],"name":"Matemática Avanzada IEED312","area":"Unidad Básica","directas":96,"sct":2,"year":2,"semestre":3,"selected":false},
+    {"id":4,"preRequisitos":[24],"name":"Instalación Eléctrica y Comunicación  IEED413","area":"Unidad Profesional","directas":144,"sct":3,"year":2,"semestre":4,"selected":false},
+    {"id":5,"preRequisitos":[27],"name":"Fundamentos de Comunicaciones TELD513","area":"Unidad Profesional","directas":144,"sct":3,"year":3,"semestre":5,"selected":false},
+    {"id":6,"preRequisitos":[5],"name":"Comunicación Digital TELD613","area":"Unidad Profesional","directas":144,"sct":3,"year":3,"semestre":6,"selected":false},
+    {"id":7,"preRequisitos":[6],"name":"Comunicación Ópticas TELD713 ","area":"Unidad Profesional","directas":144,"sct":3,"year":4,"semestre":7,"selected":false},
+    {"id":8,"preRequisitos":[39,42,45],"name":"Itinerario Basico TELD800","area":"Unidad Profesional","directas":96,"sct":2,"year":4,"semestre":8,"selected":false},
+    {"id":9,"preRequisitos":[8],"name":"Itinerario Avanzado TELD900","area":"Unidad Profesional","directas":96,"sct":2,"year":5,"semestre":9,"selected":false},
+    {"id":10,"preRequisitos":[],"name":"Calculo de una variable MATD123 ","area":"Unidad Básica","directas":144,"sct":3,"semestre":1,"year":1,"selected":false},
+    {"id":11,"preRequisitos":[],"name":"Mecánica Newtoniana FISD134","area":"Unidad Básica","directas":192,"sct":4,"semestre":1,"year":1,"selected":false},
+    {"id":12,"preRequisitos":[],"name":"Química General QUID143","area":"Unidad Básica","directas":144,"sct":3,"semestre":1,"year":1,"selected":false},
+    {"id":13,"preRequisitos":[],"name":"Herramientas Informáticas ICOD111 ","area":"Unidad Básica","directas":48,"sct":1,"semestre":1,"year":1,"selected":false},
+    {"id":14,"preRequisitos":[],"name":"Comunicaion Oral y Escrita CSHD11","area":"Unidad Básica","directas":48,"sct":1,"semestre":1,"year":1,"selected":false},
+    {"id":15,"preRequisitos":[10],"name":"Probabilidad y Estadística Básica MATD223 ","area":"Unidad Básica","directas":144,"sct":3,"semestre":2,"year":1,"selected":false},
+    {"id":16,"preRequisitos":[10],"name":"Calculo Vectorial IEED232","area":"Unidad Básica","directas":96,"sct":2,"semestre":2,"year":1,"selected":false},
+    {"id":17,"preRequisitos":[11],"name":"Fundamentos de Electromagnetismo IEED242","area":"Unidad Básica","directas":96,"sct":2,"semestre":2,"year":1,"selected":false},
+    {"id":18,"preRequisitos":[13],"name":"Programación  IEED252","area":"Unidad Básica","directas":96,"sct":2,"semestre":2,"year":1,"selected":false},
+    {"id":19,"preRequisitos":[],"name":"Análisis Socioeconómico y Político del Ecuador CSHD211","area":"Unidad Básica","directas":48,"sct":1,"semestre":2,"year":1,"selected":false},
+    {"id":20,"preRequisitos":[],"name":"Electrotecnia IEED272","area":"Unidad Profesional","directas":96,"sct":2,"semestre":2,"year":1,"selected":false},
+    {"id":21,"preRequisitos":[20],"name":"Sistema Digitales IEED323","area":"Unidad Profesional","directas":144,"sct":3,"semestre":3,"year":2,"selected":false},
+    {"id":22,"preRequisitos":[20],"name":"Dispositivos Electrónicos IEED333","area":"Unidad Profesional","directas":144,"sct":3,"semestre":3,"year":2,"selected":false},
+    {"id":23,"preRequisitos":[16,17],"name":"Teoría Electromagnética IEED342","area":"Unidad Profesional","directas":96,"sct":2,"semestre":3,"year":2,"selected":false},
+    {"id":24,"preRequisitos":[2,20],"name":"Fundamentos de Circuitos Eléctricos IEE353 ","area":"Unidad Profesional","directas":144,"sct":3,"semestre":3,"year":2,"selected":false},
+    {"id":25,"preRequisitos":[],"name":"Asignatura de Artes y Humanidades CSHD300","area":"Unidad Profesional","directas":48,"sct":0,"semestre":3,"year":2,"selected":false},
+    {"id":26,"preRequisitos":[15,21],"name":"Matemática Discreta IEED371 ","area":"Unidad Profesional","directas":48,"sct":1,"semestre":3,"year":2,"selected":false},
+    {"id":27,"preRequisitos":[3],"name":"Análisis de Señales Discretas Para Comunicaciones TELD423","area":"Unidad Profesional","directas":144,"sct":3,"semestre":4,"year":2,"selected":false},
+    {"id":28,"preRequisitos":[22],"name":"Circuitos Electrónicos  IEED433","area":"Unidad Profesional","directas":144,"sct":3,"semestre":4,"year":2,"selected":false},
+    {"id":29,"preRequisitos":[18],"name":"Programación Avanzada ITID433","area":"Unidad Profesional","directas":144,"sct":3,"semestre":4,"year":2,"selected":false},
+    {"id":30,"preRequisitos":[18],"name":"Sistema Operativo Linux TELD452","area":"Unidad Profesional","directas":96,"sct":2,"semestre":4,"year":2,"selected":false},
+    {"id":31,"preRequisitos":[],"name":"Asignatura de Economía y Sociedad  CSHD400","area":"Unidad Profesional","directas":48,"sct":1,"semestre":4,"year":2,"selected":false},
+    {"id":32,"preRequisitos":[27],"name":"Teoría de la Información y Codificación TELD 522","area":"Unidad Profesional","directas":96,"sct":2,"semestre":5,"year":3,"selected":false},
+    {"id":33,"preRequisitos":[27],"name":"Procesamiento Digital de Señales TELD532","area":"Unidad Profesional","directas":96,"sct":2,"semestre":5,"year":3,"selected":false},
+    {"id":34,"preRequisitos":[21,30],"name":"Sistema Embebidos  ITID553","area":"Unidad Profesional","directas":144,"sct":3,"semestre":5,"year":3,"selected":false},
+    {"id":35,"preRequisitos":[23],"name":"Sistema de Trasmisión TLED553 ","area":"Unidad Profesional","directas":144,"sct":3,"semestre":5,"year":3,"selected":false},
+    {"id":36,"preRequisitos":[4],"name":"Sistema de Cableado Estructural ITID512","area":"Unidad Profesional","directas":96,"sct":2,"semestre":5,"year":3,"selected":false},
+    {"id":37,"preRequisitos":[5],"name":"Telemática Básica  TELD623","area":"Unidad Profesional","directas":144,"sct":3,"semestre":6,"year":3,"selected":false},
+    {"id":38,"preRequisitos":[28,35],"name":"Electrónica de Radiofrecuencia TELD633","area":"Unidad Profesional","directas":144,"sct":3,"semestre":6,"year":3,"selected":false},
+    {"id":39,"preRequisitos":[33,34],"name":"Aplicación con Sistemas Embebidos TELD642","area":"Unidad Profesional","directas":96,"sct":2,"semestre":6,"year":3,"selected":false},
+    {"id":40,"preRequisitos":[35],"name":"Propagación y Antenas TELD654 ","area":"Unidad Profesional","directas":144,"sct":3,"semestre":6,"year":3,"selected":false},
+    {"id":41,"preRequisitos":[],"name":"Gestión Organizacional ADM511 ","area":"Unidad Profesional","directas":48,"sct":1,"semestre":6,"year":3,"selected":false},
+    {"id":42,"preRequisitos":[37],"name":"Telemática Avanzada TELD723","area":"Unidad Profesional","directas":144,"sct":3,"semestre":7,"year":4,"selected":false},
+    {"id":43,"preRequisitos":[6,34],"name":"Comunicación Inalámbricas TELD733","area":"Unidad Profesional","directas":144,"sct":3,"semestre":7,"year":4,"selected":false},
+    {"id":44,"preRequisitos":[37],"name":"Telefonia IP TELD743","area":"Unidad Profesional","directas":144,"sct":3,"semestre":7,"year":4,"selected":false},
+    {"id":45,"preRequisitos":[38,40],"name":"Ingeniería de Microondas TELD752 ","area":"Unidad Profesional","directas":96,"sct":2,"semestre":7,"year":4,"selected":false},
+    {"id":46,"preRequisitos":[41],"name":"Gestión de Procesos y Calidad ADMD611 ","area":"Unidad Profesional","directas":48,"sct":1,"semestre":7,"year":4,"selected":false},
+    {"id":47,"preRequisitos":[7],"name":"Redes Ópticas TELD823  ","area":"Unidad Profesional","directas":144,"sct":3,"semestre":8,"year":4,"selected":false},
+    {"id":48,"preRequisitos":[42],"name":"Introcucion a Diseños de Redes TELD833","area":"Unidad Profesional","directas":144,"sct":3,"semestre":8,"year":4,"selected":false},
+    {"id":49,"preRequisitos":[42],"name":"Sistema Celulares TELD843","area":"Unidad Profesional","directas":144,"sct":3,"semestre":8,"year":4,"selected":false},
+    {"id":50,"preRequisitos":[42],"name":"Fundamentos de Seguridad TELD852 ","area":"Unidad Profesional","directas":96,"sct":0,"semestre":8,"year":4,"selected":false},
+    {"id":50,"preRequisitos":[41],"name":"Ingeniería Financiera TELD711  ","area":"Unidad Profesional","directas":48,"sct":1,"semestre":8,"year":4,"selected":false},
+    {"id":51,"preRequisitos":[],"name":"Diseño de Proyectos de Telecomunicaciones TELD871","area":"Unidad Profesional","directas":48,"sct":1,"semestre":8,"year":4,"selected":false},
+    {"id":52,"preRequisitos":[],"name":"Practicas Profesionales PRLD105 ","area":"Unidad Profesional","directas":240,"sct":5,"semestre":9,"year":5,"selected":false},
+    {"id":53,"preRequisitos":[],"name":"Practica de Servicio Comunitario PSCD202","area":"Unidad Profesional","directas":96,"sct":2,"semestre":9,"year":5,"selected":false},
+    {"id":54,"preRequisitos":[45],"name":"Marco Regulatorio de los Servicios de Telecomunicaciones TELD941","area":"Unidad Profesional","directas":48,"sct":1,"semestre":9,"year":5,"selected":false},
+    {"id":55,"preRequisitos":[],"name":"Trabajo de Integración curricular / Examen de Carácter Complexivo TITD201","area":"Unidad de Integración Curricular","directas":240,"sct":5,"semestre":9,"year":5,"selected":false},
+    {"id":56,"preRequisitos":[],"name":"Ingles B1 IEXD200","area":"Requisitos Para Graduacion","directas":0,"sct":0,"semestre":2,"year":1,"selected":false},
+    {"id":57,"preRequisitos":[],"name":"Deportes DEPD110","area":"Requisitos Para Graduacion","directas":0,"sct":0,"semestre":1,"year":1,"selected":false},
+    {"id":58,"preRequisitos":[],"name":"Clubes SOCD210","area":"Requisitos Para Graduacion","directas":0,"sct":0,"semestre":2,"year":1,"selected":false},
+    {"id":59,"preRequisitos":[],"name":"Metodología de Estudio IEED210","area":"Requisitos Para Graduacion","directas":0,"sct":0,"semestre":2,"year":1,"selected":false},
+    {"id":60,"preRequisitos":[],"name":"Asignatura de Comunicación CSHD500 ","area":"Requisitos Para Graduacion","directas":0,"sct":0,"semestre":5,"year":3,"selected":false},
+    {"id":61,"preRequisitos":[],"name":"Emprendimiento ADMD700","area":"Requisitos Para Graduacion","directas":0,"sct":0,"semestre":7,"year":4,"selected":false},
+    {"id":62,"preRequisitos":[],"name":"Formulación y Evaluación de Proyectos ADMD800","area":"Requisitos Para Graduacion","directas":0,"sct":0,"semestre":8,"year":4,"selected":false},
+    {"id":63,"preRequisitos":[],"name":"Ecologia y Ambiente AMBD900","area":"Requisitos Para Graduacion","directas":0,"sct":0,"semestre":9,"year":5,"selected":false},
+    {"id":64,"preRequisitos":[8],"name":"Componentes Pasivos de Radiofrecuencia TELD801","area":"Itinerario Radiocomunicación","directas":0,"sct":0,"semestre":8,"year":4,"selected":false},
+    {"id":65,"preRequisitos":[64],"name":"Componentes Activos de Radiofrecuencia TELD901","area":"Itinerario Radiocomunicación","directas":0,"sct":0,"semestre":9,"year":5,"selected":false},
+    {"id":66,"preRequisitos":[8],"name":"Técnicas Avanzadas de Procesamiento Digital de Señales TELD802 ","area":"Itinerario Comunicación","directas":0,"sct":0,"semestre":8,"year":4,"selected":false},
+    {"id":67,"preRequisitos":[66],"name":"Técnicas Avanzadas De Clasificación de Señales TELD902","area":"Itinerario Comunicación","directas":0,"sct":0,"semestre":9,"year":5,"selected":false},
+    {"id":68,"preRequisitos":[8],"name":"Conmutación y Enrutamiento Avanzado TELD803","area":"Itinerario Telemática","directas":0,"sct":0,"semestre":8,"year":4,"selected":false},
+    {"id":69,"preRequisitos":[],"name":"Tecnología Avanzadas en Redes de Datos TELD903","area":"Itinerario Telemática","directas":0,"sct":0,"semestre":9,"year":5,"selected":false}
+  ],
+  "mallaAreas": [
+    {"name":"Unidad Básica","backgroundColor":"#e1ff00"},
+    {"name":"Unidad Profesional","backgroundColor":"#0a12ff"},
+    {"name":"Unidad de Integración Curricular","backgroundColor":"#1dff1a"},
+    {"name":"Requisitos Para Graduacion","backgroundColor":"#ff0505"},
+    {"name":"Itinerario Radiocomunicación","backgroundColor":"#ff8d0a"},
+    {"name":"Itinerario Comunicación","backgroundColor":"#09b3ec"},
+    {"name":"Itinerario Telemática","backgroundColor":"#f434c1"}
+  ]
+}</script>
 
-        // Initialize
-        function init() {
-            // Group courses by year and semester
-            const coursesByYearSemester = groupCourses();
+  <script>
+  // Utilidades DOM
+  const $ = (sel, el=document) => el.querySelector(sel);
+  const $$ = (sel, el=document) => Array.from(el.querySelectorAll(sel));
+  const toast = (msg) => { const t = $('#toast'); t.textContent = msg; t.style.display='block'; clearTimeout(t._h); t._h=setTimeout(()=>t.style.display='none', 2200); };
 
-            // Render grid
-            renderGrid(coursesByYearSemester);
+  // Carga de datos
+  const RAW = JSON.parse(document.getElementById('dataset').textContent);
+  const AREAS = RAW.mallaAreas;
+  const DATA = RAW.data.map((d,i) => ({...d, _idx:i}));
 
-            // Set up event listeners
-            setupEventListeners();
+  // Resolver IDs duplicados manteniendo el texto original
+  const idSeen = new Map();
+  for (const c of DATA){
+    if (idSeen.has(c.id)){
+      const newId = `${c.id}-${c._idx}`; // id string único interno
+      console.warn('ID duplicado detectado:', c.id, '→ usando', newId);
+      c._dupDisplayId = c.id; // conservar para mostrar
+      c.id = newId; // sobrescribir para relaciones internas
+      // también actualizar referencias que lo usen como prerrequisito
+    }
+    idSeen.set(c.id, c);
+  }
+  // Reparar referencias en preRequisitos que apuntaban a IDs duplicados
+  const originalByName = new Map();
+  for (const c of DATA){ originalByName.set((c.name||'').trim(), c); }
+  // (suponemos que los preRequisitos duplicados no afectan nombres; dejamos como están si no se encuentran)
 
-            // Initialize unlocked courses (courses with no prerequisites)
-            updateUnlockedCourses();
-        }
+  // Índices
+  const byId = new Map(DATA.map(c => [c.id, c]));
+  const dependientes = new Map(DATA.map(c => [c.id, []]));
+  for (const c of DATA){
+    (c.preRequisitos||[]).forEach(r => {
+      const key = byId.has(r) ? r : (typeof r === 'string' && byId.has(r) ? r : null);
+      if (key!=null) dependientes.get(key).push(c.id);
+    });
+  }
 
-        // Group courses by year and semester
-        function groupCourses() {
-            const grouped = {};
+  // Colores por área
+  const areaColor = Object.fromEntries(AREAS.map(a=>[a.name, a.backgroundColor]));
 
-            mallaData.data.forEach(course => {
-                if (!grouped[course.year]) {
-                    grouped[course.year] = {};
-                }
-                if (!grouped[course.year][course.semestre]) {
-                    grouped[course.year][course.semestre] = [];
-                }
-                grouped[course.year][course.semestre].push(course);
-            });
+  // UI: leyenda + filtro áreas
+  const legend = $('#legend');
+  AREAS.forEach(a=>{
+    const el=document.createElement('span'); el.className='badge';
+    el.innerHTML = `<span class="dot" style="background:${a.backgroundColor}"></span>${a.name}`;
+    legend.appendChild(el);
+    const opt=document.createElement('option'); opt.value=a.name; opt.textContent=a.name; $('#filter-area').appendChild(opt);
+  });
 
-            return grouped;
-        }
+  // Construir rejilla por 10 semestres (1..10) pero aquí hay hasta 9
+  const termsEl = $('#terms');
+  const totalTerms = Math.max(...DATA.map(c=>c.semestre||1));
+  const years = Math.max(...DATA.map(c=>c.year||1));
+  const slots = [];
+  for(let y=1;y<=years;y++){
+    for(let s=1;s<=2;s++){
+      const term = (y-1)*2 + s; // 1..10
+      const col=document.createElement('div'); col.className='col'; col.dataset.term=term;
+      const h=document.createElement('h3'); h.textContent=`${y}° Año — Sem ${s}`; col.appendChild(h);
+      const list=document.createElement('div'); list.className='drop'; col.appendChild(list);
+      termsEl.appendChild(col); slots.push(list);
+    }
+  }
+  // Extras si existen semestres > years*2 (no en este dataset)
 
-        // Render grid
-        function renderGrid(coursesByYearSemester) {
-            // Sort years
-            const years = Object.keys(coursesByYearSemester).sort((a, b) => a - b);
+  // Crear tarjetas
+  function createCard(c){
+    const el=document.createElement('div'); el.className='card'; el.tabIndex=0; el.dataset.id=c.id;
+    const area = c.area || 'Área';
+    const chipColor = areaColor[area] || '#6b7280';
+    const displayId = c._dupDisplayId ? `${c._dupDisplayId}` : c.id;
+    el.innerHTML = `
+      <div class="name">${c.name}</div>
+      <div class="meta">
+        <span class="tag" style="border-color:${chipColor}66; background:${chipColor}22">${area}</span>
+        <span class="tag">${c.directas||0}h</span>
+        <span class="tag">SCT: <b>${c.sct||0}</b></span>
+        <span class="tag">ID: ${displayId}</span>
+      </div>
+      <div class="reqs">Prereqs: ${(c.preRequisitos||[]).length? (c.preRequisitos.join(', ')) : '—'}</div>
+      <div class="mini"><span class="state">Estado: <b>normal</b></span><span class="sct">+${c.sct||0}</span></div>
+    `;
+    el.style.borderLeft = `4px solid ${chipColor}`;
+    return el;
+  }
 
-            years.forEach(year => {
-                const yearContainer = document.createElement('div');
-                yearContainer.className = 'year-container';
+  // Insertar en columnas
+  const termIndex = (y,s) => (y-1)*2 + s; // 1..10
+  DATA.forEach(c=>{
+    const t = termIndex(c.year||1, c.semestre||1);
+    const list = slots[t-1] || slots[0];
+    const card = createCard(c); list.appendChild(card);
+    c._el = card;
+  });
 
-                const yearTitle = document.createElement('h2');
-                yearTitle.className = 'year-title';
-                yearTitle.textContent = `Año ${year}`;
-                yearContainer.appendChild(yearTitle);
+  // Selección persistente
+  const STORAGE_KEY='malla-teleco-v1';
+  function loadState(){
+    try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}'); }catch{ return {}; }
+  }
+  function saveState(state){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+  function applyState(){
+    const st = loadState();
+    for(const c of DATA){
+      const s = st[c.id];
+      if(!s) continue;
+      c._state=s;
+      c._el.classList.toggle('completed', s==='completed');
+      c._el.classList.toggle('planned', s==='planned');
+      updateCardState(c);
+    }
+    redrawLinks();
+  }
 
-                // Sort semesters
-                const semesters = Object.keys(coursesByYearSemester[year]).sort((a, b) => a - b);
+  // Lógica de bloqueo/desbloqueo
+  function isCompleted(id){ const c=byId.get(id); return c && c._el.classList.contains('completed'); }
+  function updateLocks(){
+    for(const c of DATA){
+      const reqs = (c.preRequisitos||[]).filter(r=>byId.has(r));
+      const unlocked = reqs.every(isCompleted) || reqs.length===0;
+      c._el.classList.toggle('locked', !unlocked);
+      const stateEl = $('.state', c._el);
+      stateEl.innerHTML = `Estado: <b>${unlocked? 'desbloqueada' : 'bloqueada'}</b>`;
+    }
+  }
 
-                semesters.forEach(semester => {
-                    const semesterContainer = document.createElement('div');
-                    semesterContainer.className = 'semester-container';
+  function updateCardState(c){
+    const st = loadState();
+    const cls = c._el.classList;
+    let val = 'normal';
+    if (cls.contains('completed')) val='completed';
+    else if (cls.contains('planned')) val='planned';
+    st[c.id]=val; saveState(st);
+  }
 
-                    const semesterTitle = document.createElement('h3');
-                    semesterTitle.className = 'semester-title';
-                    semesterTitle.textContent = `Semestre ${semester}`;
-                    semesterContainer.appendChild(semesterTitle);
+  // Click: ciclo normal → planificada → aprobada → normal
+  termsEl.addEventListener('click', (e)=>{
+    const card = e.target.closest('.card'); if(!card) return;
+    const id = card.dataset.id; const c = byId.get(id);
+    if(card.classList.contains('planned')){ card.classList.remove('planned'); card.classList.add('completed'); toast('Marcada como APROBADA'); }
+    else if(card.classList.contains('completed')){ card.classList.remove('completed'); toast('Estado restablecido'); }
+    else { card.classList.add('planned'); toast('Marcada como PLANIFICADA'); }
+    updateCardState(c); updateLocks(); redrawLinks();
+  });
 
-                    // Sort courses by id
-                    const courses = coursesByYearSemester[year][semester].sort((a, b) => a.id - b.id);
+  // Hover: resaltar prereqs/dependientes
+  termsEl.addEventListener('mouseover', (e)=>{
+    const card = e.target.closest('.card'); if(!card) return;
+    const id = card.dataset.id; highlightRelations(id, true);
+  });
+  termsEl.addEventListener('mouseout', (e)=>{
+    const card = e.target.closest('.card'); if(!card) return;
+    const id = card.dataset.id; highlightRelations(id, false);
+  });
 
-                    courses.forEach(course => {
-                        const courseCard = createCourseCard(course);
-                        semesterContainer.appendChild(courseCard);
-                    });
+  function highlightRelations(id, on){
+    const c = byId.get(id); if(!c) return;
+    const reqs=(c.preRequisitos||[]).filter(r=>byId.has(r));
+    reqs.forEach(rid=>byId.get(rid)._el.style.outline = on? `2px solid var(--bad)` : '');
+    (dependientes.get(id)||[]).forEach(did=>byId.get(did)._el.style.outline = on? `2px solid var(--ok)` : '');
+    $$('#wires path').forEach(p=>{
+      const a = p.dataset.a, b=p.dataset.b;
+      const match = (reqs.includes(a) && b==id) || (a==id && (dependientes.get(id)||[]).includes(b));
+      p.style.strokeWidth = match? 4 : 2.5;
+      p.style.opacity = match? 1 : .25;
+    });
+  }
 
-                    yearContainer.appendChild(semesterContainer);
-                });
+  // Búsqueda y filtros
+  $('#search').addEventListener('input', e=>{
+    const q = e.target.value.toLowerCase().trim();
+    DATA.forEach(c=>{
+      const hay = c.name.toLowerCase().includes(q) || String(c.id).includes(q) || (c.area||'').toLowerCase().includes(q);
+      c._el.style.display = hay? '' : 'none';
+    });
+    redrawLinks();
+  });
+  $('#filter-area').addEventListener('change', e=>{
+    const val = e.target.value;
+    DATA.forEach(c=>{ c._el.style.display = (!val || c.area===val) ? '' : 'none'; });
+    redrawLinks();
+  });
+  $('#clear').addEventListener('click', ()=>{
+    localStorage.removeItem(STORAGE_KEY);
+    DATA.forEach(c=>{ c._el.classList.remove('planned','completed'); updateCardState(c); });
+    updateLocks(); redrawLinks(); toast('Selección borrada');
+  });
+  $('#toggle-reqs').addEventListener('change', e=>{ $('#wires').style.display = e.target.checked? '' : 'none'; });
+  $('#toggle-itins').addEventListener('change', e=>{
+    const show = e.target.checked;
+    const itins = new Set(['Itinerario Radiocomunicación','Itinerario Comunicación','Itinerario Telemática']);
+    DATA.forEach(c=>{ if(itins.has(c.area)) c._el.style.display = show? '' : 'none'; });
+    redrawLinks();
+  });
 
-                gridContainer.appendChild(yearContainer);
-            });
-        }
+  // Exportar/Importar con click derecho en header
+  $('header').addEventListener('contextmenu', (e)=>{
+    e.preventDefault();
+    const choice = prompt('Escribe "export" para descargar estado, o pega aquí un JSON para importar.');
+    if(!choice) return;
+    if(choice.trim().toLowerCase()==='export'){
+      const blob = new Blob([localStorage.getItem(STORAGE_KEY)||'{}'], {type:'application/json'});
+      const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='estado-malla.json'; a.click();
+    } else {
+      try{ const obj = JSON.parse(choice); saveState(obj); applyState(); toast('Estado importado'); }
+      catch{ alert('JSON inválido'); }
+    }
+  });
 
-        // Create course card
-        function createCourseCard(course) {
-            const courseCard = document.createElement('div');
-            courseCard.className = 'course-card';
-            courseCard.dataset.id = course.id;
+  // Dibujo de líneas SVG entre tarjetas (prerrequisito → curso)
+  const wires = $('#wires');
+  function cardAnchor(el){
+    const r = el.getBoundingClientRect();
+    const parent = termsEl.getBoundingClientRect();
+    return { x:r.left - parent.left + r.width, y:r.top - parent.top + r.height/2 };
+  }
+  function cardAnchorLeft(el){
+    const r = el.getBoundingClientRect();
+    const parent = termsEl.getBoundingClientRect();
+    return { x:r.left - parent.left, y:r.top - parent.top + r.height/2 };
+  }
+  function pathBetween(aEl, bEl){
+    const A = cardAnchor(aEl); // derecha del prereq
+    const B = cardAnchorLeft(bEl); // izquierda del curso
+    const dx = Math.max(40, (B.x - A.x) * .5);
+    return `M ${A.x},${A.y} C ${A.x+dx},${A.y} ${B.x-dx},${B.y} ${B.x},${B.y}`;
+  }
+  function redrawLinks(){
+    wires.innerHTML='';
+    const bbox = termsEl.getBoundingClientRect();
+    wires.setAttribute('viewBox', `0 0 ${bbox.width} ${bbox.height}`);
+    wires.setAttribute('width', bbox.width);
+    wires.setAttribute('height', bbox.height);
+    const show = $('#toggle-reqs').checked;
+    if(!show) return;
+    for(const c of DATA){
+      if (c._el.style.display==='none') continue;
+      const reqs = (c.preRequisitos||[]).filter(r=>byId.has(r));
+      for(const rid of reqs){
+        const from = byId.get(rid);
+        if(!from || from._el.style.display==='none') continue;
+        const p = document.createElementNS('http://www.w3.org/2000/svg','path');
+        p.setAttribute('d', pathBetween(from._el, c._el));
+        p.classList.add('prereq');
+        p.dataset.a = String(rid); p.dataset.b = String(c.id);
+        wires.appendChild(p);
+      }
+    }
+  }
+  window.addEventListener('resize', ()=>{ redrawLinks(); });
+  const ro = new ResizeObserver(()=>redrawLinks()); ro.observe($('#terms'));
 
-            if (course.selected) {
-                courseCard.classList.add('selected');
-            }
-
-            // Check if course is locked
-            const isLocked = !isCourseUnlocked(course);
-            if (isLocked) {
-                courseCard.classList.add('locked');
-            }
-
-            const courseName = document.createElement('div');
-            courseName.className = 'course-name';
-            courseName.textContent = course.name;
-
-            const courseCode = document.createElement('div');
-            courseCode.className = 'course-code';
-            courseCode.textContent = course.code;
-
-            const courseSCT = document.createElement('div');
-            courseSCT.className = 'course-sct';
-            courseSCT.textContent = `SCT: ${course.sct}`;
-
-            courseCard.appendChild(courseName);
-            courseCard.appendChild(courseCode);
-            courseCard.appendChild(courseSCT);
-
-            return courseCard;
-        }
-
-        // Set up event listeners
-        function setupEventListeners() {
-            // Dark mode toggle
-            darkModeToggle.addEventListener('change', function() {
-                document.body.classList.toggle('dark-mode', this.checked);
-            });
-
-            // Course card clicks
-            gridContainer.addEventListener('click', function(e) {
-                const courseCard = e.target.closest('.course-card');
-                if (!courseCard) return;
-
-                const courseId = parseInt(courseCard.dataset.id);
-                const course = mallaData.data.find(c => c.id === courseId);
-
-                // Don't allow selection of locked courses
-                if (courseCard.classList.contains('locked')) {
-                    return;
-                }
-
-                // Toggle selection
-                if (course.selected) {
-                    course.selected = false;
-                    selectedCourses.delete(courseId);
-                    courseCard.classList.remove('selected');
-                } else {
-                    course.selected = true;
-                    selectedCourses.add(courseId);
-                    courseCard.classList.add('selected');
-                }
-
-                // Update unlocked courses based on new selection
-                updateUnlockedCourses();
-
-                // Update stats
-                updateStats();
-            });
-        }
-
-        // Check if course is unlocked (all prerequisites are selected)
-        function isCourseUnlocked(course) {
-            if (course.preRequisitos.length === 0) return true;
-            return course.preRequisitos.every(prereqId => selectedCourses.has(prereqId));
-        }
-
-        // Update unlocked courses based on current selection
-        function updateUnlockedCourses() {
-            // Reset all locked states
-            document.querySelectorAll('.course-card').forEach(card => {
-                card.classList.remove('locked');
-            });
-
-            // Update locked state for each course
-            mallaData.data.forEach(course => {
-                const courseCard = document.querySelector(`.course-card[data-id="${course.id}"]`);
-                if (!courseCard) return;
-
-                if (!isCourseUnlocked(course) && !course.selected) {
-                    courseCard.classList.add('locked');
-                }
-            });
-        }
-
-        // Update statistics
-        function updateStats() {
-            let totalSCT = 0;
-            selectedCourses.forEach(courseId => {
-                const course = mallaData.data.find(c => c.id === courseId);
-                if (course) {
-                    totalSCT += course.sct;
-                }
-            });
-
-            totalSCTElement.textContent = totalSCT;
-            selectedCountElement.textContent = selectedCourses.size;
-        }
-
-        // Initialize the app
-        init();
-    </script>
+  // Inicialización
+  updateLocks();
+  applyState();
+  setTimeout(()=>redrawLinks(), 50);
+  </script>
 </body>
 </html>
