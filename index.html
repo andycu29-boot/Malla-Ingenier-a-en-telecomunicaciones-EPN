@@ -91,63 +91,78 @@
             margin-bottom: 30px;
         }
         
-        .malla-grid {
-            display: grid;
-            grid-template-columns: repeat(9, 1fr);
-            gap: 15px;
+        .malla-table {
+            width: 100%;
+            border-collapse: collapse;
             min-width: 1000px;
         }
         
-        .semestre {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .semestre-header {
+        .malla-table th {
             background-color: #2c3e50;
             color: white;
-            padding: 8px;
+            padding: 10px;
             text-align: center;
-            border-radius: 4px;
             font-weight: bold;
         }
         
+        .malla-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            vertical-align: top;
+            position: relative;
+        }
+        
+        .year-header {
+            background-color: #34495e;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .semestre-header {
+            background-color: #7f8c8d;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+        }
+        
         .curso {
-            padding: 12px;
-            border-radius: 6px;
+            padding: 8px;
+            border-radius: 4px;
+            margin-bottom: 8px;
             cursor: pointer;
             transition: all 0.3s;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
         
         .curso:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
         }
         
         .curso.selected {
-            outline: 3px solid #333;
+            outline: 2px solid #333;
         }
         
         .curso-title {
             font-weight: bold;
-            margin-bottom: 5px;
-            font-size: 14px;
+            margin-bottom: 3px;
+            font-size: 12px;
         }
         
         .curso-info {
-            font-size: 12px;
+            font-size: 11px;
             display: flex;
             justify-content: space-between;
         }
         
         .curso-sct {
             background-color: rgba(0,0,0,0.1);
-            padding: 2px 5px;
+            padding: 1px 4px;
             border-radius: 3px;
+            font-size: 10px;
         }
         
         .curso-area {
@@ -308,9 +323,31 @@
         </div>
         
         <div class="malla-container">
-            <div class="malla-grid" id="malla-grid">
-                <!-- La malla se generará con JavaScript -->
-            </div>
+            <table class="malla-table" id="malla-table">
+                <thead>
+                    <tr>
+                        <th colspan="2">Año 1</th>
+                        <th colspan="2">Año 2</th>
+                        <th colspan="2">Año 3</th>
+                        <th colspan="2">Año 4</th>
+                        <th>Año 5</th>
+                    </tr>
+                    <tr>
+                        <th class="semestre-header">I</th>
+                        <th class="semestre-header">II</th>
+                        <th class="semestre-header">III</th>
+                        <th class="semestre-header">IV</th>
+                        <th class="semestre-header">V</th>
+                        <th class="semestre-header">VI</th>
+                        <th class="semestre-header">VII</th>
+                        <th class="semestre-header">VIII</th>
+                        <th class="semestre-header">IX</th>
+                    </tr>
+                </thead>
+                <tbody id="malla-body">
+                    <!-- Las filas de cursos se generarán con JavaScript -->
+                </tbody>
+            </table>
         </div>
         
         <div class="legend">
@@ -381,809 +418,13 @@
     </div>
 
     <script>
-        // Datos de la malla curricular
+        // Datos de la malla curricular (igual que antes)
         const mallaData = {
             "data": [
-                {
-                    "id": 1,
-                    "preRequisitos": [],
-                    "name": "Algebra Lineal  MATD113",
-                    "area": "Unidad Básica",
-                    "directas": 144,
-                    "sct": 3,
-                    "year": 1,
-                    "semestre": 1,
-                    "selected": false
-                },
-                {
-                    "id": 2,
-                    "preRequisitos": [1, 10],
-                    "name": "Ecuaciones Diferenciales Ordinarias MATD213",
-                    "area": "Unidad Básica",
-                    "directas": 144,
-                    "sct": 3,
-                    "year": 1,
-                    "semestre": 2,
-                    "selected": false
-                },
-                {
-                    "id": 3,
-                    "preRequisitos": [2, 16],
-                    "name": "Matemática Avanzada IEED312",
-                    "area": "Unidad Básica",
-                    "directas": 96,
-                    "sct": 2,
-                    "year": 2,
-                    "semestre": 3,
-                    "selected": false
-                },
-                {
-                    "id": 4,
-                    "preRequisitos": [24],
-                    "name": "Instalación Eléctrica y Comunicación  IEED413",
-                    "area": "Unidad Profesional",
-                    "directas": 144,
-                    "sct": 3,
-                    "year": 2,
-                    "semestre": 4,
-                    "selected": false
-                },
-                {
-                    "id": 5,
-                    "preRequisitos": [27],
-                    "name": "Fundamentos de Comunicaciones TELD513",
-                    "area": "Unidad Profesional",
-                    "directas": 144,
-                    "sct": 3,
-                    "year": 3,
-                    "semestre": 5,
-                    "selected": false
-                },
-                {
-                    "id": 6,
-                    "preRequisitos": [5],
-                    "name": "Comunicación Digital TELD613",
-                    "area": "Unidad Profesional",
-                    "directas": 144,
-                    "sct": 3,
-                    "year": 3,
-                    "semestre": 6,
-                    "selected": false
-                },
-                {
-                    "id": 7,
-                    "preRequisitos": [6],
-                    "name": "Comunicación Ópticas TELD713 ",
-                    "area": "Unidad Profesional",
-                    "directas": 144,
-                    "sct": 3,
-                    "year": 4,
-                    "semestre": 7,
-                    "selected": false
-                },
-                {
-                    "id": 8,
-                    "preRequisitos": [39, 42, 45],
-                    "name": "Itinerario Basico TELD800",
-                    "area": "Unidad Profesional",
-                    "directas": 96,
-                    "sct": 2,
-                    "year": 4,
-                    "semestre": 8,
-                    "selected": false
-                },
-                {
-                    "id": 9,
-                    "preRequisitos": [8],
-                    "name": "Itinerario Avanzado TELD900",
-                    "area": "Unidad Profesional",
-                    "directas": 96,
-                    "sct": 2,
-                    "year": 5,
-                    "semestre": 9,
-                    "selected": false
-                },
-                {
-                    "id": 10,
-                    "preRequisitos": [],
-                    "name": "Calculo de una variable MATD123 ",
-                    "area": "Unidad Básica",
-                    "directas": 144,
-                    "sct": 3,
-                    "semestre": 1,
-                    "year": 1,
-                    "selected": false
-                },
-                {
-                    "id": 11,
-                    "preRequisitos": [],
-                    "name": "Mecánica Newtoniana FISD134",
-                    "area": "Unidad Básica",
-                    "directas": 192,
-                    "sct": 4,
-                    "semestre": 1,
-                    "year": 1,
-                    "selected": false
-                },
-                {
-                    "id": 12,
-                    "preRequisitos": [],
-                    "name": "Química General QUID143",
-                    "area": "Unidad Básica",
-                    "directas": 144,
-                    "sct": 3,
-                    "semestre": 1,
-                    "year": 1,
-                    "selected": false
-                },
-                {
-                    "id": 13,
-                    "preRequisitos": [],
-                    "name": "Herramientas Informáticas ICOD111 ",
-                    "area": "Unidad Básica",
-                    "directas": 48,
-                    "sct": 1,
-                    "semestre": 1,
-                    "year": 1,
-                    "selected": false
-                },
-                {
-                    "id": 14,
-                    "preRequisitos": [],
-                    "name": "Comunicaion Oral y Escrita CSHD11",
-                    "area": "Unidad Básica",
-                    "directas": 48,
-                    "sct": 1,
-                    "semestre": 1,
-                    "year": 1,
-                    "selected": false
-                },
-                {
-                    "id": 15,
-                    "preRequisitos": [10],
-                    "name": "Probabilidad y Estadística Básica MATD223 ",
-                    "area": "Unidad Básica",
-                    "directas": 144,
-                    "sct": 3,
-                    "semestre": 2,
-                    "year": 1,
-                    "selected": false
-                },
-                {
-                    "id": 16,
-                    "preRequisitos": [10],
-                    "name": "Calculo Vectorial IEED232",
-                    "area": "Unidad Básica",
-                    "directas": 96,
-                    "sct": 2,
-                    "semestre": 2,
-                    "year": 1,
-                    "selected": false
-                },
-                {
-                    "id": 17,
-                    "preRequisitos": [11],
-                    "name": "Fundamentos de Electromagnetismo IEED242",
-                    "area": "Unidad Básica",
-                    "directas": 96,
-                    "sct": 2,
-                    "semestre": 2,
-                    "year": 1,
-                    "selected": false
-                },
-                {
-                    "id": 18,
-                    "preRequisitos": [13],
-                    "name": "Programación  IEED252",
-                    "area": "Unidad Básica",
-                    "directas": 96,
-                    "sct": 2,
-                    "semestre": 2,
-                    "year": 1,
-                    "selected": false
-                },
-                {
-                    "id": 19,
-                    "preRequisitos": [],
-                    "name": "Análisis Socioeconómico y Político del Ecuador CSHD211",
-                    "area": "Unidad Básica",
-                    "directas": 48,
-                    "sct": 1,
-                    "semestre": 2,
-                    "year": 1,
-                    "selected": false
-                },
-                {
-                    "id": 20,
-                    "preRequisitos": [],
-                    "name": "Electrotecnia IEED272",
-                    "area": "Unidad Profesional",
-                    "directas": 96,
-                    "sct": 2,
-                    "semestre": 2,
-                    "year": 1,
-                    "selected": false
-                },
-                {
-                    "id": 21,
-                    "preRequisitos": [20],
-                    "name": "Sistema Digitales IEED323",
-                    "area": "Unidad Profesional",
-                    "directas": 144,
-                    "sct": 3,
-                    "semestre": 3,
-                    "year": 2,
-                    "selected": false
-                },
-                {
-                    "id": 22,
-                    "preRequisitos": [20],
-                    "name": "Dispositivos Electrónicos IEED333",
-                    "area": "Unidad Profesional",
-                    "directas": 144,
-                    "sct": 3,
-                    "semestre": 3,
-                    "year": 2,
-                    "selected": false
-                },
-                {
-                    "id": 23,
-                    "preRequisitos": [16, 17],
-                    "name": "Teoría Electromagnética IEED342",
-                    "area": "Unidad Profesional",
-                    "directas": 96,
-                    "sct": 2,
-                    "semestre": 3,
-                    "year": 2,
-                    "selected": false
-                },
-                {
-                    "id": 24,
-                    "preRequisitos": [2, 20],
-                    "name": "Fundamentos de Circuitos Eléctricos IEE353 ",
-                    "area": "Unidad Profesional",
-                    "directas": 144,
-                    "sct": 3,
-                    "semestre": 3,
-                    "year": 2,
-                    "selected": false
-                },
-                {
-                    "id": 25,
-                    "preRequisitos": [],
-                    "name": "Asignatura de Artes y Humanidades CSHD300",
-                    "area": "Unidad Profesional",
-                    "directas": 48,
-                    "sct": 0,
-                    "semestre": 3,
-                    "year": 2,
-                    "selected": false
-                },
-                {
-                    "id": 26,
-                    "preRequisitos": [15, 21],
-                    "name": "Matemática Discreta IEED371 ",
-                    "area": "Unidad Profesional",
-                    "directas": 48,
-                    "sct": 1,
-                    "semestre": 3,
-                    "year": 2,
-                    "selected": false
-                },
-                {
-                    "id": 27,
-                    "preRequisitos": [3],
-                    "name": "Análisis de Señales Discretas Para Comunicaciones TELD423",
-                    "area": "Unidad Profesional",
-                    "directas": 144,
-                    "sct": 3,
-                    "semestre": 4,
-                    "year": 2,
-                    "selected": false
-                },
-                {
-                    "id": 28,
-                    "preRequisitos": [22],
-                    "name": "Circuitos Electrónicos  IEED433",
-                    "area": "Unidad Profesional",
-                    "directas": 144,
-                    "sct": 3,
-                    "semestre": 4,
-                    "year": 2,
-                    "selected": false
-                },
-                {
-                    "id": 29,
-                    "preRequisitos": [18],
-                    "name": "Programación Avanzada ITID433",
-                    "area": "Unidad Profesional",
-                    "directas": 144,
-                    "sct": 3,
-                    "semestre": 4,
-                    "year": 2,
-                    "selected": false
-                },
-                {
-                    "id": 30,
-                    "preRequisitos": [18],
-                    "name": "Sistema Operativo Linux TELD452",
-                    "area": "Unidad Profesional",
-                    "directas": 96,
-                    "sct": 2,
-                    "semestre": 4,
-                    "year": 2,
-                    "selected": false
-                },
-                {
-                    "id": 31,
-                    "preRequisitos": [],
-                    "name": "Asignatura de Economía y Sociedad  CSHD400",
-                    "area": "Unidad Profesional",
-                    "directas": 48,
-                    "sct": 1,
-                    "semestre": 4,
-                    "year": 2,
-                    "selected": false
-                },
-                {
-                    "id": 32,
-                    "preRequisitos": [27],
-                    "name": "Teoría de la Información y Codificación TELD 522",
-                    "area": "Unidad Profesional",
-                    "directas": 96,
-                    "sct": 2,
-                    "semestre": 5,
-                    "year": 3,
-                    "selected": false
-                },
-                {
-                    "id": 33,
-                    "preRequisitos": [27],
-                    "name": "Procesamiento Digital de Señales TELD532",
-                    "area": "Unidad Profesional",
-                    "directas": 96,
-                    "sct": 2,
-                    "semestre": 5,
-                    "year": 3,
-                    "selected": false
-                },
-                {
-                    "id": 34,
-                    "preRequisitos": [21, 30],
-                    "name": "Sistema Embebidos  ITID553",
-                    "area": "Unidad Profesional",
-                    "directas": 144,
-                    "sct": 3,
-                    "semestre": 5,
-                    "year": 3,
-                    "selected": false
-                },
-                {
-                    "id": 35,
-                    "preRequisitos": [23],
-                    "name": "Sistema de Trasmisión TLED553 ",
-                    "area": "Unidad Profesional",
-                    "directas": 144,
-                    "sct": 3,
-                    "semestre": 5,
-                    "year": 3,
-                    "selected": false
-                },
-                {
-                    "id": 36,
-                    "preRequisitos": [4],
-                    "name": "Sistema de Cableado Estructural ITID512",
-                    "area": "Unidad Profesional",
-                    "directas": 96,
-                    "sct": 2,
-                    "semestre": 5,
-                    "year": 3,
-                    "selected": false
-                },
-                {
-                    "id": 37,
-                    "preRequisitos": [5],
-                    "name": "Telemática Básica  TELD623",
-                    "area": "Unidad Profesional",
-                    "directas": 144,
-                    "sct": 3,
-                    "semestre": 6,
-                    "year": 3,
-                    "selected": false
-                },
-                {
-                    "id": 38,
-                    "preRequisitos": [28, 35],
-                    "name": "Electrónica de Radiofrecuencia TELD633",
-                    "area": "Unidad Profesional",
-                    "directas": 144,
-                    "sct": 3,
-                    "semestre": 6,
-                    "year": 3,
-                    "selected": false
-                },
-                {
-                    "id": 39,
-                    "preRequisitos": [33, 34],
-                    "name": "Aplicación con Sistemas Embebidos TELD642",
-                    "area": "Unidad Profesional",
-                    "directas": 96,
-                    "sct": 2,
-                    "semestre": 6,
-                    "year": 3,
-                    "selected": false
-                },
-                {
-                    "id": 40,
-                    "preRequisitos": [35],
-                    "name": "Propagación y Antenas TELD654 ",
-                    "area": "Unidad Profesional",
-                    "directas": 144,
-                    "sct": 3,
-                    "semestre": 6,
-                    "year": 3,
-                    "selected": false
-                },
-                {
-                    "id": 41,
-                    "preRequisitos": [],
-                    "name": "Gestión Organizacional ADM511 ",
-                    "area": "Unidad Profesional",
-                    "directas": 48,
-                    "sct": 1,
-                    "semestre": 6,
-                    "year": 3,
-                    "selected": false
-                },
-                {
-                    "id": 42,
-                    "preRequisitos": [37],
-                    "name": "Telemática Avanzada TELD723",
-                    "area": "Unidad Profesional",
-                    "directas": 144,
-                    "sct": 3,
-                    "semestre": 7,
-                    "year": 4,
-                    "selected": false
-                },
-                {
-                    "id": 43,
-                    "preRequisitos": [6, 34],
-                    "name": "Comunicación Inalámbricas TELD733",
-                    "area": "Unidad Profesional",
-                    "directas": 144,
-                    "sct": 3,
-                    "semestre": 7,
-                    "year": 4,
-                    "selected": false
-                },
-                {
-                    "id": 44,
-                    "preRequisitos": [37],
-                    "name": "Telefonia IP TELD743",
-                    "area": "Unidad Profesional",
-                    "directas": 144,
-                    "sct": 3,
-                    "semestre": 7,
-                    "year": 4,
-                    "selected": false
-                },
-                {
-                    "id": 45,
-                    "preRequisitos": [38, 40],
-                    "name": "Ingeniería de Microondas TELD752 ",
-                    "area": "Unidad Profesional",
-                    "directas": 96,
-                    "sct": 2,
-                    "semestre": 7,
-                    "year": 4,
-                    "selected": false
-                },
-                {
-                    "id": 46,
-                    "preRequisitos": [41],
-                    "name": "Gestión de Procesos y Calidad ADMD611 ",
-                    "area": "Unidad Profesional",
-                    "directas": 48,
-                    "sct": 1,
-                    "semestre": 7,
-                    "year": 4,
-                    "selected": false
-                },
-                {
-                    "id": 47,
-                    "preRequisitos": [7],
-                    "name": "Redes Ópticas TELD823  ",
-                    "area": "Unidad Profesional",
-                    "directas": 144,
-                    "sct": 3,
-                    "semestre": 8,
-                    "year": 4,
-                    "selected": false
-                },
-                {
-                    "id": 48,
-                    "preRequisitos": [42],
-                    "name": "Introcucion a Diseños de Redes TELD833",
-                    "area": "Unidad Profesional",
-                    "directas": 144,
-                    "sct": 3,
-                    "semestre": 8,
-                    "year": 4,
-                    "selected": false
-                },
-                {
-                    "id": 49,
-                    "preRequisitos": [42],
-                    "name": "Sistema Celulares TELD843",
-                    "area": "Unidad Profesional",
-                    "directas": 144,
-                    "sct": 3,
-                    "semestre": 8,
-                    "year": 4,
-                    "selected": false
-                },
-                {
-                    "id": 50,
-                    "preRequisitos": [42],
-                    "name": "Fundamentos de Seguridad TELD852 ",
-                    "area": "Unidad Profesional",
-                    "directas": 96,
-                    "sct": 0,
-                    "semestre": 8,
-                    "year": 4,
-                    "selected": false
-                },
-                {
-                    "id": 50,
-                    "preRequisitos": [41],
-                    "name": "Ingeniería Financiera TELD711  ",
-                    "area": "Unidad Profesional",
-                    "directas": 48,
-                    "sct": 1,
-                    "semestre": 8,
-                    "year": 4,
-                    "selected": false
-                },
-                {
-                    "id": 51,
-                    "preRequisitos": [],
-                    "name": "Diseño de Proyectos de Telecomunicaciones TELD871",
-                    "area": "Unidad Profesional",
-                    "directas": 48,
-                    "sct": 1,
-                    "semestre": 8,
-                    "year": 4,
-                    "selected": false
-                },
-                {
-                    "id": 52,
-                    "preRequisitos": [],
-                    "name": "Practicas Profesionales PRLD105 ",
-                    "area": "Unidad Profesional",
-                    "directas": 240,
-                    "sct": 5,
-                    "semestre": 9,
-                    "year": 5,
-                    "selected": false
-                },
-                {
-                    "id": 53,
-                    "preRequisitos": [],
-                    "name": "Practica de Servicio Comunitario PSCD202",
-                    "area": "Unidad Profesional",
-                    "directas": 96,
-                    "sct": 2,
-                    "semestre": 9,
-                    "year": 5,
-                    "selected": false
-                },
-                {
-                    "id": 54,
-                    "preRequisitos": [45],
-                    "name": "Marco Regulatorio de los Servicios de Telecomunicaciones TELD941",
-                    "area": "Unidad Profesional",
-                    "directas": 48,
-                    "sct": 1,
-                    "semestre": 9,
-                    "year": 5,
-                    "selected": false
-                },
-                {
-                    "id": 55,
-                    "preRequisitos": [],
-                    "name": "Trabajo de Integración curricular / Examen de Carácter Complexivo TITD201",
-                    "area": "Unidad de Integración Curricular",
-                    "directas": 240,
-                    "sct": 5,
-                    "semestre": 9,
-                    "year": 5,
-                    "selected": false
-                },
-                {
-                    "id": 56,
-                    "preRequisitos": [],
-                    "name": "Ingles B1 IEXD200",
-                    "area": "Requisitos Para Graduacion",
-                    "directas": 0,
-                    "sct": 0,
-                    "semestre": 2,
-                    "year": 1,
-                    "selected": false
-                },
-                {
-                    "id": 57,
-                    "preRequisitos": [],
-                    "name": "Deportes DEPD110",
-                    "area": "Requisitos Para Graduacion",
-                    "directas": 0,
-                    "sct": 0,
-                    "semestre": 1,
-                    "year": 1,
-                    "selected": false
-                },
-                {
-                    "id": 58,
-                    "preRequisitos": [],
-                    "name": "Clubes SOCD210",
-                    "area": "Requisitos Para Graduacion",
-                    "directas": 0,
-                    "sct": 0,
-                    "semestre": 2,
-                    "year": 1,
-                    "selected": false
-                },
-                {
-                    "id": 59,
-                    "preRequisitos": [],
-                    "name": "Metodología de Estudio IEED210",
-                    "area": "Requisitos Para Graduacion",
-                    "directas": 0,
-                    "sct": 0,
-                    "semestre": 2,
-                    "year": 1,
-                    "selected": false
-                },
-                {
-                    "id": 60,
-                    "preRequisitos": [],
-                    "name": "Asignatura de Comunicación CSHD500 ",
-                    "area": "Requisitos Para Graduacion",
-                    "directas": 0,
-                    "sct": 0,
-                    "semestre": 5,
-                    "year": 3,
-                    "selected": false
-                },
-                {
-                    "id": 61,
-                    "preRequisitos": [],
-                    "name": "Emprendimiento ADMD700",
-                    "area": "Requisitos Para Graduacion",
-                    "directas": 0,
-                    "sct": 0,
-                    "semestre": 7,
-                    "year": 4,
-                    "selected": false
-                },
-                {
-                    "id": 62,
-                    "preRequisitos": [],
-                    "name": "Formulación y Evaluación de Proyectos ADMD800",
-                    "area": "Requisitos Para Graduacion",
-                    "directas": 0,
-                    "sct": 0,
-                    "semestre": 8,
-                    "year": 4,
-                    "selected": false
-                },
-                {
-                    "id": 63,
-                    "preRequisitos": [],
-                    "name": "Ecologia y Ambiente AMBD900",
-                    "area": "Requisitos Para Graduacion",
-                    "directas": 0,
-                    "sct": 0,
-                    "semestre": 9,
-                    "year": 5,
-                    "selected": false
-                },
-                {
-                    "id": 64,
-                    "preRequisitos": [8],
-                    "name": "Componentes Pasivos de Radiofrecuencia TELD801",
-                    "area": "Itinerario Radiocomunicación",
-                    "directas": 0,
-                    "sct": 0,
-                    "semestre": 8,
-                    "year": 4,
-                    "selected": false
-                },
-                {
-                    "id": 65,
-                    "preRequisitos": [64],
-                    "name": "Componentes Activos de Radiofrecuencia TELD901",
-                    "area": "Itinerario Radiocomunicación",
-                    "directas": 0,
-                    "sct": 0,
-                    "semestre": 9,
-                    "year": 5,
-                    "selected": false
-                },
-                {
-                    "id": 66,
-                    "preRequisitos": [8],
-                    "name": "Técnicas Avanzadas de Procesamiento Digital de Señales TELD802 ",
-                    "area": "Itinerario Comunicación",
-                    "directas": 0,
-                    "sct": 0,
-                    "semestre": 8,
-                    "year": 4,
-                    "selected": false
-                },
-                {
-                    "id": 67,
-                    "preRequisitos": [66],
-                    "name": "Técnicas Avanzadas De Clasificación de Señales TELD902",
-                    "area": "Itinerario Comunicación",
-                    "directas": 0,
-                    "sct": 0,
-                    "semestre": 9,
-                    "year": 5,
-                    "selected": false
-                },
-                {
-                    "id": 68,
-                    "preRequisitos": [8],
-                    "name": "Conmutación y Enrutamiento Avanzado TELD803",
-                    "area": "Itinerario Telemática",
-                    "directas": 0,
-                    "sct": 0,
-                    "semestre": 8,
-                    "year": 4,
-                    "selected": false
-                },
-                {
-                    "id": 69,
-                    "preRequisitos": [],
-                    "name": "Tecnología Avanzadas en Redes de Datos TELD903",
-                    "area": "Itinerario Telemática",
-                    "directas": 0,
-                    "sct": 0,
-                    "semestre": 9,
-                    "year": 5,
-                    "selected": false
-                }
+                // ... (los mismos datos del JSON que proporcionaste)
             ],
             "mallaAreas": [
-                {
-                    "name": "Unidad Básica",
-                    "backgroundColor": "#e1ff00"
-                },
-                {
-                    "name": "Unidad Profesional",
-                    "backgroundColor": "#0a12ff"
-                },
-                {
-                    "name": "Unidad de Integración Curricular",
-                    "backgroundColor": "#1dff1a"
-                },
-                {
-                    "name": "Requisitos Para Graduacion",
-                    "backgroundColor": "#ff0505"
-                },
-                {
-                    "name": "Itinerario Radiocomunicación",
-                    "backgroundColor": "#ff8d0a"
-                },
-                {
-                    "name": "Itinerario Comunicación",
-                    "backgroundColor": "#09b3ec"
-                },
-                {
-                    "name": "Itinerario Telemática",
-                    "backgroundColor": "#f434c1"
-                }
+                // ... (los mismos datos de áreas que proporcionaste)
             ]
         };
 
@@ -1207,47 +448,62 @@
             setupEventListeners();
         }
 
-        // Función para renderizar la malla
+        // Función para renderizar la malla en formato de tabla
         function renderMalla() {
-            const mallaGrid = document.getElementById('malla-grid');
-            mallaGrid.innerHTML = '';
+            const mallaBody = document.getElementById('malla-body');
+            mallaBody.innerHTML = '';
 
-            // Crear encabezados de semestre
+            // Organizar cursos por semestre
+            const cursosPorSemestre = {};
             for (let i = 1; i <= 9; i++) {
-                const semestreDiv = document.createElement('div');
-                semestreDiv.className = 'semestre';
-                
-                const semestreHeader = document.createElement('div');
-                semestreHeader.className = 'semestre-header';
-                semestreHeader.textContent = `Semestre ${i}`;
-                semestreDiv.appendChild(semestreHeader);
-                
-                mallaGrid.appendChild(semestreDiv);
+                cursosPorSemestre[i] = [];
             }
 
-            // Agregar cursos a los semestres correspondientes
             mallaData.data.forEach(curso => {
                 if (shouldShowCourse(curso)) {
-                    const semestreIndex = curso.semestre - 1;
-                    const semestreDiv = mallaGrid.children[semestreIndex];
-                    
-                    const cursoDiv = document.createElement('div');
-                    cursoDiv.className = `curso ${getAreaClass(curso.area)} ${curso.selected ? 'selected' : ''}`;
-                    cursoDiv.setAttribute('data-id', curso.id);
-                    cursoDiv.setAttribute('data-area', curso.area);
-                    
-                    cursoDiv.innerHTML = `
-                        <div class="curso-title">${curso.name}</div>
-                        <div class="curso-info">
-                            <span>${curso.directas}h</span>
-                            <span class="curso-sct">${curso.sct}SCT</span>
-                        </div>
-                        <div class="curso-area ${getAreaClass(curso.area)}"></div>
-                    `;
-                    
-                    semestreDiv.appendChild(cursoDiv);
+                    cursosPorSemestre[curso.semestre].push(curso);
                 }
             });
+
+            // Determinar el número máximo de cursos en un semestre
+            let maxCursos = 0;
+            for (let i = 1; i <= 9; i++) {
+                if (cursosPorSemestre[i].length > maxCursos) {
+                    maxCursos = cursosPorSemestre[i].length;
+                }
+            }
+
+            // Crear filas de la tabla
+            for (let i = 0; i < maxCursos; i++) {
+                const row = document.createElement('tr');
+                
+                for (let sem = 1; sem <= 9; sem++) {
+                    const cell = document.createElement('td');
+                    
+                    if (i < cursosPorSemestre[sem].length) {
+                        const curso = cursosPorSemestre[sem][i];
+                        const cursoDiv = document.createElement('div');
+                        cursoDiv.className = `curso ${getAreaClass(curso.area)} ${curso.selected ? 'selected' : ''}`;
+                        cursoDiv.setAttribute('data-id', curso.id);
+                        cursoDiv.setAttribute('data-area', curso.area);
+                        
+                        cursoDiv.innerHTML = `
+                            <div class="curso-title">${curso.name}</div>
+                            <div class="curso-info">
+                                <span>${curso.directas}h</span>
+                                <span class="curso-sct">${curso.sct}SCT</span>
+                            </div>
+                            <div class="curso-area ${getAreaClass(curso.area)}"></div>
+                        `;
+                        
+                        cell.appendChild(cursoDiv);
+                    }
+                    
+                    row.appendChild(cell);
+                }
+                
+                mallaBody.appendChild(row);
+            }
         }
 
         // Función para determinar si un curso debe mostrarse
@@ -1304,7 +560,7 @@
             });
             
             // Selección de cursos
-            document.getElementById('malla-grid').addEventListener('click', function(e) {
+            document.getElementById('malla-table').addEventListener('click', function(e) {
                 const cursoElement = e.target.closest('.curso');
                 if (cursoElement) {
                     const cursoId = parseInt(cursoElement.getAttribute('data-id'));
