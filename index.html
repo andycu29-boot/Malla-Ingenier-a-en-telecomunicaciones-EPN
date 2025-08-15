@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plan de Estudios - Unidades</title>
+    <title>Plan de Estudios Completo</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -38,20 +38,16 @@
         .creditos {
             font-weight: bold;
             text-align: center;
-            background-color: #e6f3ff;  /* Azul claro para créditos */
+            background-color: #e6f3ff; /* Azul claro para créditos */
         }
-        tr:hover {
-            background-color: #f5f5f5;
-        }
-        td:hover {
-            background-color: #e0e0e0;
-            cursor: pointer;
-        }
+        .basica { background-color: #fff4e6; } /* Naranja claro - Unidad Básica */
+        .profesional { background-color: #e6ffe6; } /* Verde claro - Unidad Profesional */
+        .integracion { background-color: #f9e6ff; } /* Lila claro - Integración Curricular */
         
-        /* Colores por tipo de asignatura (ejemplo) */
-        .basica { background-color: #fff4e6; }  /* Naranja claro */
-        .profesional { background-color: #e6ffe6; }  /* Verde claro */
-        .integracion { background-color: #f9e6ff; }  /* Lila claro */
+        /* Interactividad */
+        tr:hover { background-color: #f5f5f5; }
+        td:hover { background-color: #e0e0e0; cursor: pointer; }
+        .selected { background-color: #ffeb3b !important; } /* Amarillo para selección */
     </style>
 </head>
 <body>
@@ -64,10 +60,10 @@
 <table>
     <thead>
         <tr>
-            <th colspan="2">Año 1</th>
-            <th colspan="2">Año 2</th>
-            <th colspan="2">Año 3</th>
-            <th colspan="2">Año 4</th>
+            <th>Año 1</th>
+            <th>Año 2</th>
+            <th>Año 3</th>
+            <th>Año 4</th>
             <th>Año 5</th>
         </tr>
         <tr>
@@ -95,13 +91,14 @@
         </tr>
         <tr>
             <td class="basica">Algebra Lineal MAT0120</td>
-            <td class="profesional">Ecuaciones Diferenciales TED022</td>
-            <td class="profesional">Materiales Avanzados TED022</td>
+            <td class="profesional">Ecuaciones Diferenciales Ordinarias TED022</td>
+            <td class="profesional">Materiales Avanzados de TED022</td>
             <td class="profesional">Instalación Comunicación</td>
             <td class="integracion">Fundamentos Institucionales</td>
             <td class="integracion">Comunicación Públicas</td>
             <td class="integracion">Comunicación Institucionales</td>
             <td class="integracion">Integraría Básico TELD800</td>
+            <td class="integracion">Interarío Avanzado TELD800</td>
         </tr>
         
         <!-- Fila 2 -->
@@ -116,14 +113,15 @@
             <td class="creditos">38CT</td>
         </tr>
         <tr>
-            <td class="basica">Cálculo MAT0120</td>
-            <td class="profesional">Probabilidad y Estadística</td>
-            <td class="profesional">Sistemas Digitales TED023</td>
-            <td class="profesional">Análisis de Señales</td>
-            <td class="profesional">Teoría de la Información</td>
+            <td class="basica">Circuito de una variable MAT0120</td>
+            <td class="profesional">Probabilidad y Estadística Básica...</td>
+            <td class="profesional">Sistema Digitales TED023</td>
+            <td class="profesional">Análisis de Señales Discretos Par...</td>
+            <td class="profesional">Teoría de la Información y Codificación...</td>
             <td class="profesional">Telemática Básica TELD623</td>
             <td class="profesional">Telemática Avanzada TELD723</td>
-            <td class="integracion">Prácticas Profesionales</td>
+            <td class="profesional">Redes Ópticas TELD623</td>
+            <td class="integracion">Practicas Profesionales DEL DPG</td>
         </tr>
         
         <!-- Fila 3 -->
@@ -139,22 +137,74 @@
         </tr>
         <tr>
             <td class="basica">Mecánica Newtoniana FIS0134</td>
-            <td class="profesional">Cálculo Vectorial TED023</td>
+            <td class="profesional">Cáculo Vecional TED023</td>
             <td class="profesional">Dispositivos Electrónicos TED033</td>
             <td class="profesional">Circuitos Electrónicos TED034</td>
-            <td class="profesional">Procesamiento Digital</td>
-            <td class="profesional">Electrónica RF TELD633</td>
-            <td class="integracion">Comunicaciones TELD733</td>
-            <td class="integracion">Servicio Comunitario</td>
+            <td class="profesional">Procuramientos Digital de Señales...</td>
+            <td class="profesional">Electrónica de Radiofrecuencia TELD633</td>
+            <td class="integracion">Comunicación Institúricas TELD733</td>
+            <td class="integracion">Introdución Diseños de Redes...</td>
+            <td class="integracion">Practica de Servicio Comunitario...</td>
+        </tr>
+        
+        <!-- Fila 4 -->
+        <tr>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+        </tr>
+        <tr>
+            <td class="basica">Química General QU1043</td>
+            <td class="profesional">Fundamentos de Electromagn...</td>
+            <td class="profesional">Teoría Electromagnética TED042</td>
+            <td class="profesional">Programación Avanzada TED043</td>
+            <td class="profesional">Sistema Enrededor TID053</td>
+            <td class="profesional">Aplicación con Sistemas Enrededor...</td>
+            <td class="profesional">Teléfonía IP TELD743</td>
+            <td class="profesional">Sistema Calabres TELD843</td>
+            <td class="integracion">Marco Regulatorio de los Servicios...</td>
+        </tr>
+        
+        <!-- Fila 5 -->
+        <tr>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+        </tr>
+        <tr>
+            <td class="basica">Retramientas Informáticas COO111</td>
+            <td class="profesional">Programación TED052</td>
+            <td class="profesional">Fundamentos de Circuitos Electrónicos TED042</td>
+            <td class="profesional">Sistema Operativo Linux TELD452</td>
+            <td class="profesional">Sistema de Trasmisión TLED655</td>
+            <td class="profesional">Propagación y Anteses TELD654</td>
+            <td class="profesional">Llegancia de Micronidas TELD752</td>
+            <td class="profesional">Fundamentos de Seguridad TELD852</td>
+            <td class="integracion">Trabajo de integración curricular</td>
         </tr>
     </tbody>
 </table>
 
 <script>
-    // Interactividad: Resaltar al hacer clic
+    // Interactividad: Selección con clic
     document.querySelectorAll('td').forEach(cell => {
         cell.addEventListener('click', function() {
-            this.style.backgroundColor = '#ffeb3b';  // Amarillo al seleccionar
+            // Remover selección previa
+            document.querySelectorAll('.selected').forEach(el => {
+                el.classList.remove('selected');
+            });
+            // Aplicar selección actual
+            this.classList.add('selected');
         });
     });
 </script>
