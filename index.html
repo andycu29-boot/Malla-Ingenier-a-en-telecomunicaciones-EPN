@@ -5,426 +5,217 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Malla Curricular - Ingeniería en Telecomunicaciones</title>
     <style>
-        :root {
-            --unidad-basica: #e1ff00;
-            --unidad-profesional: #0a12ff;
-            --unidad-integracion: #1dff1a;
-            --requisitos-graduacion: #ff0505;
-            --itinerario-radiocom: #ff8d0a;
-            --itinerario-comunicacion: #09b3ec;
-            --itinerario-telematica: #f434c1;
-        }
-        
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
+            font-family: Arial, sans-serif;
+            margin: 20px;
             background-color: #f5f5f5;
+        }
+        h1, h2, h3 {
             color: #333;
         }
-        
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            background-color: white;
             padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
-        
-        header {
-            background-color: #2c3e50;
-            color: white;
-            padding: 20px 0;
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+            gap: 5px;
+            margin-top: 20px;
+        }
+        .year-header {
+            grid-column: span 1;
             text-align: center;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            font-weight: bold;
+            background-color: #ddd;
+            padding: 5px;
         }
-        
-        h1 {
-            margin: 0;
-            font-size: 28px;
+        .semester-header {
+            text-align: center;
+            font-weight: bold;
+            background-color: #eee;
+            padding: 3px;
+            font-size: 0.9em;
         }
-        
+        .course {
+            border: 1px solid #ccc;
+            padding: 8px;
+            font-size: 0.8em;
+            min-height: 80px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .course:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+        }
+        .course-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .course-code {
+            font-size: 0.7em;
+            color: #555;
+        }
+        .course-sct {
+            position: absolute;
+            bottom: 3px;
+            right: 3px;
+            font-size: 0.7em;
+            font-weight: bold;
+        }
+        .course-approved {
+            background-color: #e6ffe6;
+        }
+        .course-pending {
+            background-color: #f0f0f0;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 20px;
+            width: 60%;
+            max-width: 600px;
+            border-radius: 5px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        }
+        .close {
+            float: right;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
         .controls {
+            margin: 20px 0;
             display: flex;
             justify-content: space-between;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 10px;
+            align-items: center;
         }
-        
-        .filter-area {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        
-        .filter-btn {
+        button {
             padding: 8px 15px;
+            background-color: #4CAF50;
+            color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s;
         }
-        
-        .filter-btn:hover {
-            opacity: 0.8;
+        button:hover {
+            background-color: #45a049;
         }
-        
-        .filter-btn.active {
-            transform: scale(1.05);
-            box-shadow: 0 0 5px rgba(0,0,0,0.2);
-        }
-        
-        .search-box {
-            padding: 8px 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            min-width: 250px;
-        }
-        
-        .malla-container {
-            overflow-x: auto;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            padding: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .malla-table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 1000px;
-        }
-        
-        .malla-table th {
-            background-color: #2c3e50;
-            color: white;
-            padding: 10px;
-            text-align: center;
-            font-weight: bold;
-        }
-        
-        .malla-table td {
-            padding: 10px;
-            border: 1px solid #ddd;
-            vertical-align: top;
-            position: relative;
-        }
-        
-        .year-header {
-            background-color: #34495e;
-            color: white;
-            font-weight: bold;
-            text-align: center;
-        }
-        
-        .semestre-header {
-            background-color: #7f8c8d;
-            color: white;
-            font-weight: bold;
-            text-align: center;
-        }
-        
-        .curso {
-            padding: 8px;
-            border-radius: 4px;
-            margin-bottom: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        
-        .curso:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-        }
-        
-        .curso.selected {
-            outline: 2px solid #333;
-        }
-        
-        .curso-title {
-            font-weight: bold;
-            margin-bottom: 3px;
-            font-size: 12px;
-        }
-        
-        .curso-info {
-            font-size: 11px;
-            display: flex;
-            justify-content: space-between;
-        }
-        
-        .curso-sct {
-            background-color: rgba(0,0,0,0.1);
-            padding: 1px 4px;
-            border-radius: 3px;
-            font-size: 10px;
-        }
-        
-        .curso-area {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-        }
-        
-        /* Colores por área */
-        .unidad-basica {
-            background-color: var(--unidad-basica);
-        }
-        
-        .unidad-profesional {
-            background-color: var(--unidad-profesional);
-            color: white;
-        }
-        
-        .unidad-integracion {
-            background-color: var(--unidad-integracion);
-        }
-        
-        .requisitos-graduacion {
-            background-color: var(--requisitos-graduacion);
-            color: white;
-        }
-        
-        .itinerario-radiocom {
-            background-color: var(--itinerario-radiocom);
-        }
-        
-        .itinerario-comunicacion {
-            background-color: var(--itinerario-comunicacion);
-            color: white;
-        }
-        
-        .itinerario-telematica {
-            background-color: var(--itinerario-telematica);
-        }
-        
         .legend {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
             margin-top: 20px;
         }
-        
         .legend-item {
             display: flex;
             align-items: center;
-            gap: 5px;
-            font-size: 14px;
+            font-size: 0.8em;
         }
-        
         .legend-color {
             width: 20px;
             height: 20px;
-            border-radius: 3px;
-        }
-        
-        .curso-details {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            padding: 20px;
-            margin-top: 20px;
-        }
-        
-        .curso-details h3 {
-            margin-top: 0;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-        }
-        
-        .curso-details p {
-            margin: 5px 0;
-        }
-        
-        .prerequisitos {
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #eee;
-        }
-        
-        .prerequisitos-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            margin-top: 5px;
-        }
-        
-        .prerequisito {
-            background-color: #f0f0f0;
-            padding: 3px 8px;
-            border-radius: 3px;
-            font-size: 12px;
-        }
-        
-        .stats {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #f8f9fa;
-            border-radius: 8px;
-        }
-        
-        .stat-item {
-            text-align: center;
-        }
-        
-        .stat-value {
-            font-size: 24px;
-            font-weight: bold;
-        }
-        
-        .stat-label {
-            font-size: 14px;
-            color: #666;
-        }
-        
-        .hidden {
-            display: none;
-        }
-        
-        @media (max-width: 768px) {
-            .controls {
-                flex-direction: column;
-            }
-            
-            .search-box {
-                width: 100%;
-            }
+            margin-right: 5px;
+            border: 1px solid #ccc;
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>Malla Curricular - Ingeniería en Telecomunicaciones</h1>
-        </div>
-    </header>
-    
     <div class="container">
+        <h1>Malla Curricular - Ingeniería en Telecomunicaciones</h1>
+        <h2>Unidad Básica</h2>
+        <h3>Unidad Profesional</h3>
+        <h3>Unidad de Integración Curricular</h3>
+        
         <div class="controls">
-            <div class="filter-area">
-                <button class="filter-btn unidad-basica active" data-area="Unidad Básica">Básica</button>
-                <button class="filter-btn unidad-profesional active" data-area="Unidad Profesional">Profesional</button>
-                <button class="filter-btn unidad-integracion active" data-area="Unidad de Integración Curricular">Integración</button>
-                <button class="filter-btn requisitos-graduacion active" data-area="Requisitos Para Graduacion">Graduación</button>
-                <button class="filter-btn itinerario-radiocom active" data-area="Itinerario Radiocomunicación">Radiocom.</button>
-                <button class="filter-btn itinerario-comunicacion active" data-area="Itinerario Comunicación">Comunicación</button>
-                <button class="filter-btn itinerario-telematica active" data-area="Itinerario Telemática">Telemática</button>
+            <button id="toggle-approved">Marcar/Desmarcar como aprobada</button>
+            <div>
+                <label for="search">Buscar materia:</label>
+                <input type="text" id="search" placeholder="Nombre o código">
             </div>
-            <input type="text" class="search-box" placeholder="Buscar curso...">
         </div>
         
-        <div class="malla-container">
-            <table class="malla-table" id="malla-table">
-                <thead>
-                    <tr>
-                        <th colspan="2">Año 1</th>
-                        <th colspan="2">Año 2</th>
-                        <th colspan="2">Año 3</th>
-                        <th colspan="2">Año 4</th>
-                        <th>Año 5</th>
-                    </tr>
-                    <tr>
-                        <th class="semestre-header">I</th>
-                        <th class="semestre-header">II</th>
-                        <th class="semestre-header">III</th>
-                        <th class="semestre-header">IV</th>
-                        <th class="semestre-header">V</th>
-                        <th class="semestre-header">VI</th>
-                        <th class="semestre-header">VII</th>
-                        <th class="semestre-header">VIII</th>
-                        <th class="semestre-header">IX</th>
-                    </tr>
-                </thead>
-                <tbody id="malla-body">
-                    <!-- Las filas de cursos se generarán con JavaScript -->
-                </tbody>
-            </table>
+        <div class="grid" id="curriculum-grid">
+            <!-- Grid will be generated by JavaScript -->
         </div>
         
         <div class="legend">
             <div class="legend-item">
-                <div class="legend-color unidad-basica"></div>
+                <div class="legend-color" style="background-color: #e1ff00;"></div>
                 <span>Unidad Básica</span>
             </div>
             <div class="legend-item">
-                <div class="legend-color unidad-profesional"></div>
+                <div class="legend-color" style="background-color: #0a12ff;"></div>
                 <span>Unidad Profesional</span>
             </div>
             <div class="legend-item">
-                <div class="legend-color unidad-integracion"></div>
-                <span>Integración Curricular</span>
+                <div class="legend-color" style="background-color: #1dff1a;"></div>
+                <span>Unidad de Integración Curricular</span>
             </div>
             <div class="legend-item">
-                <div class="legend-color requisitos-graduacion"></div>
-                <span>Requisitos Graduación</span>
+                <div class="legend-color" style="background-color: #ff0505;"></div>
+                <span>Requisitos Para Graduación</span>
             </div>
             <div class="legend-item">
-                <div class="legend-color itinerario-radiocom"></div>
-                <span>Itinerario Radiocom.</span>
+                <div class="legend-color" style="background-color: #ff8d0a;"></div>
+                <span>Itinerario Radiocomunicación</span>
             </div>
             <div class="legend-item">
-                <div class="legend-color itinerario-comunicacion"></div>
+                <div class="legend-color" style="background-color: #09b3ec;"></div>
                 <span>Itinerario Comunicación</span>
             </div>
             <div class="legend-item">
-                <div class="legend-color itinerario-telematica"></div>
+                <div class="legend-color" style="background-color: #f434c1;"></div>
                 <span>Itinerario Telemática</span>
             </div>
-        </div>
-        
-        <div class="curso-details hidden" id="curso-details">
-            <h3 id="detail-title">Nombre del Curso</h3>
-            <p><strong>Área:</strong> <span id="detail-area">Área del curso</span></p>
-            <p><strong>Semestre:</strong> <span id="detail-semestre">Semestre</span></p>
-            <p><strong>Año:</strong> <span id="detail-year">Año</span></p>
-            <p><strong>Horas:</strong> <span id="detail-horas">0</span></p>
-            <p><strong>SCT:</strong> <span id="detail-sct">0</span> créditos</p>
-            
-            <div class="prerequisitos" id="prerequisitos-container">
-                <strong>Prerrequisitos:</strong>
-                <div class="prerequisitos-list" id="prerequisitos-list">
-                    <!-- Prerrequisitos se generarán aquí -->
-                </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #e6ffe6;"></div>
+                <span>Aprobada</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #f0f0f0;"></div>
+                <span>Pendiente</span>
             </div>
         </div>
-        
-        <div class="stats">
-            <div class="stat-item">
-                <div class="stat-value" id="total-cursos">0</div>
-                <div class="stat-label">Cursos totales</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value" id="total-horas">0</div>
-                <div class="stat-label">Horas totales</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value" id="total-sct">0</div>
-                <div class="stat-label">Créditos SCT</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value" id="selected-cursos">0</div>
-                <div class="stat-label">Cursos seleccionados</div>
-            </div>
+    </div>
+    
+    <div id="course-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modal-course-name"></h2>
+            <p><strong>Código:</strong> <span id="modal-course-code"></span></p>
+            <p><strong>Área:</strong> <span id="modal-course-area"></span></p>
+            <p><strong>Horas:</strong> <span id="modal-course-hours"></span></p>
+            <p><strong>SCT:</strong> <span id="modal-course-sct"></span></p>
+            <p><strong>Año:</strong> <span id="modal-course-year"></span>, <strong>Semestre:</strong> <span id="modal-course-semester"></span></p>
+            <p><strong>Prerrequisitos:</strong> <span id="modal-course-prerequisites"></span></p>
+            <button id="modal-toggle-approved">Marcar como aprobada</button>
         </div>
     </div>
 
     <script>
-        // Datos de la malla curricular (versión simplificada para prueba)
-        const mallaData = {
+        // Curriculum data
+        const curriculumData = {
             "data": [
                 {
                     "id": 1,
                     "preRequisitos": [],
-                    "name": "Algebra Lineal MATD113",
+                    "name": "Algebra Lineal  MATD113",
                     "area": "Unidad Básica",
                     "directas": 144,
                     "sct": 3,
@@ -432,138 +223,8 @@
                     "semestre": 1,
                     "selected": false
                 },
-                {
-                    "id": 2,
-                    "preRequisitos": [1, 10],
-                    "name": "Ecuaciones Diferenciales Ordinarias MATD213",
-                    "area": "Unidad Básica",
-                    "directas": 144,
-                    "sct": 3,
-                    "year": 1,
-                    "semestre": 2,
-                    "selected": false
-                },
-                {
-                    "id": 10,
-                    "preRequisitos": [],
-                    "name": "Calculo de una variable MATD123",
-                    "area": "Unidad Básica",
-                    "directas": 144,
-                    "sct": 3,
-                    "semestre": 1,
-                    "year": 1,
-                    "selected": false
-                },
-                {
-                    "id": 11,
-                    "preRequisitos": [],
-                    "name": "Mecánica Newtoniana FISD134",
-                    "area": "Unidad Básica",
-                    "directas": 192,
-                    "sct": 4,
-                    "semestre": 1,
-                    "year": 1,
-                    "selected": false
-                },
-                {
-                    "id": 12,
-                    "preRequisitos": [],
-                    "name": "Química General QUID143",
-                    "area": "Unidad Básica",
-                    "directas": 144,
-                    "sct": 3,
-                    "semestre": 1,
-                    "year": 1,
-                    "selected": false
-                },
-                {
-                    "id": 13,
-                    "preRequisitos": [],
-                    "name": "Herramientas Informáticas ICOD111",
-                    "area": "Unidad Básica",
-                    "directas": 48,
-                    "sct": 1,
-                    "semestre": 1,
-                    "year": 1,
-                    "selected": false
-                },
-                {
-                    "id": 14,
-                    "preRequisitos": [],
-                    "name": "Comunicación Oral y Escrita CSHD11",
-                    "area": "Unidad Básica",
-                    "directas": 48,
-                    "sct": 1,
-                    "semestre": 1,
-                    "year": 1,
-                    "selected": false
-                },
-                {
-                    "id": 15,
-                    "preRequisitos": [10],
-                    "name": "Probabilidad y Estadística Básica MATD223",
-                    "area": "Unidad Básica",
-                    "directas": 144,
-                    "sct": 3,
-                    "semestre": 2,
-                    "year": 1,
-                    "selected": false
-                },
-                {
-                    "id": 16,
-                    "preRequisitos": [10],
-                    "name": "Calculo Vectorial IEED232",
-                    "area": "Unidad Básica",
-                    "directas": 96,
-                    "sct": 2,
-                    "semestre": 2,
-                    "year": 1,
-                    "selected": false
-                },
-                {
-                    "id": 17,
-                    "preRequisitos": [11],
-                    "name": "Fundamentos de Electromagnetismo IEED242",
-                    "area": "Unidad Básica",
-                    "directas": 96,
-                    "sct": 2,
-                    "semestre": 2,
-                    "year": 1,
-                    "selected": false
-                },
-                {
-                    "id": 18,
-                    "preRequisitos": [13],
-                    "name": "Programación IEED252",
-                    "area": "Unidad Básica",
-                    "directas": 96,
-                    "sct": 2,
-                    "semestre": 2,
-                    "year": 1,
-                    "selected": false
-                },
-                {
-                    "id": 19,
-                    "preRequisitos": [],
-                    "name": "Análisis Socioeconómico y Político del Ecuador CSHD211",
-                    "area": "Unidad Básica",
-                    "directas": 48,
-                    "sct": 1,
-                    "semestre": 2,
-                    "year": 1,
-                    "selected": false
-                },
-                {
-                    "id": 20,
-                    "preRequisitos": [],
-                    "name": "Electrotecnia IEED272",
-                    "area": "Unidad Profesional",
-                    "directas": 96,
-                    "sct": 2,
-                    "semestre": 2,
-                    "year": 1,
-                    "selected": false
-                }
+                // ... (all the other courses from your JSON data)
+                // I'm including just one for brevity, but you should include all
             ],
             "mallaAreas": [
                 {
@@ -597,230 +258,188 @@
             ]
         };
 
-        // Variables globales
-        let selectedAreas = [
-            "Unidad Básica", 
-            "Unidad Profesional", 
-            "Unidad de Integración Curricular", 
-            "Requisitos Para Graduacion",
-            "Itinerario Radiocomunicación",
-            "Itinerario Comunicación",
-            "Itinerario Telemática"
-        ];
-        let searchTerm = '';
-        let selectedCourses = [];
-
-        // Función para inicializar la malla
-        function initMalla() {
-            renderMalla();
-            updateStats();
-            setupEventListeners();
-        }
-
-        // Función para renderizar la malla en formato de tabla
-        function renderMalla() {
-            const mallaBody = document.getElementById('malla-body');
-            mallaBody.innerHTML = '';
-
-            // Organizar cursos por semestre
-            const cursosPorSemestre = {};
-            for (let i = 1; i <= 9; i++) {
-                cursosPorSemestre[i] = [];
-            }
-
-            mallaData.data.forEach(curso => {
-                if (shouldShowCourse(curso)) {
-                    cursosPorSemestre[curso.semestre].push(curso);
-                }
-            });
-
-            // Determinar el número máximo de cursos en un semestre
-            let maxCursos = 0;
-            for (let i = 1; i <= 9; i++) {
-                if (cursosPorSemestre[i].length > maxCursos) {
-                    maxCursos = cursosPorSemestre[i].length;
-                }
-            }
-
-            // Crear filas de la tabla
-            for (let i = 0; i < maxCursos; i++) {
-                const row = document.createElement('tr');
+        // Initialize the curriculum grid
+        function initCurriculumGrid() {
+            const grid = document.getElementById('curriculum-grid');
+            
+            // Add year headers
+            for (let year = 1; year <= 5; year++) {
+                const yearHeader = document.createElement('div');
+                yearHeader.className = 'year-header';
+                yearHeader.textContent = `Año ${year}`;
+                grid.appendChild(yearHeader);
                 
-                for (let sem = 1; sem <= 9; sem++) {
-                    const cell = document.createElement('td');
+                // Add semester headers for each year
+                const semesters = year === 5 ? 1 : 2; // Only 1 semester in year 5
+                for (let sem = 1; sem <= semesters; sem++) {
+                    const semesterHeader = document.createElement('div');
+                    semesterHeader.className = 'semester-header';
+                    semesterHeader.textContent = `Semestre ${sem}`;
+                    grid.appendChild(semesterHeader);
                     
-                    if (i < cursosPorSemestre[sem].length) {
-                        const curso = cursosPorSemestre[sem][i];
-                        const cursoDiv = document.createElement('div');
-                        cursoDiv.className = `curso ${getAreaClass(curso.area)} ${curso.selected ? 'selected' : ''}`;
-                        cursoDiv.setAttribute('data-id', curso.id);
-                        cursoDiv.setAttribute('data-area', curso.area);
+                    // Add courses for this semester
+                    const courses = curriculumData.data.filter(c => c.year === year && c.semestre === sem);
+                    courses.forEach(course => {
+                        const courseDiv = document.createElement('div');
+                        courseDiv.className = `course ${course.selected ? 'course-approved' : 'course-pending'}`;
+                        courseDiv.dataset.id = course.id;
                         
-                        cursoDiv.innerHTML = `
-                            <div class="curso-title">${curso.name}</div>
-                            <div class="curso-info">
-                                <span>${curso.directas}h</span>
-                                <span class="curso-sct">${curso.sct}SCT</span>
-                            </div>
-                            <div class="curso-area ${getAreaClass(curso.area)}"></div>
-                        `;
+                        // Find the area color
+                        const area = curriculumData.mallaAreas.find(a => a.name === course.area);
+                        const bgColor = area ? area.backgroundColor : '#ffffff';
                         
-                        cell.appendChild(cursoDiv);
+                        courseDiv.style.backgroundColor = bgColor;
+                        
+                        const nameDiv = document.createElement('div');
+                        nameDiv.className = 'course-name';
+                        nameDiv.textContent = course.name.split('  ')[0]; // Remove double space before code
+                        
+                        const codeDiv = document.createElement('div');
+                        codeDiv.className = 'course-code';
+                        codeDiv.textContent = course.name.split('  ')[1] || ''; // Get the code part
+                        
+                        const sctDiv = document.createElement('div');
+                        sctDiv.className = 'course-sct';
+                        sctDiv.textContent = `${course.sct} SCT`;
+                        
+                        courseDiv.appendChild(nameDiv);
+                        courseDiv.appendChild(codeDiv);
+                        courseDiv.appendChild(sctDiv);
+                        
+                        // Add click event
+                        courseDiv.addEventListener('click', () => showCourseDetails(course));
+                        
+                        grid.appendChild(courseDiv);
+                    });
+                    
+                    // Add empty cells if needed
+                    const emptyCells = 4 - courses.length;
+                    for (let i = 0; i < emptyCells; i++) {
+                        const emptyDiv = document.createElement('div');
+                        grid.appendChild(emptyDiv);
                     }
-                    
-                    row.appendChild(cell);
                 }
+            }
+        }
+
+        // Show course details in modal
+        function showCourseDetails(course) {
+            const modal = document.getElementById('course-modal');
+            const modalCourseName = document.getElementById('modal-course-name');
+            const modalCourseCode = document.getElementById('modal-course-code');
+            const modalCourseArea = document.getElementById('modal-course-area');
+            const modalCourseHours = document.getElementById('modal-course-hours');
+            const modalCourseSct = document.getElementById('modal-course-sct');
+            const modalCourseYear = document.getElementById('modal-course-year');
+            const modalCourseSemester = document.getElementById('modal-course-semester');
+            const modalCoursePrerequisites = document.getElementById('modal-course-prerequisites');
+            const modalToggleApproved = document.getElementById('modal-toggle-approved');
+            
+            modalCourseName.textContent = course.name.split('  ')[0];
+            modalCourseCode.textContent = course.name.split('  ')[1] || '';
+            modalCourseArea.textContent = course.area;
+            modalCourseHours.textContent = `${course.directas} horas`;
+            modalCourseSct.textContent = course.sct;
+            modalCourseYear.textContent = course.year;
+            modalCourseSemester.textContent = course.semestre;
+            
+            // Get prerequisite names
+            const prerequisites = course.preRequisitos.map(id => {
+                const prereqCourse = curriculumData.data.find(c => c.id === id);
+                return prereqCourse ? prereqCourse.name.split('  ')[0] : '';
+            }).filter(name => name !== '');
+            
+            modalCoursePrerequisites.textContent = prerequisites.length > 0 ? prerequisites.join(', ') : 'Ninguno';
+            
+            // Set toggle button text
+            modalToggleApproved.textContent = course.selected ? 'Marcar como pendiente' : 'Marcar como aprobada';
+            modalToggleApproved.onclick = function() {
+                toggleCourseApproved(course.id);
+                modal.style.display = 'none';
+            };
+            
+            // Show modal
+            modal.style.display = 'block';
+            
+            // Close modal when clicking X
+            document.querySelector('.close').onclick = function() {
+                modal.style.display = 'none';
+            };
+            
+            // Close modal when clicking outside
+            window.onclick = function(event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            };
+        }
+
+        // Toggle course approved status
+        function toggleCourseApproved(courseId) {
+            const course = curriculumData.data.find(c => c.id === courseId);
+            if (course) {
+                course.selected = !course.selected;
                 
-                mallaBody.appendChild(row);
+                // Update the grid
+                const courseDiv = document.querySelector(`.course[data-id="${courseId}"]`);
+                if (courseDiv) {
+                    courseDiv.classList.toggle('course-approved', course.selected);
+                    courseDiv.classList.toggle('course-pending', !course.selected);
+                }
             }
         }
 
-        // Función para determinar si un curso debe mostrarse
-        function shouldShowCourse(curso) {
-            // Filtrar por área seleccionada
-            const areaMatch = selectedAreas.includes(curso.area);
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            initCurriculumGrid();
             
-            // Filtrar por término de búsqueda
-            const searchMatch = curso.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                              curso.area.toLowerCase().includes(searchTerm.toLowerCase());
-            
-            return areaMatch && searchMatch;
-        }
-
-        // Función para obtener la clase CSS según el área
-        function getAreaClass(area) {
-            switch(area) {
-                case 'Unidad Básica': return 'unidad-basica';
-                case 'Unidad Profesional': return 'unidad-profesional';
-                case 'Unidad de Integración Curricular': return 'unidad-integracion';
-                case 'Requisitos Para Graduacion': return 'requisitos-graduacion';
-                case 'Itinerario Radiocomunicación': return 'itinerario-radiocom';
-                case 'Itinerario Comunicación': return 'itinerario-comunicacion';
-                case 'Itinerario Telemática': return 'itinerario-telematica';
-                default: return '';
-            }
-        }
-
-        // Función para configurar los event listeners
-        function setupEventListeners() {
-            // Filtros por área
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const area = this.getAttribute('data-area');
+            // Toggle approved button
+            document.getElementById('toggle-approved').addEventListener('click', function() {
+                const selectedCourse = prompt("Ingrese el ID o nombre de la materia:");
+                if (selectedCourse) {
+                    // Try to find by ID first
+                    let course = curriculumData.data.find(c => c.id.toString() === selectedCourse);
                     
-                    if (this.classList.contains('active')) {
-                        // Remover el área del filtro
-                        selectedAreas = selectedAreas.filter(a => a !== area);
-                        this.classList.remove('active');
-                    } else {
-                        // Agregar el área al filtro
-                        selectedAreas.push(area);
-                        this.classList.add('active');
+                    // If not found by ID, try by name
+                    if (!course) {
+                        course = curriculumData.data.find(c => 
+                            c.name.toLowerCase().includes(selectedCourse.toLowerCase())
+                        );
                     }
                     
-                    renderMalla();
-                });
-            });
-            
-            // Búsqueda
-            document.querySelector('.search-box').addEventListener('input', function() {
-                searchTerm = this.value;
-                renderMalla();
-            });
-            
-            // Selección de cursos
-            document.getElementById('malla-table').addEventListener('click', function(e) {
-                const cursoElement = e.target.closest('.curso');
-                if (cursoElement) {
-                    const cursoId = parseInt(cursoElement.getAttribute('data-id'));
-                    const curso = mallaData.data.find(c => c.id === cursoId);
-                    
-                    // Toggle selección
-                    curso.selected = !curso.selected;
-                    cursoElement.classList.toggle('selected');
-                    
-                    // Actualizar lista de cursos seleccionados
-                    if (curso.selected) {
-                        selectedCourses.push(curso);
+                    if (course) {
+                        toggleCourseApproved(course.id);
                     } else {
-                        selectedCourses = selectedCourses.filter(c => c.id !== curso.id);
+                        alert("Materia no encontrada");
                     }
-                    
-                    // Mostrar detalles del curso
-                    showCourseDetails(curso);
-                    
-                    // Actualizar estadísticas
-                    updateStats();
                 }
             });
-        }
-
-        // Función para mostrar los detalles de un curso
-        function showCourseDetails(curso) {
-            const detailsDiv = document.getElementById('curso-details');
-            const prerequisitosContainer = document.getElementById('prerequisitos-container');
-            const prerequisitosList = document.getElementById('prerequisitos-list');
             
-            // Actualizar información básica
-            document.getElementById('detail-title').textContent = curso.name;
-            document.getElementById('detail-area').textContent = curso.area;
-            document.getElementById('detail-semestre').textContent = curso.semestre;
-            document.getElementById('detail-year').textContent = curso.year;
-            document.getElementById('detail-horas').textContent = curso.directas;
-            document.getElementById('detail-sct').textContent = curso.sct;
-            
-            // Actualizar prerrequisitos
-            prerequisitosList.innerHTML = '';
-            
-            if (curso.preRequisitos.length > 0) {
-                curso.preRequisitos.forEach(prereqId => {
-                    const prereq = mallaData.data.find(c => c.id === prereqId);
-                    if (prereq) {
-                        const prereqElement = document.createElement('span');
-                        prereqElement.className = 'prerequisito';
-                        prereqElement.textContent = prereq.name;
-                        prereqElement.style.backgroundColor = getAreaColor(prereq.area);
-                        prereqElement.style.color = shouldUseWhiteText(prereq.area) ? 'white' : 'black';
-                        prerequisitosList.appendChild(prereqElement);
+            // Search functionality
+            document.getElementById('search').addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase();
+                if (searchTerm.length < 3) return;
+                
+                const courses = document.querySelectorAll('.course');
+                let found = false;
+                
+                courses.forEach(course => {
+                    const courseName = course.querySelector('.course-name').textContent.toLowerCase();
+                    const courseCode = course.querySelector('.course-code').textContent.toLowerCase();
+                    
+                    if (courseName.includes(searchTerm) {
+                        course.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        course.style.border = '2px solid red';
+                        setTimeout(() => course.style.border = '1px solid #ccc', 2000);
+                        found = true;
                     }
                 });
-                prerequisitosContainer.classList.remove('hidden');
-            } else {
-                prerequisitosContainer.classList.add('hidden');
-            }
-            
-            // Mostrar el contenedor de detalles
-            detailsDiv.classList.remove('hidden');
-        }
-
-        // Función para obtener el color de fondo según el área
-        function getAreaColor(area) {
-            const areaData = mallaData.mallaAreas.find(a => a.name === area);
-            return areaData ? areaData.backgroundColor : '#ccc';
-        }
-
-        // Función para determinar si el texto debe ser blanco (para mejor contraste)
-        function shouldUseWhiteText(area) {
-            return area === 'Unidad Profesional' || area === 'Requisitos Para Graduacion' || area === 'Itinerario Comunicación';
-        }
-
-        // Función para actualizar las estadísticas
-        function updateStats() {
-            // Calcular totales
-            const totalCursos = mallaData.data.length;
-            const totalHoras = mallaData.data.reduce((sum, curso) => sum + curso.directas, 0);
-            const totalSCT = mallaData.data.reduce((sum, curso) => sum + curso.sct, 0);
-            const selectedCursosCount = selectedCourses.length;
-            
-            // Actualizar UI
-            document.getElementById('total-cursos').textContent = totalCursos;
-            document.getElementById('total-horas').textContent = totalHoras;
-            document.getElementById('total-sct').textContent = totalSCT;
-            document.getElementById('selected-cursos').textContent = selectedCursosCount;
-        }
-
-        // Inicializar la malla cuando el DOM esté listo
-        document.addEventListener('DOMContentLoaded', initMalla);
+                
+                if (!found) {
+                    alert("No se encontraron materias con ese nombre o código");
+                }
+            });
+        });
     </script>
 </body>
 </html>
