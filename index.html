@@ -3,285 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Malla Curricular - Telecomunicaciones</title>
+    <title>Plan de Estudios</title>
     <style>
-        :root {
-            --bg-color: #121212;
-            --text-color: #e0e0e0;
-            --card-bg: #1e1e1e;
-            --header-bg: #000000;
-            --header-text: #ffffff;
-            --course-color: #e1ff00;
-            --locked-opacity: 0.4;
-        }
-
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 0;
-            line-height: 1.4;
+            font-family: Arial, sans-serif;
+            margin: 20px;
         }
-
-        header {
-            background-color: var(--header-bg);
-            color: var(--header-text);
-            padding: 1rem;
-            text-align: center;
+        h1, h2, h3 {
+            color: #333;
         }
-
-        h1 {
-            margin: 0;
-            font-size: 1.8rem;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem;
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            vertical-align: top;
         }
-
-        .year-container {
-            display: flex;
-            gap: 1rem;
-            overflow-x: auto;
-            padding-bottom: 1rem;
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
         }
-
-        .semester-column {
-            min-width: 180px;
-            background-color: #2a2a2a;
-            border-radius: 8px;
-            padding: 1rem;
-        }
-
-        .semester-title {
+        .creditos {
             font-weight: bold;
             text-align: center;
-            margin-bottom: 1rem;
-            color: var(--course-color);
-            font-size: 1.2rem;
-        }
-
-        .course-card {
-            background-color: var(--course-color);
-            color: #000;
-            border-radius: 6px;
-            padding: 0.8rem;
-            margin-bottom: 0.8rem;
-            font-size: 0.9rem;
-        }
-
-        .course-code {
-            font-weight: bold;
-            font-size: 0.8rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .course-name {
-            font-size: 0.9rem;
-            line-height: 1.2;
-        }
-
-        .sct-badge {
-            display: inline-block;
-            background-color: rgba(0,0,0,0.2);
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-            font-size: 0.7rem;
-            margin-top: 0.3rem;
-        }
-
-        .roman-numeral {
-            font-weight: bold;
-            color: var(--course-color);
-            margin-right: 0.3rem;
-        }
-
-        @media (max-width: 768px) {
-            .semester-column {
-                min-width: 160px;
-            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Malla Curricular - Ingeniería en Telecomunicaciones</h1>
-    </header>
 
-    <div class="container" id="gridContainer">
-        <!-- Los años y semestres se generarán dinámicamente -->
-    </div>
+<h1>Unidad Básica</h1>
 
-    <script>
-        // Datos de ejemplo basados en la imagen
-        const mallaData = [
-            // Año 1
-            {
-                year: 1,
-                semesters: [
-                    {
-                        number: 1,
-                        courses: [
-                            { code: "MATO113", name: "Algebra Lineal", sct: "3GCT" },
-                            { code: "MATO123", name: "Calculo de una variable", sct: "3GCT" },
-                            { code: "FISD134", name: "Mecánica Newtoniana", sct: "3GCT" },
-                            { code: "QUID143", name: "Química General", sct: "3GCT" }
-                        ]
-                    },
-                    {
-                        number: 2,
-                        courses: [
-                            { code: "MATD213", name: "Ecuaciones Diferenciales Ordinarias", sct: "3GCT" },
-                            { code: "MATD223", name: "Probabilidad y Estadística Básica", sct: "3GCT" },
-                            { code: "IEE0222", name: "Calculo Vectorial", sct: "3GCT" },
-                            { code: "IEED242", name: "Fundamentos de Electromagnetismo", sct: "3GCT" }
-                        ]
-                    }
-                ]
-            },
-            // Año 2
-            {
-                year: 2,
-                semesters: [
-                    {
-                        number: 3,
-                        courses: [
-                            { code: "IEED312", name: "Matemática Avanzada", sct: "3GCT" },
-                            { code: "IEED323", name: "Sistema Digitales", sct: "3GCT" },
-                            { code: "IEED333", name: "Dispositivos Electrónicos", sct: "3GCT" }
-                        ]
-                    },
-                    {
-                        number: 4,
-                        courses: [
-                            { code: "IEED413", name: "Instalación Eléctrica y Comunicación", sct: "3GCT" },
-                            { code: "TELD423", name: "Análisis de Señales Discretas", sct: "3GCT" },
-                            { code: "IEED433", name: "Circuitos Electrónicos", sct: "3GCT" }
-                        ]
-                    }
-                ]
-            },
-            // Año 3
-            {
-                year: 3,
-                semesters: [
-                    {
-                        number: 5,
-                        courses: [
-                            { code: "TELD513", name: "Fundamentos de Comunicaciones", sct: "3GCT" },
-                            { code: "TELD522", name: "Teoría de la Información", sct: "3GCT" },
-                            { code: "TELD532", name: "Procesamiento Digital de Señales", sct: "3GCT" }
-                        ]
-                    },
-                    {
-                        number: 6,
-                        courses: [
-                            { code: "TELD613", name: "Comunicación Digital", sct: "3GCT" },
-                            { code: "TELD623", name: "Telemática Básica", sct: "3GCT" },
-                            { code: "TELD633", name: "Electrónica de Radiofrecuencia", sct: "3GCT" }
-                        ]
-                    }
-                ]
-            },
-            // Año 4
-            {
-                year: 4,
-                semesters: [
-                    {
-                        number: 7,
-                        courses: [
-                            { code: "TELD713", name: "Comunicación Ópticas", sct: "3GCT" },
-                            { code: "TELD723", name: "Telemática Avanzada", sct: "3GCT" },
-                            { code: "TELD733", name: "Comunicación Inalámbricas", sct: "3GCT" }
-                        ]
-                    },
-                    {
-                        number: 8,
-                        courses: [
-                            { code: "TELD823", name: "Redes Ópticas", sct: "3GCT" },
-                            { code: "TELD833", name: "Diseños de Redes", sct: "3GCT" },
-                            { code: "TELD843", name: "Sistema Celulares", sct: "3GCT" }
-                        ]
-                    }
-                ]
-            },
-            // Año 5
-            {
-                year: 5,
-                semesters: [
-                    {
-                        number: 9,
-                        courses: [
-                            { code: "PRLD105", name: "Practicas Profesionales", sct: "3GCT" },
-                            { code: "TITD201", name: "Trabajo de Integración", sct: "3GCT" },
-                            { code: "TELD941", name: "Marco Regulatorio", sct: "3GCT" }
-                        ]
-                    }
-                ]
-            }
-        ];
+<h2>Unidad Profesional</h2>
 
-        // Función para convertir números a romanos
-        function toRoman(num) {
-            const roman = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX'];
-            return roman[num - 1] || num;
-        }
+<h2>Unidad de Integración Curricular</h2>
 
-        // Renderizar la malla
-        function renderMalla() {
-            const gridContainer = document.getElementById('gridContainer');
-            gridContainer.innerHTML = '';
+<h3>Requisitos Para Graduación</h3>
 
-            mallaData.forEach(yearData => {
-                const yearDiv = document.createElement('div');
-                yearDiv.className = 'year-container';
+<table>
+    <thead>
+        <tr>
+            <th>Año 1</th>
+            <th>Año 2</th>
+            <th>Año 3</th>
+            <th>Año 4</th>
+            <th>Año 5</th>
+        </tr>
+        <tr>
+            <th>I</th>
+            <th>II</th>
+            <th>III</th>
+            <th>IV</th>
+            <th>V</th>
+            <th>VI</th>
+            <th>VII</th>
+            <th>IX</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+        </tr>
+        <tr>
+            <td>Algebra Lineal MAT0120</td>
+            <td>Ecuaciones Diferenciales Ordinarias TED022</td>
+            <td>Materiales Avanzados de TED022</td>
+            <td>Instalación Comunicación</td>
+            <td>Fundamentos Institucionales</td>
+            <td>Comunicación Públicas</td>
+            <td>Comunicación Institucionales</td>
+            <td>Integraría Básico TELD800</td>
+            <td>Interarío Avanzado TELD800</td>
+        </tr>
+        <tr>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+        </tr>
+        <tr>
+            <td>Cálculo de una variable MAT0120</td>
+            <td>Probabilidad y Estadística Básica...</td>
+            <td>Sistema Digitales TED023</td>
+            <td>Análisis de Señales Discretos Par...</td>
+            <td>Teoría de la Información y Codificación...</td>
+            <td>Telemática Básica TELD623</td>
+            <td>Telemática Avanzada TELD723</td>
+            <td>Redes Ópticas TELD623</td>
+            <td>Practicas Profesionales DEL DPG</td>
+        </tr>
+        <tr>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+        </tr>
+        <tr>
+            <td>Mecánica Newtoniana FIS0134</td>
+            <td>Cálculo Vectorial TED023</td>
+            <td>Dispositivos Electrónicos TED033</td>
+            <td>Circuitos Electrónicos TED034</td>
+            <td>Procesamiento Digital de Señales...</td>
+            <td>Electrónica de Radiofrecuencia TELD633</td>
+            <td>Comunicación Institúricas TELD733</td>
+            <td>Introducción Diseños de Redes...</td>
+            <td>Practica de Servicio Comunitario...</td>
+        </tr>
+        <tr>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+        </tr>
+        <tr>
+            <td>Química General QU1043</td>
+            <td>Fundamentos de Electromagn...</td>
+            <td>Teoría Electromagnética TED042</td>
+            <td>Programación Avanzada TED043</td>
+            <td>Sistema Enrededor TID053</td>
+            <td>Aplicación con Sistemas Enrededor...</td>
+            <td>Teléfonía IP TELD743</td>
+            <td>Sistema Calabres TELD843</td>
+            <td>Marco Regulatorio de los Servicios...</td>
+        </tr>
+        <tr>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+            <td class="creditos">38CT</td>
+        </tr>
+        <tr>
+            <td>Herramientas Informáticas COO111</td>
+            <td>Programación TED052</td>
+            <td>Fundamentos de Circuitos Electrónicos TED042</td>
+            <td>Sistema Operativo Linux TELD452</td>
+            <td>Sistema de Trasmisión TLED655</td>
+            <td>Propagación y Antenas TELD654</td>
+            <td>Llegacia de Micronidas TELD752</td>
+            <td>Fundamentos de Seguridad TELD852</td>
+            <td>Trabajo de integración curricular</td>
+        </tr>
+    </tbody>
+</table>
 
-                yearData.semesters.forEach(semester => {
-                    const semesterCol = document.createElement('div');
-                    semesterCol.className = 'semester-column';
-
-                    const semesterTitle = document.createElement('div');
-                    semesterTitle.className = 'semester-title';
-                    semesterTitle.innerHTML = `<span class="roman-numeral">${toRoman(semester.number)}</span> Año ${yearData.year}`;
-                    semesterCol.appendChild(semesterTitle);
-
-                    semester.courses.forEach(course => {
-                        const courseCard = document.createElement('div');
-                        courseCard.className = 'course-card';
-
-                        const courseCode = document.createElement('div');
-                        courseCode.className = 'course-code';
-                        courseCode.textContent = course.code;
-                        courseCard.appendChild(courseCode);
-
-                        const courseName = document.createElement('div');
-                        courseName.className = 'course-name';
-                        courseName.textContent = course.name;
-                        courseCard.appendChild(courseName);
-
-                        const sctBadge = document.createElement('div');
-                        sctBadge.className = 'sct-badge';
-                        sctBadge.textContent = course.sct;
-                        courseCard.appendChild(sctBadge);
-
-                        semesterCol.appendChild(courseCard);
-                    });
-
-                    yearDiv.appendChild(semesterCol);
-                });
-
-                gridContainer.appendChild(yearDiv);
-            });
-        }
-
-        // Inicializar
-        renderMalla();
-    </script>
 </body>
 </html>
