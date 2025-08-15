@@ -3,25 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plan de Estudios</title>
+    <title>Plan de Estudios - Unidades</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            margin: 10px;
+            font-size: 12px;
         }
         h1, h2, h3 {
             color: #333;
+            margin: 5px 0;
         }
+        h1 { font-size: 16px; }
+        h2 { font-size: 14px; }
+        h3 { font-size: 13px; }
+        
         table {
             width: 100%;
             border-collapse: collapse;
-            margin: 20px 0;
+            margin: 10px 0;
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 4px;
             text-align: left;
             vertical-align: top;
+            font-size: 11px;
+            height: 20px;
         }
         th {
             background-color: #f2f2f2;
@@ -30,26 +38,36 @@
         .creditos {
             font-weight: bold;
             text-align: center;
+            background-color: #e6f3ff;  /* Azul claro para créditos */
         }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        td:hover {
+            background-color: #e0e0e0;
+            cursor: pointer;
+        }
+        
+        /* Colores por tipo de asignatura (ejemplo) */
+        .basica { background-color: #fff4e6; }  /* Naranja claro */
+        .profesional { background-color: #e6ffe6; }  /* Verde claro */
+        .integracion { background-color: #f9e6ff; }  /* Lila claro */
     </style>
 </head>
 <body>
 
 <h1>Unidad Básica</h1>
-
 <h2>Unidad Profesional</h2>
-
 <h2>Unidad de Integración Curricular</h2>
-
 <h3>Requisitos Para Graduación</h3>
 
 <table>
     <thead>
         <tr>
-            <th>Año 1</th>
-            <th>Año 2</th>
-            <th>Año 3</th>
-            <th>Año 4</th>
+            <th colspan="2">Año 1</th>
+            <th colspan="2">Año 2</th>
+            <th colspan="2">Año 3</th>
+            <th colspan="2">Año 4</th>
             <th>Año 5</th>
         </tr>
         <tr>
@@ -64,6 +82,7 @@
         </tr>
     </thead>
     <tbody>
+        <!-- Fila 1 -->
         <tr>
             <td class="creditos">38CT</td>
             <td class="creditos">38CT</td>
@@ -75,16 +94,17 @@
             <td class="creditos">38CT</td>
         </tr>
         <tr>
-            <td>Algebra Lineal MAT0120</td>
-            <td>Ecuaciones Diferenciales Ordinarias TED022</td>
-            <td>Materiales Avanzados de TED022</td>
-            <td>Instalación Comunicación</td>
-            <td>Fundamentos Institucionales</td>
-            <td>Comunicación Públicas</td>
-            <td>Comunicación Institucionales</td>
-            <td>Integraría Básico TELD800</td>
-            <td>Interarío Avanzado TELD800</td>
+            <td class="basica">Algebra Lineal MAT0120</td>
+            <td class="profesional">Ecuaciones Diferenciales TED022</td>
+            <td class="profesional">Materiales Avanzados TED022</td>
+            <td class="profesional">Instalación Comunicación</td>
+            <td class="integracion">Fundamentos Institucionales</td>
+            <td class="integracion">Comunicación Públicas</td>
+            <td class="integracion">Comunicación Institucionales</td>
+            <td class="integracion">Integraría Básico TELD800</td>
         </tr>
+        
+        <!-- Fila 2 -->
         <tr>
             <td class="creditos">38CT</td>
             <td class="creditos">38CT</td>
@@ -96,16 +116,17 @@
             <td class="creditos">38CT</td>
         </tr>
         <tr>
-            <td>Cálculo de una variable MAT0120</td>
-            <td>Probabilidad y Estadística Básica...</td>
-            <td>Sistema Digitales TED023</td>
-            <td>Análisis de Señales Discretos Par...</td>
-            <td>Teoría de la Información y Codificación...</td>
-            <td>Telemática Básica TELD623</td>
-            <td>Telemática Avanzada TELD723</td>
-            <td>Redes Ópticas TELD623</td>
-            <td>Practicas Profesionales DEL DPG</td>
+            <td class="basica">Cálculo MAT0120</td>
+            <td class="profesional">Probabilidad y Estadística</td>
+            <td class="profesional">Sistemas Digitales TED023</td>
+            <td class="profesional">Análisis de Señales</td>
+            <td class="profesional">Teoría de la Información</td>
+            <td class="profesional">Telemática Básica TELD623</td>
+            <td class="profesional">Telemática Avanzada TELD723</td>
+            <td class="integracion">Prácticas Profesionales</td>
         </tr>
+        
+        <!-- Fila 3 -->
         <tr>
             <td class="creditos">38CT</td>
             <td class="creditos">38CT</td>
@@ -117,60 +138,26 @@
             <td class="creditos">38CT</td>
         </tr>
         <tr>
-            <td>Mecánica Newtoniana FIS0134</td>
-            <td>Cálculo Vectorial TED023</td>
-            <td>Dispositivos Electrónicos TED033</td>
-            <td>Circuitos Electrónicos TED034</td>
-            <td>Procesamiento Digital de Señales...</td>
-            <td>Electrónica de Radiofrecuencia TELD633</td>
-            <td>Comunicación Institúricas TELD733</td>
-            <td>Introducción Diseños de Redes...</td>
-            <td>Practica de Servicio Comunitario...</td>
-        </tr>
-        <tr>
-            <td class="creditos">38CT</td>
-            <td class="creditos">38CT</td>
-            <td class="creditos">38CT</td>
-            <td class="creditos">38CT</td>
-            <td class="creditos">38CT</td>
-            <td class="creditos">38CT</td>
-            <td class="creditos">38CT</td>
-            <td class="creditos">38CT</td>
-        </tr>
-        <tr>
-            <td>Química General QU1043</td>
-            <td>Fundamentos de Electromagn...</td>
-            <td>Teoría Electromagnética TED042</td>
-            <td>Programación Avanzada TED043</td>
-            <td>Sistema Enrededor TID053</td>
-            <td>Aplicación con Sistemas Enrededor...</td>
-            <td>Teléfonía IP TELD743</td>
-            <td>Sistema Calabres TELD843</td>
-            <td>Marco Regulatorio de los Servicios...</td>
-        </tr>
-        <tr>
-            <td class="creditos">38CT</td>
-            <td class="creditos">38CT</td>
-            <td class="creditos">38CT</td>
-            <td class="creditos">38CT</td>
-            <td class="creditos">38CT</td>
-            <td class="creditos">38CT</td>
-            <td class="creditos">38CT</td>
-            <td class="creditos">38CT</td>
-        </tr>
-        <tr>
-            <td>Herramientas Informáticas COO111</td>
-            <td>Programación TED052</td>
-            <td>Fundamentos de Circuitos Electrónicos TED042</td>
-            <td>Sistema Operativo Linux TELD452</td>
-            <td>Sistema de Trasmisión TLED655</td>
-            <td>Propagación y Antenas TELD654</td>
-            <td>Llegacia de Micronidas TELD752</td>
-            <td>Fundamentos de Seguridad TELD852</td>
-            <td>Trabajo de integración curricular</td>
+            <td class="basica">Mecánica Newtoniana FIS0134</td>
+            <td class="profesional">Cálculo Vectorial TED023</td>
+            <td class="profesional">Dispositivos Electrónicos TED033</td>
+            <td class="profesional">Circuitos Electrónicos TED034</td>
+            <td class="profesional">Procesamiento Digital</td>
+            <td class="profesional">Electrónica RF TELD633</td>
+            <td class="integracion">Comunicaciones TELD733</td>
+            <td class="integracion">Servicio Comunitario</td>
         </tr>
     </tbody>
 </table>
+
+<script>
+    // Interactividad: Resaltar al hacer clic
+    document.querySelectorAll('td').forEach(cell => {
+        cell.addEventListener('click', function() {
+            this.style.backgroundColor = '#ffeb3b';  // Amarillo al seleccionar
+        });
+    });
+</script>
 
 </body>
 </html>
