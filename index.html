@@ -418,13 +418,182 @@
     </div>
 
     <script>
-        // Datos de la malla curricular (igual que antes)
+        // Datos de la malla curricular (versión simplificada para prueba)
         const mallaData = {
             "data": [
-                // ... (los mismos datos del JSON que proporcionaste)
+                {
+                    "id": 1,
+                    "preRequisitos": [],
+                    "name": "Algebra Lineal MATD113",
+                    "area": "Unidad Básica",
+                    "directas": 144,
+                    "sct": 3,
+                    "year": 1,
+                    "semestre": 1,
+                    "selected": false
+                },
+                {
+                    "id": 2,
+                    "preRequisitos": [1, 10],
+                    "name": "Ecuaciones Diferenciales Ordinarias MATD213",
+                    "area": "Unidad Básica",
+                    "directas": 144,
+                    "sct": 3,
+                    "year": 1,
+                    "semestre": 2,
+                    "selected": false
+                },
+                {
+                    "id": 10,
+                    "preRequisitos": [],
+                    "name": "Calculo de una variable MATD123",
+                    "area": "Unidad Básica",
+                    "directas": 144,
+                    "sct": 3,
+                    "semestre": 1,
+                    "year": 1,
+                    "selected": false
+                },
+                {
+                    "id": 11,
+                    "preRequisitos": [],
+                    "name": "Mecánica Newtoniana FISD134",
+                    "area": "Unidad Básica",
+                    "directas": 192,
+                    "sct": 4,
+                    "semestre": 1,
+                    "year": 1,
+                    "selected": false
+                },
+                {
+                    "id": 12,
+                    "preRequisitos": [],
+                    "name": "Química General QUID143",
+                    "area": "Unidad Básica",
+                    "directas": 144,
+                    "sct": 3,
+                    "semestre": 1,
+                    "year": 1,
+                    "selected": false
+                },
+                {
+                    "id": 13,
+                    "preRequisitos": [],
+                    "name": "Herramientas Informáticas ICOD111",
+                    "area": "Unidad Básica",
+                    "directas": 48,
+                    "sct": 1,
+                    "semestre": 1,
+                    "year": 1,
+                    "selected": false
+                },
+                {
+                    "id": 14,
+                    "preRequisitos": [],
+                    "name": "Comunicación Oral y Escrita CSHD11",
+                    "area": "Unidad Básica",
+                    "directas": 48,
+                    "sct": 1,
+                    "semestre": 1,
+                    "year": 1,
+                    "selected": false
+                },
+                {
+                    "id": 15,
+                    "preRequisitos": [10],
+                    "name": "Probabilidad y Estadística Básica MATD223",
+                    "area": "Unidad Básica",
+                    "directas": 144,
+                    "sct": 3,
+                    "semestre": 2,
+                    "year": 1,
+                    "selected": false
+                },
+                {
+                    "id": 16,
+                    "preRequisitos": [10],
+                    "name": "Calculo Vectorial IEED232",
+                    "area": "Unidad Básica",
+                    "directas": 96,
+                    "sct": 2,
+                    "semestre": 2,
+                    "year": 1,
+                    "selected": false
+                },
+                {
+                    "id": 17,
+                    "preRequisitos": [11],
+                    "name": "Fundamentos de Electromagnetismo IEED242",
+                    "area": "Unidad Básica",
+                    "directas": 96,
+                    "sct": 2,
+                    "semestre": 2,
+                    "year": 1,
+                    "selected": false
+                },
+                {
+                    "id": 18,
+                    "preRequisitos": [13],
+                    "name": "Programación IEED252",
+                    "area": "Unidad Básica",
+                    "directas": 96,
+                    "sct": 2,
+                    "semestre": 2,
+                    "year": 1,
+                    "selected": false
+                },
+                {
+                    "id": 19,
+                    "preRequisitos": [],
+                    "name": "Análisis Socioeconómico y Político del Ecuador CSHD211",
+                    "area": "Unidad Básica",
+                    "directas": 48,
+                    "sct": 1,
+                    "semestre": 2,
+                    "year": 1,
+                    "selected": false
+                },
+                {
+                    "id": 20,
+                    "preRequisitos": [],
+                    "name": "Electrotecnia IEED272",
+                    "area": "Unidad Profesional",
+                    "directas": 96,
+                    "sct": 2,
+                    "semestre": 2,
+                    "year": 1,
+                    "selected": false
+                }
             ],
             "mallaAreas": [
-                // ... (los mismos datos de áreas que proporcionaste)
+                {
+                    "name": "Unidad Básica",
+                    "backgroundColor": "#e1ff00"
+                },
+                {
+                    "name": "Unidad Profesional",
+                    "backgroundColor": "#0a12ff"
+                },
+                {
+                    "name": "Unidad de Integración Curricular",
+                    "backgroundColor": "#1dff1a"
+                },
+                {
+                    "name": "Requisitos Para Graduacion",
+                    "backgroundColor": "#ff0505"
+                },
+                {
+                    "name": "Itinerario Radiocomunicación",
+                    "backgroundColor": "#ff8d0a"
+                },
+                {
+                    "name": "Itinerario Comunicación",
+                    "backgroundColor": "#09b3ec"
+                },
+                {
+                    "name": "Itinerario Telemática",
+                    "backgroundColor": "#f434c1"
+                }
             ]
         };
 
