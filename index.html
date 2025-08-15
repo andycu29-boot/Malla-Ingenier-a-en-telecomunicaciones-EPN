@@ -5,913 +5,652 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Malla Curricular - Ingeniería en Telecomunicaciones</title>
     <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+            --text-color: #333;
+            --light-text: #7f8c8d;
+            --success-color: #2ecc71;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #f9f9f9;
+            padding: 0;
             margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
-            color: #333;
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            background-color: white;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        header {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         
         h1 {
-            color: #2c3e50;
-            text-align: center;
+            font-size: 2.2rem;
             margin-bottom: 5px;
         }
         
         h2 {
-            color: #3498db;
-            text-align: center;
-            margin-top: 0;
-            margin-bottom: 20px;
+            font-size: 1.3rem;
             font-weight: normal;
+            opacity: 0.9;
         }
         
         .pensum-info {
-            text-align: center;
-            margin-bottom: 20px;
             font-style: italic;
-            color: #7f8c8d;
+            margin-top: 5px;
+            font-size: 0.9rem;
         }
         
         .controls {
             display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
+            justify-content: space-between;
+            margin-bottom: 25px;
             flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .filters {
+            display: flex;
             gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .search-box {
+            position: relative;
+            min-width: 250px;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            padding-left: 40px;
+        }
+        
+        .search-box::before {
+            content: "🔍";
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.6;
         }
         
         button {
-            padding: 8px 15px;
-            background-color: #3498db;
+            padding: 10px 15px;
+            background-color: var(--primary-color);
             color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
         
         button:hover {
             background-color: #2980b9;
+            transform: translateY(-2px);
         }
         
-        .semester-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+        button.active {
+            background-color: var(--accent-color);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
         
-        .semester {
-            background-color: #ecf0f1;
-            border-radius: 8px;
-            padding: 15px;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .semester:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .semester-title {
-            background-color: #3498db;
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            text-align: center;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
-        
-        .course {
-            background-color: white;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            border-left: 4px solid #3498db;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        .course:hover {
-            background-color: #f0f8ff;
-        }
-        
-        .course-code {
-            font-weight: bold;
-            color: #3498db;
-        }
-        
-        .course-name {
-            margin: 5px 0;
-        }
-        
-        .course-credits {
-            font-size: 0.8em;
-            color: #7f8c8d;
-        }
-        
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-        }
-        
-        .modal-content {
-            background-color: #fefefe;
-            margin: 10% auto;
-            padding: 20px;
-            border-radius: 8px;
-            width: 80%;
-            max-width: 600px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-        
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        
-        .close:hover {
-            color: black;
+        button i {
+            font-size: 1rem;
         }
         
         .stats {
             display: flex;
             justify-content: space-around;
-            margin: 20px 0;
+            margin: 25px 0;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 15px;
         }
         
         .stat-box {
-            background-color: #3498db;
-            color: white;
-            padding: 15px;
+            background-color: white;
+            padding: 15px 20px;
             border-radius: 8px;
             text-align: center;
             flex: 1;
-            min-width: 150px;
+            min-width: 180px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--primary-color);
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-box:hover {
+            transform: translateY(-5px);
         }
         
         .stat-value {
-            font-size: 1.5em;
+            font-size: 1.8rem;
             font-weight: bold;
             margin: 5px 0;
+            color: var(--primary-color);
         }
         
         .stat-label {
-            font-size: 0.9em;
+            font-size: 0.9rem;
+            color: var(--light-text);
+        }
+        
+        .semester-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .semester {
+            background-color: white;
+            border-radius: 8px;
+            padding: 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        
+        .semester-title {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 15px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .semester-number {
+            font-size: 1.2rem;
+        }
+        
+        .semester-credits {
+            background-color: rgba(255,255,255,0.2);
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        
+        .courses-list {
+            padding: 15px;
+        }
+        
+        .course {
+            background-color: var(--light-color);
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            border-left: 4px solid var(--primary-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .course:hover {
+            transform: translateX(5px);
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .course-code {
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 0.85rem;
+            margin-bottom: 3px;
+        }
+        
+        .course-name {
+            margin: 5px 0;
+            font-weight: 500;
+        }
+        
+        .course-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--light-text);
+            margin-top: 5px;
+        }
+        
+        .course-credits, .course-hours {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+        
+        .course-type {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 3px;
+            background-color: var(--dark-color);
+            color: white;
+        }
+        
+        .basic-badge {
+            background-color: #3498db;
+        }
+        
+        .professional-badge {
+            background-color: #2ecc71;
+        }
+        
+        .integration-badge {
+            background-color: #e74c3c;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(3px);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 25px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 700px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            position: relative;
+            animation: modalOpen 0.4s ease;
+        }
+        
+        @keyframes modalOpen {
+            from {opacity: 0; transform: translateY(-50px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+        
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .close:hover {
+            color: var(--accent-color);
+        }
+        
+        .modal-header {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 5px;
+        }
+        
+        .modal-subtitle {
+            display: flex;
+            gap: 15px;
+            font-size: 0.9rem;
+            color: var(--light-text);
+            margin-bottom: 10px;
+        }
+        
+        .modal-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .modal-section {
+            margin-bottom: 15px;
+        }
+        
+        .modal-section-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: var(--secondary-color);
+            font-size: 1.1rem;
+        }
+        
+        .prerequisites, .corequisites {
+            margin-top: 5px;
+        }
+        
+        .prereq-item, .coreq-item {
+            display: inline-block;
+            background-color: var(--light-color);
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+        }
+        
+        .progress-container {
+            width: 100%;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            margin: 20px 0;
+            height: 10px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            border-radius: 5px;
+            background-color: var(--primary-color);
+            width: 0;
+            transition: width 1s ease;
+        }
+        
+        .progress-text {
+            text-align: center;
+            margin-top: 5px;
+            font-size: 0.9rem;
+            color: var(--light-text);
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.85rem;
+        }
+        
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 3px;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            grid-column: 1 / -1;
+            color: var(--light-text);
+        }
+        
+        .export-btn {
+            background-color: var(--success-color);
+        }
+        
+        .export-btn:hover {
+            background-color: #27ae60;
         }
         
         @media (max-width: 768px) {
-            .semester-grid {
+            .controls {
+                flex-direction: column;
+            }
+            
+            .filters {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .search-box {
+                width: 100%;
+            }
+            
+            .modal-body {
                 grid-template-columns: 1fr;
             }
             
-            .controls {
-                flex-direction: column;
-                align-items: center;
+            .semester-grid {
+                grid-template-columns: 1fr;
             }
         }
+        
+        /* Animaciones */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+    <header>
+        <div class="container">
+            <h1>MALLA CURRICULAR</h1>
+            <h2>Ingeniería en Telecomunicaciones</h2>
+            <div class="pensum-info">Título: INGENIERO/A EN TELECOMUNICACIONES | PÉNSUM: 2020</div>
+        </div>
+    </header>
+    
     <div class="container">
-        <h1>MALLA CURRICULAR</h1>
-        <h2>Carrera: Ingeniería en Telecomunicaciones</h2>
-        <div class="pensum-info">Título que otorga: INGENIERO/A EN TELECOMUNICACIONES | PÉNSUM: 2020</div>
-        
         <div class="stats">
             <div class="stat-box">
-                <div class="stat-value">15</div>
-                <div class="stat-label">Créditos Totales</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-value">720</div>
-                <div class="stat-label">Horas Totales</div>
+                <div class="stat-value">54</div>
+                <div class="stat-label">Asignaturas</div>
             </div>
             <div class="stat-box">
                 <div class="stat-value">240</div>
-                <div class="stat-label">Prácticas Laborales</div>
+                <div class="stat-label">Créditos</div>
             </div>
             <div class="stat-box">
-                <div class="stat-value">336</div>
-                <div class="stat-label">Prácticas Comunitarias</div>
+                <div class="stat-value">720</div>
+                <div class="stat-label">Horas Académicas</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">576</div>
+                <div class="stat-label">Horas Prácticas</div>
             </div>
         </div>
         
         <div class="controls">
-            <button id="showAll">Mostrar Todos</button>
-            <button id="filterBasic">Unidad Básica</button>
-            <button id="filterProfessional">Unidad Profesional</button>
-            <button id="filterIntegration">Unidad de Integración</button>
+            <div class="filters">
+                <button id="showAll" class="active">
+                    <i class="fas fa-layer-group"></i> Todas
+                </button>
+                <button id="filterBasic">
+                    <i class="fas fa-book"></i> Básicas
+                </button>
+                <button id="filterProfessional">
+                    <i class="fas fa-microchip"></i> Profesionales
+                </button>
+                <button id="filterIntegration">
+                    <i class="fas fa-project-diagram"></i> Integración
+                </button>
+            </div>
+            
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Buscar asignatura...">
+            </div>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+            <div class="progress-text" id="progressText">0% completado</div>
         </div>
         
         <div class="semester-grid" id="semesterGrid">
             <!-- Los semestres se generarán con JavaScript -->
+        </div>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #3498db;"></div>
+                <span>Asignaturas Básicas</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #2ecc71;"></div>
+                <span>Asignaturas Profesionales</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #e74c3c;"></div>
+                <span>Integración Curricular</span>
+            </div>
         </div>
     </div>
     
     <div id="courseModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h2 id="modalTitle">Título del Curso</h2>
-            <p><strong>Código:</strong> <span id="modalCode"></span></p>
-            <p><strong>Créditos:</strong> <span id="modalCredits"></span></p>
-            <p><strong>Horas:</strong> <span id="modalHours"></span></p>
-            <p><strong>Semestre:</strong> <span id="modalSemester"></span></p>
-            <div id="modalDescription">
-                Descripción detallada del curso aparecerá aquí.
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Nombre del Curso</h2>
+                <div class="modal-subtitle">
+                    <span id="modalCode"><strong>Código:</strong> ABC123</span>
+                    <span id="modalSemester"><strong>Semestre:</strong> 1</span>
+                    <span id="modalType"><strong>Tipo:</strong> Básica</span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-section">
+                    <h3 class="modal-section-title">Información General</h3>
+                    <p><strong>Créditos:</strong> <span id="modalCredits">3</span></p>
+                    <p><strong>Horas:</strong> <span id="modalHours">48</span></p>
+                    <p><strong>Requisitos:</strong> <span id="modalRequirements">Ninguno</span></p>
+                </div>
+                <div class="modal-section">
+                    <h3 class="modal-section-title">Descripción</h3>
+                    <p id="modalDescription">Descripción detallada del curso aparecerá aquí. Esta es una descripción de ejemplo que sería reemplazada por la información real del curso.</p>
+                </div>
+                <div class="modal-section">
+                    <h3 class="modal-section-title">Prerrequisitos</h3>
+                    <div class="prerequisites" id="modalPrerequisites">
+                        <!-- Se llenará dinámicamente -->
+                    </div>
+                </div>
+                <div class="modal-section">
+                    <h3 class="modal-section-title">Correquisitos</h3>
+                    <div class="corequisites" id="modalCorequisites">
+                        <!-- Se llenará dinámicamente -->
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     
     <script>
-        // Datos de la malla curricular
+        // Datos completos de la malla curricular con relaciones
         const curriculumData = [
             {
                 semester: 1,
                 courses: [
-                    { code: "MAID113", name: "Álgebra Lineal", credits: 3, hours: 48, unit: "basic" },
-                    { code: "MAID123", name: "Cálculo en una Variable", credits: 3, hours: 48, unit: "basic" },
-                    { code: "FISD134", name: "Física Newtoniana", credits: 3, hours: 48, unit: "basic" },
-                    { code: "QUID143", name: "Química General", credits: 3, hours: 48, unit: "basic" },
-                    { code: "KGO9111", name: "Herramientas Informáticas", credits: 3, hours: 48, unit: "basic" },
-                    { code: "CSH0111", name: "Comunicación Oral y Escrita", credits: 3, hours: 48, unit: "basic" }
+                    { 
+                        code: "MAID113", 
+                        name: "Álgebra Lineal", 
+                        credits: 3, 
+                        hours: 48, 
+                        unit: "basic",
+                        description: "Estudio de espacios vectoriales, transformaciones lineales, matrices y sistemas de ecuaciones lineales.",
+                        prerequisites: [],
+                        corequisites: []
+                    },
+                    { 
+                        code: "MAID123", 
+                        name: "Cálculo en una Variable", 
+                        credits: 3, 
+                        hours: 48, 
+                        unit: "basic",
+                        description: "Límites, derivadas e integrales de funciones de una variable real con aplicaciones.",
+                        prerequisites: [],
+                        corequisites: []
+                    },
+                    { 
+                        code: "FISD134", 
+                        name: "Física Newtoniana", 
+                        credits: 3, 
+                        hours: 48, 
+                        unit: "basic",
+                        description: "Fundamentos de mecánica clásica: cinemática, dinámica, trabajo y energía.",
+                        prerequisites: [],
+                        corequisites: ["MAID123"]
+                    },
+                    { 
+                        code: "QUID143", 
+                        name: "Química General", 
+                        credits: 3, 
+                        hours: 48, 
+                        unit: "basic",
+                        description: "Principios fundamentales de química: estructura atómica, enlaces químicos y reacciones.",
+                        prerequisites: [],
+                        corequisites: []
+                    },
+                    { 
+                        code: "KGO9111", 
+                        name: "Herramientas Informáticas", 
+                        credits: 3, 
+                        hours: 48, 
+                        unit: "basic",
+                        description: "Uso de software de productividad y herramientas básicas de computación.",
+                        prerequisites: [],
+                        corequisites: []
+                    },
+                    { 
+                        code: "CSH0111", 
+                        name: "Comunicación Oral y Escrita", 
+                        credits: 3, 
+                        hours: 48, 
+                        unit: "basic",
+                        description: "Desarrollo de habilidades de comunicación efectiva en contextos académicos y profesionales.",
+                        prerequisites: [],
+                        corequisites: []
+                    }
                 ]
             },
             {
                 semester: 2,
                 courses: [
-                    { code: "MAID213", name: "Ecuaciones Diferenciales Ordinarias", credits: 3, hours: 48, unit: "basic" },
-                    { code: "MAID223", name: "Probabilidad y Estadística Básicas", credits: 3, hours: 48, unit: "basic" },
-                    { code: "HEID232", name: "Cálculo Vectorial", credits: 3, hours: 48, unit: "basic" },
-                    { code: "HEID242", name: "Fundamentos de Electromagnetismo", credits: 3, hours: 48, unit: "professional" },
-                    { code: "HEID252", name: "Programación", credits: 3, hours: 48, unit: "professional" },
-                    { code: "CSH0271", name: "Análisis Socioeconómico y Político del Ecuador", credits: 3, hours: 48, unit: "basic" },
-                    { code: "HEID272", name: "Electrotecnia", credits: 3, hours: 48, unit: "professional" }
-                ]
-            },
-            {
-                semester: 3,
-                courses: [
-                    { code: "HEID312", name: "Matemática Avanzada", credits: 3, hours: 48, unit: "basic" },
-                    { code: "HEID323", name: "Sistemas Digitales", credits: 3, hours: 48, unit: "professional" },
-                    { code: "HEID313", name: "Dispositivos Electrónicos", credits: 3, hours: 48, unit: "professional" },
-                    { code: "HEID342", name: "Teoría Electromagnética", credits: 3, hours: 48, unit: "professional" },
-                    { code: "HEID353", name: "Tratamiento de Señales Electrónicas", credits: 3, hours: 48, unit: "professional" },
-                    { code: "CSH0309", name: "Asignatura de Artes y Humanidades", credits: 3, hours: 48, unit: "basic" },
-                    { code: "HEID371", name: "Matemática Discreta", credits: 3, hours: 48, unit: "basic" }
-                ]
-            },
-            {
-                semester: 4,
-                courses: [
-                    { code: "HEID413", name: "Instalaciones Eléctricas y Comunicaciones", credits: 3, hours: 48, unit: "professional" },
-                    { code: "HEID423", name: "Análisis de Señales Discretas para Comunicaciones", credits: 3, hours: 48, unit: "professional" },
-                    { code: "HEID453", name: "Circuitos Electrónicos", credits: 3, hours: 48, unit: "professional" },
-                    { code: "HEID453", name: "Programación Avanzada", credits: 3, hours: 48, unit: "professional" },
-                    { code: "HEID453", name: "Sistema Operativo Linux", credits: 3, hours: 48, unit: "professional" },
-                    { code: "CSH0409", name: "Asignatura de Economía y Sociedad", credits: 3, hours: 48, unit: "basic" }
-                ]
-            },
-            {
-                semester: 5,
-                courses: [
-                    { code: "HEID513", name: "Fundamentos de Comunicaciones", credits: 3, hours: 48, unit: "professional" },
-                    { code: "HEID532", name: "Teoría de la Información y Codificación", credits: 3, hours: 48, unit: "professional" },
-                    { code: "HEID532", name: "Programación Digital de Señales", credits: 3, hours: 48, unit: "professional" },
-                    { code: "HEID533", name: "Sistemas de Comunicaciones", credits: 3, hours: 48, unit: "professional" },
-                    { code: "HEID533", name: "Sistemas de Electrónica de Comunicaciones", credits: 3, hours: 48, unit: "professional" }
-                ]
-            },
-            {
-                semester: 6,
-                courses: [
-                    { code: "HEID713", name: "Comunicaciones Ópticas", credits: 3, hours: 48, unit: "professional" },
-                    { code: "HEID713", name: "Telemática Avanzada", credits: 3, hours: 48, unit: "professional" },
-                    { code: "HEID713", name: "Comunicaciones Inalámbricas", credits: 3, hours: 48, unit: "professional" },
-                    { code: "HEID713", name: "Telefonía IP", credits: 3, hours: 48, unit: "professional" },
-                    { code: "HEID713", name: "Ingeniería de Microondas", credits: 3, hours: 48, unit: "professional" },
-                    { code: "HEID713", name: "Gestión de Procesos y Calidad", credits: 3, hours: 48, unit: "professional" }
-                ]
-            },
-            {
-                semester: 7,
-                courses: [
-                    { code: "HEID160", name: "Itinerario Avanzado", credits: 3, hours: 48, unit: "professional" },
-                    { code: "PALÚTICS", name: "Prácticas Laborales", credits: 3, hours: 240, unit: "integration" },
-                    { code: "PSCOW22", name: "Prácticas de Servicio Comunitario", credits: 3, hours: 336, unit: "integration" },
-                    { code: "HEID154", name: "Regulación de los Servicios de Telecomunicaciones", credits: 3, hours: 48, unit: "professional" }
-                ]
-            },
-            {
-                semester: 8,
-                courses: [
-                    { code: "TIC", name: "Trabajo de Integración Curricular / Examen Complexivo", credits: 6, hours: 240, unit: "integration" }
-                ]
-            }
-        ];
-
-        // Generar la malla curricular
-        function generateCurriculum(filter = 'all') {
-            const semesterGrid = document.getElementById('semesterGrid');
-            semesterGrid.innerHTML = '';
-            
-            curriculumData.forEach(semesterData => {
-                const semesterElement = document.createElement('div');
-                semesterElement.className = 'semester';
-                
-                const semesterTitle = document.createElement('div');
-                semesterTitle.className = 'semester-title';
-                semesterTitle.textContent = `Semestre ${semesterData.semester}`;
-                semesterElement.appendChild(semesterTitle);
-                
-                semesterData.courses.forEach(course => {
-                    if (filter === 'all' || filter === course.unit) {
-                        const courseElement = document.createElement('div');
-                        courseElement.className = 'course';
-                        courseElement.setAttribute('data-code', course.code);
-                        courseElement.setAttribute('data-semester', semesterData.semester);
-                        
-                        const courseCode = document.createElement('div');
-                        courseCode.className = 'course-code';
-                        courseCode.textContent = course.code;
-                        courseElement.appendChild(courseCode);
-                        
-                        const courseName = document.createElement('div');
-                        courseName.className = 'course-name';
-                        courseName.textContent = course.name;
-                        courseElement.appendChild(courseName);
-                        
-                        const courseCredits = document.createElement('div');
-                        courseCredits.className = 'course-credits';
-                        courseCredits.textContent = `${course.credits} créditos | ${course.hours} horas`;
-                        courseElement.appendChild(courseCredits);
-                        
-                        courseElement.addEventListener('click', () => openModal(course, semesterData.semester));
-                        semesterElement.appendChild(courseElement);
-                    }
-                });
-                
-                semesterGrid.appendChild(semesterElement);
-            });
-        }
-
-        // Abrir modal con información del curso
-        function openModal(course, semester) {
-            const modal = document.getElementById('courseModal');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalCode = document.getElementById('modalCode');
-            const modalCredits = document.getElementById('modalCredits');
-            const modalHours = document.getElementById('modalHours');
-            const modalSemester = document.getElementById('modalSemester');
-            const modalDescription = document.getElementById('modalDescription');
-            
-            modalTitle.textContent = course.name;
-            modalCode.textContent = course.code;
-            modalCredits.textContent = course.credits;
-            modalHours.textContent = course.hours;
-            modalSemester.textContent = semester;
-            
-            // Descripción detallada (podrías expandir esto con más información)
-            let description = `<p>Este curso es parte del plan de estudios de Ingeniería en Telecomunicaciones.</p>`;
-            description += `<p><strong>Tipo:</strong> ${getUnitName(course.unit)}</p>`;
-            
-            // Agregar información específica según el tipo de curso
-            if (course.unit === 'professional') {
-                description += `<p>Este curso profesional proporciona conocimientos especializados en el área de telecomunicaciones.</p>`;
-            } else if (course.unit === 'basic') {
-                description += `<p>Curso básico que sienta las bases para los estudios profesionales.</p>`;
-            } else if (course.unit === 'integration') {
-                description += `<p>Actividad de integración curricular que aplica los conocimientos adquiridos.</p>`;
-            }
-            
-            modalDescription.innerHTML = description;
-            modal.style.display = 'block';
-        }
-
-        // Obtener nombre descriptivo de la unidad
-        function getUnitName(unit) {
-            switch(unit) {
-                case 'basic': return 'Unidad Básica';
-                case 'professional': return 'Unidad Profesional';
-                case 'integration': return 'Unidad de Integración Curricular';
-                default: return '';
-            }
-        }
-
-        // Cerrar modal
-        document.querySelector('.close').addEventListener('click', function() {
-            document.getElementById('courseModal').style.display = 'none';
-        });
-
-        // Cerrar modal al hacer clic fuera de él
-        window.addEventListener('click', function(event) {
-            if (event.target === document.getElementById('courseModal')) {
-                document.getElementById('courseModal').style.display = 'none';
-            }
-        });
-
-        // Event listeners para los botones de filtro
-        document.getElementById('showAll').addEventListener('click', function() {
-            generateCurriculum('all');
-        });
-
-        document.getElementById('filterBasic').addEventListener('click', function() {
-            generateCurriculum('basic');
-        });
-
-        document.getElementById('filterProfessional').addEventListener('click', function() {
-            generateCurriculum('professional');
-        });
-
-        document.getElementById('filterIntegration').addEventListener('click', function() {
-            generateCurriculum('integration');
-        });
-
-        // Generar la malla al cargar la página
-        window.addEventListener('DOMContentLoaded', function() {
-            generateCurriculum();
-        });
-    </script>
-</body>
-</html><!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Malla Curricular - Ingeniería en Telecomunicaciones</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
-            color: #333;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        
-        h1 {
-            color: #2c3e50;
-            text-align: center;
-            margin-bottom: 5px;
-        }
-        
-        h2 {
-            color: #3498db;
-            text-align: center;
-            margin-top: 0;
-            margin-bottom: 20px;
-            font-weight: normal;
-        }
-        
-        .pensum-info {
-            text-align: center;
-            margin-bottom: 20px;
-            font-style: italic;
-            color: #7f8c8d;
-        }
-        
-        .controls {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        
-        button {
-            padding: 8px 15px;
-            background-color: #3498db;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        button:hover {
-            background-color: #2980b9;
-        }
-        
-        .semester-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        
-        .semester {
-            background-color: #ecf0f1;
-            border-radius: 8px;
-            padding: 15px;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .semester:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .semester-title {
-            background-color: #3498db;
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            text-align: center;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
-        
-        .course {
-            background-color: white;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            border-left: 4px solid #3498db;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        .course:hover {
-            background-color: #f0f8ff;
-        }
-        
-        .course-code {
-            font-weight: bold;
-            color: #3498db;
-        }
-        
-        .course-name {
-            margin: 5px 0;
-        }
-        
-        .course-credits {
-            font-size: 0.8em;
-            color: #7f8c8d;
-        }
-        
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-        }
-        
-        .modal-content {
-            background-color: #fefefe;
-            margin: 10% auto;
-            padding: 20px;
-            border-radius: 8px;
-            width: 80%;
-            max-width: 600px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-        
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        
-        .close:hover {
-            color: black;
-        }
-        
-        .stats {
-            display: flex;
-            justify-content: space-around;
-            margin: 20px 0;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        
-        .stat-box {
-            background-color: #3498db;
-            color: white;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            flex: 1;
-            min-width: 150px;
-        }
-        
-        .stat-value {
-            font-size: 1.5em;
-            font-weight: bold;
-            margin: 5px 0;
-        }
-        
-        .stat-label {
-            font-size: 0.9em;
-        }
-        
-        @media (max-width: 768px) {
-            .semester-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .controls {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>MALLA CURRICULAR</h1>
-        <h2>Carrera: Ingeniería en Telecomunicaciones</h2>
-        <div class="pensum-info">Título que otorga: INGENIERO/A EN TELECOMUNICACIONES | PÉNSUM: 2020</div>
-        
-        <div class="stats">
-            <div class="stat-box">
-                <div class="stat-value">15</div>
-                <div class="stat-label">Créditos Totales</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-value">720</div>
-                <div class="stat-label">Horas Totales</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-value">240</div>
-                <div class="stat-label">Prácticas Laborales</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-value">336</div>
-                <div class="stat-label">Prácticas Comunitarias</div>
-            </div>
-        </div>
-        
-        <div class="controls">
-            <button id="showAll">Mostrar Todos</button>
-            <button id="filterBasic">Unidad Básica</button>
-            <button id="filterProfessional">Unidad Profesional</button>
-            <button id="filterIntegration">Unidad de Integración</button>
-        </div>
-        
-        <div class="semester-grid" id="semesterGrid">
-            <!-- Los semestres se generarán con JavaScript -->
-        </div>
-    </div>
-    
-    <div id="courseModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2 id="modalTitle">Título del Curso</h2>
-            <p><strong>Código:</strong> <span id="modalCode"></span></p>
-            <p><strong>Créditos:</strong> <span id="modalCredits"></span></p>
-            <p><strong>Horas:</strong> <span id="modalHours"></span></p>
-            <p><strong>Semestre:</strong> <span id="modalSemester"></span></p>
-            <div id="modalDescription">
-                Descripción detallada del curso aparecerá aquí.
-            </div>
-        </div>
-    </div>
-    
-    <script>
-        // Datos de la malla curricular
-        const curriculumData = [
-            {
-                semester: 1,
-                courses: [
-                    { code: "MAID113", name: "Álgebra Lineal", credits: 3, hours: 48, unit: "basic" },
-                    { code: "MAID123", name: "Cálculo en una Variable", credits: 3, hours: 48, unit: "basic" },
-                    { code: "FISD134", name: "Física Newtoniana", credits: 3, hours: 48, unit: "basic" },
-                    { code: "QUID143", name: "Química General", credits: 3, hours: 48, unit: "basic" },
-                    { code: "KGO9111", name: "Herramientas Informáticas", credits: 3, hours: 48, unit: "basic" },
-                    { code: "CSH0111", name: "Comunicación Oral y Escrita", credits: 3, hours: 48, unit: "basic" }
-                ]
-            },
-            {
-                semester: 2,
-                courses: [
-                    { code: "MAID213", name: "Ecuaciones Diferenciales Ordinarias", credits: 3, hours: 48, unit: "basic" },
-                    { code: "MAID223", name: "Probabilidad y Estadística Básicas", credits: 3, hours: 48, unit: "basic" },
-                    { code: "HEID232", name: "Cálculo Vectorial", credits: 3, hours: 48, unit: "basic" },
-                    { code: "HEID242", name: "Fundamentos de Electromagnetismo", credits: 3, hours: 48, unit: "professional" },
-                    { code: "HEID252", name: "Programación", credits: 3, hours: 48, unit: "professional" },
-                    { code: "CSH0271", name: "Análisis Socioeconómico y Político del Ecuador", credits: 3, hours: 48, unit: "basic" },
-                    { code: "HEID272", name: "Electrotecnia", credits: 3, hours: 48, unit: "professional" }
-                ]
-            },
-            {
-                semester: 3,
-                courses: [
-                    { code: "HEID312", name: "Matemática Avanzada", credits: 3, hours: 48, unit: "basic" },
-                    { code: "HEID323", name: "Sistemas Digitales", credits: 3, hours: 48, unit: "professional" },
-                    { code: "HEID313", name: "Dispositivos Electrónicos", credits: 3, hours: 48, unit: "professional" },
-                    { code: "HEID342", name: "Teoría Electromagnética", credits: 3, hours: 48, unit: "professional" },
-                    { code: "HEID353", name: "Tratamiento de Señales Electrónicas", credits: 3, hours: 48, unit: "professional" },
-                    { code: "CSH0309", name: "Asignatura de Artes y Humanidades", credits: 3, hours: 48, unit: "basic" },
-                    { code: "HEID371", name: "Matemática Discreta", credits: 3, hours: 48, unit: "basic" }
-                ]
-            },
-            {
-                semester: 4,
-                courses: [
-                    { code: "HEID413", name: "Instalaciones Eléctricas y Comunicaciones", credits: 3, hours: 48, unit: "professional" },
-                    { code: "HEID423", name: "Análisis de Señales Discretas para Comunicaciones", credits: 3, hours: 48, unit: "professional" },
-                    { code: "HEID453", name: "Circuitos Electrónicos", credits: 3, hours: 48, unit: "professional" },
-                    { code: "HEID453", name: "Programación Avanzada", credits: 3, hours: 48, unit: "professional" },
-                    { code: "HEID453", name: "Sistema Operativo Linux", credits: 3, hours: 48, unit: "professional" },
-                    { code: "CSH0409", name: "Asignatura de Economía y Sociedad", credits: 3, hours: 48, unit: "basic" }
-                ]
-            },
-            {
-                semester: 5,
-                courses: [
-                    { code: "HEID513", name: "Fundamentos de Comunicaciones", credits: 3, hours: 48, unit: "professional" },
-                    { code: "HEID532", name: "Teoría de la Información y Codificación", credits: 3, hours: 48, unit: "professional" },
-                    { code: "HEID532", name: "Programación Digital de Señales", credits: 3, hours: 48, unit: "professional" },
-                    { code: "HEID533", name: "Sistemas de Comunicaciones", credits: 3, hours: 48, unit: "professional" },
-                    { code: "HEID533", name: "Sistemas de Electrónica de Comunicaciones", credits: 3, hours: 48, unit: "professional" }
-                ]
-            },
-            {
-                semester: 6,
-                courses: [
-                    { code: "HEID713", name: "Comunicaciones Ópticas", credits: 3, hours: 48, unit: "professional" },
-                    { code: "HEID713", name: "Telemática Avanzada", credits: 3, hours: 48, unit: "professional" },
-                    { code: "HEID713", name: "Comunicaciones Inalámbricas", credits: 3, hours: 48, unit: "professional" },
-                    { code: "HEID713", name: "Telefonía IP", credits: 3, hours: 48, unit: "professional" },
-                    { code: "HEID713", name: "Ingeniería de Microondas", credits: 3, hours: 48, unit: "professional" },
-                    { code: "HEID713", name: "Gestión de Procesos y Calidad", credits: 3, hours: 48, unit: "professional" }
-                ]
-            },
-            {
-                semester: 7,
-                courses: [
-                    { code: "HEID160", name: "Itinerario Avanzado", credits: 3, hours: 48, unit: "professional" },
-                    { code: "PALÚTICS", name: "Prácticas Laborales", credits: 3, hours: 240, unit: "integration" },
-                    { code: "PSCOW22", name: "Prácticas de Servicio Comunitario", credits: 3, hours: 336, unit: "integration" },
-                    { code: "HEID154", name: "Regulación de los Servicios de Telecomunicaciones", credits: 3, hours: 48, unit: "professional" }
-                ]
-            },
-            {
-                semester: 8,
-                courses: [
-                    { code: "TIC", name: "Trabajo de Integración Curricular / Examen Complexivo", credits: 6, hours: 240, unit: "integration" }
-                ]
-            }
-        ];
-
-        // Generar la malla curricular
-        function generateCurriculum(filter = 'all') {
-            const semesterGrid = document.getElementById('semesterGrid');
-            semesterGrid.innerHTML = '';
-            
-            curriculumData.forEach(semesterData => {
-                const semesterElement = document.createElement('div');
-                semesterElement.className = 'semester';
-                
-                const semesterTitle = document.createElement('div');
-                semesterTitle.className = 'semester-title';
-                semesterTitle.textContent = `Semestre ${semesterData.semester}`;
-                semesterElement.appendChild(semesterTitle);
-                
-                semesterData.courses.forEach(course => {
-                    if (filter === 'all' || filter === course.unit) {
-                        const courseElement = document.createElement('div');
-                        courseElement.className = 'course';
-                        courseElement.setAttribute('data-code', course.code);
-                        courseElement.setAttribute('data-semester', semesterData.semester);
-                        
-                        const courseCode = document.createElement('div');
-                        courseCode.className = 'course-code';
-                        courseCode.textContent = course.code;
-                        courseElement.appendChild(courseCode);
-                        
-                        const courseName = document.createElement('div');
-                        courseName.className = 'course-name';
-                        courseName.textContent = course.name;
-                        courseElement.appendChild(courseName);
-                        
-                        const courseCredits = document.createElement('div');
-                        courseCredits.className = 'course-credits';
-                        courseCredits.textContent = `${course.credits} créditos | ${course.hours} horas`;
-                        courseElement.appendChild(courseCredits);
-                        
-                        courseElement.addEventListener('click', () => openModal(course, semesterData.semester));
-                        semesterElement.appendChild(courseElement);
-                    }
-                });
-                
-                semesterGrid.appendChild(semesterElement);
-            });
-        }
-
-        // Abrir modal con información del curso
-        function openModal(course, semester) {
-            const modal = document.getElementById('courseModal');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalCode = document.getElementById('modalCode');
-            const modalCredits = document.getElementById('modalCredits');
-            const modalHours = document.getElementById('modalHours');
-            const modalSemester = document.getElementById('modalSemester');
-            const modalDescription = document.getElementById('modalDescription');
-            
-            modalTitle.textContent = course.name;
-            modalCode.textContent = course.code;
-            modalCredits.textContent = course.credits;
-            modalHours.textContent = course.hours;
-            modalSemester.textContent = semester;
-            
-            // Descripción detallada (podrías expandir esto con más información)
-            let description = `<p>Este curso es parte del plan de estudios de Ingeniería en Telecomunicaciones.</p>`;
-            description += `<p><strong>Tipo:</strong> ${getUnitName(course.unit)}</p>`;
-            
-            // Agregar información específica según el tipo de curso
-            if (course.unit === 'professional') {
-                description += `<p>Este curso profesional proporciona conocimientos especializados en el área de telecomunicaciones.</p>`;
-            } else if (course.unit === 'basic') {
-                description += `<p>Curso básico que sienta las bases para los estudios profesionales.</p>`;
-            } else if (course.unit === 'integration') {
-                description += `<p>Actividad de integración curricular que aplica los conocimientos adquiridos.</p>`;
-            }
-            
-            modalDescription.innerHTML = description;
-            modal.style.display = 'block';
-        }
-
-        // Obtener nombre descriptivo de la unidad
-        function getUnitName(unit) {
-            switch(unit) {
-                case 'basic': return 'Unidad Básica';
-                case 'professional': return 'Unidad Profesional';
-                case 'integration': return 'Unidad de Integración Curricular';
-                default: return '';
-            }
-        }
-
-        // Cerrar modal
-        document.querySelector('.close').addEventListener('click', function() {
-            document.getElementById('courseModal').style.display = 'none';
-        });
-
-        // Cerrar modal al hacer clic fuera de él
-        window.addEventListener('click', function(event) {
-            if (event.target === document.getElementById('courseModal')) {
-                document.getElementById('courseModal').style.display = 'none';
-            }
-        });
-
-        // Event listeners para los botones de filtro
-        document.getElementById('showAll').addEventListener('click', function() {
-            generateCurriculum('all');
-        });
-
-        document.getElementById('filterBasic').addEventListener('click', function() {
-            generateCurriculum('basic');
-        });
-
-        document.getElementById('filterProfessional').addEventListener('click', function() {
-            generateCurriculum('professional');
-        });
-
-        document.getElementById('filterIntegration').addEventListener('click', function() {
-            generateCurriculum('integration');
-        });
-
-        // Generar la malla al cargar la página
-        window.addEventListener('DOMContentLoaded', function() {
-            generateCurriculum();
-        });
-    </script>
-</body>
-</html>
+                    { 
+                        code: "MAID213", 
+                        name: "Ecuaciones Diferenciales Ordinarias", 
+                        credits: 3, 
+                        hours: 48, 
+                        unit: "basic",
+                        description: "Métodos de solución para ecuaciones diferenciales ordinarias y sus aplicaciones.",
+                        prerequisites: ["MAID123"],
+       
