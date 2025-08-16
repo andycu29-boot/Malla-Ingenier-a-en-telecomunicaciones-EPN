@@ -1,4 +1,4 @@
- <!doctype html>
+<!doctype html>
 <html lang="es">
 <head>
   <meta charset="utf-8" />
@@ -25,9 +25,6 @@
       max-width:100vw;
       overflow-x:hidden;
       transition: background 0.3s ease;
-      display: grid;
-      grid-template-columns: 1fr auto; /* Nueva estructura de grid */
-      gap: 20px;
     }
     
     /* Estilos de fondo */
@@ -48,10 +45,6 @@
       --text: #eaeaea;
     }
 
-    .main-content {
-      grid-column: 1;
-    }
-
     .header {
       position: sticky;
       top: 0;
@@ -59,19 +52,7 @@
       padding: 10px 0;
       z-index: 100;
       border-bottom: 1px solid rgba(255,255,255,0.1);
-      grid-column: 1 / -1; /* Ocupa ambas columnas */
     }
-
-    /* Barra lateral derecha con progreso */
-    .sidebar {
-      position: sticky;
-      top: 80px; /* Debajo del header */
-      height: calc(100vh - 100px);
-      overflow-y: auto;
-      padding: 10px;
-      width: 200px;
-    }
-
     h1{
       font-size:18px;
       margin:0 0 10px;
@@ -293,42 +274,41 @@
       background: linear-gradient(135deg, #000 0%, #0a001a 50%, #2a004d 100%);
     }
 
-    /* Resumen de progreso - Ahora en sidebar */
+    /* Resumen de progreso */
     .progress-summary {
       background: rgba(255,255,255,0.05);
       border-radius: 6px;
-      padding: 12px;
-      margin-bottom: 12px;
+      padding: 8px;
+      margin: 12px 0;
       border: 1px solid rgba(255,255,255,0.1);
       display: grid;
-      grid-template-columns: 1fr;
-      gap: 8px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
       text-align: center;
       font-size: 11px;
-      width: 100%;
     }
     .progress-summary h3 {
-      margin: 0 0 8px;
-      font-size: 14px;
+      grid-column: 1 / -1;
+      margin: 0 0 4px;
+      font-size: 12px;
       color: #cfcfcf;
     }
     .progress-summary div {
-      font-size: 11px;
-      margin-bottom: 6px;
+      font-size: 10px;
     }
     .progress-summary .value {
       font-weight: bold;
-      font-size: 16px;
+      font-size: 12px;
       color: #f5d442;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
 
     .legend{
       display:flex;
-      flex-direction: column;
-      gap:6px;
+      gap:8px;
       flex-wrap:wrap;
       margin-top:12px;
+      justify-content: center;
       font-size: 11px;
     }
     .legend .item{
@@ -337,8 +317,8 @@
       align-items:center;
       font-size:11px;
       background:rgba(255,255,255,0.05);
-      padding:4px 8px;
-      border-radius:4px;
+      padding:3px 6px;
+      border-radius:3px;
       border:1px solid rgba(255,255,255,0.1);
     }
     .legend .sw{
@@ -348,21 +328,6 @@
     }
 
     /* responsive */
-    @media (max-width: 900px) {
-      body {
-        grid-template-columns: 1fr;
-      }
-      .sidebar {
-        position: static;
-        width: 100%;
-        height: auto;
-        order: -1;
-      }
-      .progress-summary {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
     @media (max-width:600px){
       :root{
         --card-width:100px;
@@ -373,7 +338,8 @@
         align-items: stretch;
       }
       .progress-summary {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        padding: 6px;
       }
       .bg-selector {
         bottom: 10px;
@@ -394,61 +360,56 @@
     <p class="lead"></p>
   </div>
 
-  <div class="main-content">
-    <div class="search-container">
-      <input type="text" id="search" placeholder="Buscar materia por nombre o código...">
-    </div>
+  <div class="search-container">
+    <input type="text" id="search" placeholder="Buscar materia por nombre o código...">
+  </div>
 
-    <div class="controls">
-      <button id="reset" class="reset-btn">Limpiar todo</button>
-      <div style="color:#bdbdbd;font-size:12px">Mostrar:</div>
-      <select id="filter">
-        <option value="all">Todas</option>
-        <option value="enabled">Habilitadas</option>
-        <option value="completed">Cursadas</option>
-        <option value="blocked">Bloqueadas</option>
-      </select>
-    </div>
+  <div class="controls">
+    <button id="reset" class="reset-btn">Limpiar todo</button>
+    <div style="color:#bdbdbd;font-size:12px">Mostrar:</div>
+    <select id="filter">
+      <option value="all">Todas</option>
+      <option value="enabled">Habilitadas</option>
+      <option value="completed">Cursadas</option>
+      <option value="blocked">Bloqueadas</option>
+    </select>
+  </div>
 
-    <div class="board" id="board" aria-live="polite">
-      <!-- columns generadas por JS -->
+  <div class="board" id="board" aria-live="polite">
+    <!-- columns generadas por JS -->
+  </div>
+
+  <!-- Resumen de progreso compacto -->
+  <div class="progress-summary">
+    <h3>Progreso Académico</h3>
+    <div>
+      <div class="value" id="completed-courses">0</div>
+      <div>Ramos aprobados</div>
+    </div>
+    <div>
+      <div class="value" id="completion-percentage">0%</div>
+      <div>Porcentaje</div>
+    </div>
+    <div>
+      <div class="value" id="completed-credits">0</div>
+      <div>Créditos SCT</div>
+    </div>
+    <div>
+      <div class="value" id="completed-hours">0</div>
+      <div>Horas completadas</div>
     </div>
   </div>
 
-  <!-- Sidebar derecha con progreso académico -->
-  <div class="sidebar">
-    <!-- Resumen de progreso compacto -->
-    <div class="progress-summary">
-      <h3>Progreso Académico</h3>
-      <div>
-        <div class="value" id="completed-courses">0</div>
-        <div>Ramos aprobados</div>
-      </div>
-      <div>
-        <div class="value" id="completion-percentage">0%</div>
-        <div>Porcentaje</div>
-      </div>
-      <div>
-        <div class="value" id="completed-credits">0</div>
-        <div>Créditos SCT</div>
-      </div>
-      <div>
-        <div class="value" id="completed-hours">0</div>
-        <div>Horas completadas</div>
-      </div>
-    </div>
-
-    <div>
-      <strong style="font-size:12px; display: block; text-align: center; margin-bottom: 8px;">Leyenda de Áreas:</strong>
-      <div class="legend">
-        <div class="item"><span class="sw" style="background:#f5d442"></span> Unidad Básica</div>
-        <div class="item"><span class="sw" style="background:#2b8ce6"></span> Unidad Profesional</div>
-        <div class="item"><span class="sw" style="background:#2bd46b"></span> Unidad de Integración</div>
-        <div class="item"><span class="sw" style="background:var(--graduacion-color)"></span> Requisitos Graduación</div>
-        <div class="item"><span class="sw" style="background:#ff9a2e"></span> Itinerario Radiocomunicación</div>
-        <div class="item"><span class="sw" style="background:#9fe9ff"></span> Itinerario Comunicación</div>
-        <div class="item"><span class="sw" style="background:#ffb6da"></span> Itinerario Telemática</div>
-      </div>
+  <div style="margin-top:12px">
+    <strong style="font-size:12px; display: block; text-align: center;">Leyenda de Áreas:</strong>
+    <div class="legend">
+      <div class="item"><span class="sw" style="background:#f5d442"></span> Unidad Básica</div>
+      <div class="item"><span class="sw" style="background:#2b8ce6"></span> Unidad Profesional</div>
+      <div class="item"><span class="sw" style="background:#2bd46b"></span> Unidad de Integración</div>
+      <div class="item"><span class="sw" style="background:var(--graduacion-color)"></span> Requisitos Graduación</div>
+      <div class="item"><span class="sw" style="background:#ff9a2e"></span> Itinerario Radiocomunicación</div>
+      <div class="item"><span class="sw" style="background:#9fe9ff"></span> Itinerario Comunicación</div>
+      <div class="item"><span class="sw" style="background:#ffb6da"></span> Itinerario Telemática</div>
     </div>
   </div>
 
@@ -791,4 +752,4 @@
     window.__malla = {materias, semestres, mapa, cursadas};
   </script>
 </body>
-</html>
+</html>fr
