@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Malla - Ingeniería en Telecomunicaciones</title>
+  <title>Malla Curricular - Ing. Telecomunicaciones</title>
   <style>
     :root{
       --bg:#000;
@@ -21,9 +21,28 @@
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
       padding:12px;
+      max-width:100vw;
+      overflow-x:hidden;
     }
-    h1{font-size:18px;margin:0 0 10px}
-    p.lead{margin:0 0 12px;color:#bdbdbd;font-size:12px}
+    .header {
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      padding: 10px 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    h1{
+      font-size:18px;
+      margin:0 0 10px;
+      text-align:center;
+    }
+    p.lead{
+      margin:0 0 12px;
+      color:#bdbdbd;
+      font-size:12px;
+      text-align:center;
+    }
 
     /* layout compacto */
     .board{
@@ -92,12 +111,16 @@
       bottom: 0;
       background: linear-gradient(
         to top left,
-        transparent calc(50% - 3px),
+        transparent calc(50% - 5px),
         rgba(231, 76, 60, 0.95),
-        transparent calc(50% + 3px)
+        transparent calc(50% + 5px)
       );
-      transform: rotate(-7deg);
+      transform: rotate(-10deg);
       z-index: 0;
+      width: 150%;
+      height: 150%;
+      left: -25%;
+      top: -25%;
     }
 
     /* area colors - colores originales modificados */
@@ -140,6 +163,7 @@
       align-items:center;
       margin:8px 0 12px;
       flex-wrap:wrap;
+      justify-content:center;
     }
     button, .btn{
       background:#222;
@@ -160,12 +184,28 @@
       border-radius:6px;
       font-size:12px;
     }
+    .search-container {
+      width: 100%;
+      margin: 10px 0;
+      display: flex;
+      justify-content: center;
+    }
+    #search {
+      width: 100%;
+      max-width: 400px;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: #222;
+      color: var(--text);
+    }
 
     .legend{
       display:flex;
       gap:8px;
       flex-wrap:wrap;
       margin-top:12px;
+      justify-content: center;
     }
     .legend .item{
       display:flex;
@@ -189,12 +229,22 @@
         --card-width:120px;
         --card-height:90px;
       }
+      .controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>Malla - Ingeniería en Telecomunicaciones</h1>
-  <p class="lead">Haz clic en una asignatura para marcarla como cursada. Las asignaturas bloqueadas aparecerán atenuadas.</p>
+  <div class="header">
+    <h1>Malla Curricular - Ingeniería en Telecomunicaciones</h1>
+    <p class="lead">Haz clic en una asignatura para marcarla como cursada. Las asignaturas bloqueadas aparecerán atenuadas.</p>
+  </div>
+
+  <div class="search-container">
+    <input type="text" id="search" placeholder="Buscar materia por nombre o código...">
+  </div>
 
   <div class="controls">
     <button id="reset">Restablecer</button>
@@ -212,22 +262,22 @@
   </div>
 
   <div style="margin-top:12px">
-    <strong style="font-size:12px">Leyenda:</strong>
+    <strong style="font-size:12px; display: block; text-align: center;">Leyenda de Áreas:</strong>
     <div class="legend">
-      <div class="item"><span class="sw" style="background:#f5d442"></span> Básica</div>
-      <div class="item"><span class="sw" style="background:#2b8ce6"></span> Profesional</div>
-      <div class="item"><span class="sw" style="background:#2bd46b"></span> Integración</div>
-      <div class="item"><span class="sw" style="background:#ff9a2e"></span> Graduación</div>
-      <div class="item"><span class="sw" style="background:#ff9a2e"></span> Radio</div>
-      <div class="item"><span class="sw" style="background:#9fe9ff"></span> Comunicación</div>
-      <div class="item"><span class="sw" style="background:#ffb6da"></span> Telemática</div>
+      <div class="item"><span class="sw" style="background:#f5d442"></span> Unidad Básica</div>
+      <div class="item"><span class="sw" style="background:#2b8ce6"></span> Unidad Profesional</div>
+      <div class="item"><span class="sw" style="background:#2bd46b"></span> Unidad de Integración</div>
+      <div class="item"><span class="sw" style="background:#ff9a2e"></span> Requisitos Graduación</div>
+      <div class="item"><span class="sw" style="background:#ff9a2e"></span> Itinerario Radiocomunicación</div>
+      <div class="item"><span class="sw" style="background:#9fe9ff"></span> Itinerario Comunicación</div>
+      <div class="item"><span class="sw" style="background:#ffb6da"></span> Itinerario Telemática</div>
     </div>
   </div>
 
   <script>
     /* datos de la malla completa */
     const materias = [
-      // === AÑO 1 - SEMESTRE 1 ===
+      // === SEMESTRE 1 ===
       {id:1,name:'Álgebra Lineal',codigo:'MATD113',horas:144,creditos:3,area:'Unidad Básica',prereqs:[]},
       {id:2,name:'Cálculo de una Variable',codigo:'MATD123',horas:144,creditos:3,area:'Unidad Básica',prereqs:[]},
       {id:3,name:'Mecánica Newtoniana',codigo:'FISD134',horas:192,creditos:4,area:'Unidad Básica',prereqs:[]},
@@ -236,7 +286,7 @@
       {id:6,name:'Comunicación Oral y Escrita',codigo:'CSHD11',horas:48,creditos:1,area:'Unidad Básica',prereqs:[]},
       {id:7,name:'Deportes',codigo:'DEPD110',horas:0,creditos:0,area:'Requisitos Para Graduación',prereqs:[]},
 
-      // === AÑO 1 - SEMESTRE 2 ===
+      // === SEMESTRE 2 ===
       {id:8,name:'Ecuaciones Diferenciales Ordinarias',codigo:'MATD213',horas:144,creditos:3,area:'Unidad Básica',prereqs:[1,2]},
       {id:9,name:'Probabilidad y Estadística Básica',codigo:'MATD223',horas:144,creditos:3,area:'Unidad Básica',prereqs:[2]},
       {id:10,name:'Cálculo Vectorial',codigo:'IEED232',horas:96,creditos:2,area:'Unidad Básica',prereqs:[2]},
@@ -248,7 +298,7 @@
       {id:16,name:'Clubes',codigo:'SOCD210',horas:0,creditos:0,area:'Requisitos Para Graduación',prereqs:[]},
       {id:17,name:'Metodología de Estudio',codigo:'IEED210',horas:0,creditos:0,area:'Requisitos Para Graduación',prereqs:[]},
 
-      // === AÑO 2 - SEMESTRE 3 ===
+      // === SEMESTRE 3 ===
       {id:18,name:'Matemática Avanzada',codigo:'IEED312',horas:96,creditos:2,area:'Unidad Básica',prereqs:[8,10]},
       {id:19,name:'Sistemas Digitales',codigo:'IEED323',horas:144,creditos:3,area:'Unidad Profesional',prereqs:[14]},
       {id:20,name:'Dispositivos Electrónicos',codigo:'IEED333',horas:144,creditos:3,area:'Unidad Profesional',prereqs:[14]},
@@ -257,7 +307,7 @@
       {id:23,name:'Asignatura de Artes y Humanidades',codigo:'CSHD300',horas:48,creditos:0,area:'Unidad Profesional',prereqs:[]},
       {id:24,name:'Matemática Discreta',codigo:'IEED371',horas:48,creditos:1,area:'Unidad Profesional',prereqs:[9,19]},
 
-      // === AÑO 2 - SEMESTRE 4 ===
+      // === SEMESTRE 4 ===
       {id:25,name:'Instalación Eléctrica y Comunicación',codigo:'IEED413',horas:144,creditos:3,area:'Unidad Profesional',prereqs:[22]},
       {id:26,name:'Análisis de Señales Discretas para Comunicaciones',codigo:'TELD423',horas:144,creditos:3,area:'Unidad Profesional',prereqs:[18]},
       {id:27,name:'Circuitos Electrónicos',codigo:'IEED433',horas:144,creditos:3,area:'Unidad Profesional',prereqs:[20]},
@@ -265,24 +315,24 @@
       {id:29,name:'Sistema Operativo Linux',codigo:'TELD452',horas:96,creditos:2,area:'Unidad Profesional',prereqs:[12]},
       {id:30,name:'Asignatura de Economía y Sociedad',codigo:'CSHD400',horas:48,creditos:1,area:'Unidad Profesional',prereqs:[]},
 
-      // === AÑO 3 - SEMESTRE 5 ===
+      // === SEMESTRE 5 ===
       {id:31,name:'Fundamentos de Comunicaciones',codigo:'TELD513',horas:144,creditos:3,area:'Unidad Profesional',prereqs:[26]},
       {id:32,name:'Teoría de la Información y Codificación',codigo:'TELD522',horas:96,creditos:2,area:'Unidad Profesional',prereqs:[26]},
       {id:33,name:'Procesamiento Digital de Señales',codigo:'TELD532',horas:96,creditos:2,area:'Unidad Profesional',prereqs:[26]},
       {id:34,name:'Sistemas Embebidos',codigo:'ITID553',horas:144,creditos:3,area:'Unidad Profesional',prereqs:[19,29]},
       {id:35,name:'Sistemas de Transmisión',codigo:'TLED553',horas:144,creditos:3,area:'Unidad Profesional',prereqs:[21]},
       {id:36,name:'Sistemas de Cableado Estructural',codigo:'ITID512',horas:96,creditos:2,area:'Unidad Profesional',prereqs:[25]},
-      {id:37,name:'Gestión Organizacional',codigo:'ADM511',horas:48,creditos:1,area:'Unidad Profesional',prereqs:[]},
       {id:38,name:'Asignatura de Comunicación',codigo:'CSHD500',horas:0,creditos:0,area:'Requisitos Para Graduación',prereqs:[]},
 
-      // === AÑO 3 - SEMESTRE 6 ===
+      // === SEMESTRE 6 ===
       {id:39,name:'Comunicación Digital',codigo:'TELD613',horas:144,creditos:3,area:'Unidad Profesional',prereqs:[31]},
       {id:40,name:'Telemática Básica',codigo:'TELD623',horas:144,creditos:3,area:'Unidad Profesional',prereqs:[31]},
       {id:41,name:'Electrónica de Radiofrecuencia',codigo:'TELD633',horas:144,creditos:3,area:'Unidad Profesional',prereqs:[27,35]},
       {id:42,name:'Aplicación con Sistemas Embebidos',codigo:'TELD642',horas:96,creditos:2,area:'Unidad Profesional',prereqs:[33,34]},
       {id:43,name:'Propagación y Antenas',codigo:'TELD654',horas:144,creditos:3,area:'Unidad Profesional',prereqs:[35]},
+      {id:37,name:'Gestión Organizacional',codigo:'ADM511',horas:48,creditos:1,area:'Unidad Profesional',prereqs:[]},
 
-      // === AÑO 4 - SEMESTRE 7 ===
+      // === SEMESTRE 7 ===
       {id:44,name:'Comunicación Óptica',codigo:'TELD713',horas:144,creditos:3,area:'Unidad Profesional',prereqs:[39]},
       {id:45,name:'Telemática Avanzada',codigo:'TELD723',horas:144,creditos:3,area:'Unidad Profesional',prereqs:[40]},
       {id:46,name:'Comunicaciones Inalámbricas',codigo:'TELD733',horas:144,creditos:3,area:'Unidad Profesional',prereqs:[39,34]},
@@ -291,7 +341,7 @@
       {id:49,name:'Gestión de Procesos y Calidad',codigo:'ADMD611',horas:48,creditos:1,area:'Unidad Profesional',prereqs:[37]},
       {id:50,name:'Emprendimiento',codigo:'ADMD700',horas:0,creditos:0,area:'Requisitos Para Graduación',prereqs:[]},
 
-      // === AÑO 4 - SEMESTRE 8 ===
+      // === SEMESTRE 8 ===
       {id:51,name:'Itinerario Básico',codigo:'TELD800',horas:96,creditos:2,area:'Unidad Profesional',prereqs:[42,45,48]},
       {id:52,name:'Redes Ópticas',codigo:'TELD823',horas:144,creditos:3,area:'Unidad Profesional',prereqs:[44]},
       {id:53,name:'Introducción a Diseño de Redes',codigo:'TELD833',horas:144,creditos:3,area:'Unidad Profesional',prereqs:[45]},
@@ -304,7 +354,7 @@
       {id:60,name:'Técnicas Avanzadas de Procesamiento Digital de Señales',codigo:'TELD802',horas:0,creditos:0,area:'Itinerario Comunicación',prereqs:[51]},
       {id:61,name:'Conmutación y Enrutamiento Avanzado',codigo:'TELD803',horas:0,creditos:0,area:'Itinerario Telemática',prereqs:[51]},
 
-      // === AÑO 5 - SEMESTRE 9 ===
+      // === SEMESTRE 9 ===
       {id:62,name:'Itinerario Avanzado',codigo:'TELD900',horas:96,creditos:2,area:'Unidad Profesional',prereqs:[51]},
       {id:63,name:'Prácticas Profesionales',codigo:'PRLD105',horas:240,creditos:5,area:'Unidad Profesional',prereqs:[]},
       {id:64,name:'Práctica de Servicio Comunitario',codigo:'PSCD202',horas:96,creditos:2,area:'Unidad Profesional',prereqs:[]},
@@ -318,15 +368,15 @@
 
     /* semestres organizados */
     const semestres = [
-      {title:'AÑO 1 - SEMESTRE 1', ids:[1,2,3,4,5,6,7]},
-      {title:'AÑO 1 - SEMESTRE 2', ids:[8,9,10,11,12,13,14,15,16,17]},
-      {title:'AÑO 2 - SEMESTRE 3', ids:[18,19,20,21,22,23,24]},
-      {title:'AÑO 2 - SEMESTRE 4', ids:[25,26,27,28,29,30]},
-      {title:'AÑO 3 - SEMESTRE 5', ids:[31,32,33,34,35,36,37,38]},
-      {title:'AÑO 3 - SEMESTRE 6', ids:[39,40,41,42,43]},
-      {title:'AÑO 4 - SEMESTRE 7', ids:[44,45,46,47,48,49,50]},
-      {title:'AÑO 4 - SEMESTRE 8', ids:[51,52,53,54,55,56,57,58,59,60,61]},
-      {title:'AÑO 5 - SEMESTRE 9', ids:[62,63,64,65,66,67,68,69,70]},
+      {title:'SEMESTRE 1', ids:[1,2,3,4,5,6,7]},
+      {title:'SEMESTRE 2', ids:[8,9,10,11,12,13,14,15,16,17]},
+      {title:'SEMESTRE 3', ids:[18,19,20,21,22,23,24]},
+      {title:'SEMESTRE 4', ids:[25,26,27,28,29,30]},
+      {title:'SEMESTRE 5', ids:[31,32,33,34,35,36,38]},
+      {title:'SEMESTRE 6', ids:[39,40,41,42,43,37]},
+      {title:'SEMESTRE 7', ids:[44,45,46,47,48,49,50]},
+      {title:'SEMESTRE 8', ids:[51,52,53,54,55,56,57,58,59,60,61]},
+      {title:'SEMESTRE 9', ids:[62,63,64,65,66,67,68,69,70]},
     ];
 
     /* mapa rápido para acceder por id */
@@ -348,7 +398,7 @@
     }
 
     /* estado de cursadas (persistencia localStorage) */
-    const STORAGE_KEY = 'malla_telecom_cursadas_v6';
+    const STORAGE_KEY = 'malla_telecom_cursadas_v9';
     let cursadas = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'));
 
     function save(){
@@ -415,7 +465,7 @@
       }
     }
 
-    function renderBoard(filter='all'){
+    function renderBoard(filter='all', searchTerm=''){
       const board = document.getElementById('board');
       board.innerHTML='';
       semestres.forEach(sem=>{
@@ -429,12 +479,20 @@
         const stack = document.createElement('div');
         stack.className='stack';
         
+        let hasVisibleCards = false;
+        
         sem.ids.forEach(id=>{
           const m = mapa[id];
           if(!m) return;
-          const card = buildCard(m);
-
-          // apply filter
+          
+          // apply search filter
+          const matchesSearch = searchTerm === '' || 
+            m.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+            m.codigo.toLowerCase().includes(searchTerm.toLowerCase());
+          
+          if(!matchesSearch) return;
+          
+          // apply completion filter
           const isCompleted = cursadas.has(id);
           const isEnabled = allPrereqsDone(m) && !isCompleted;
           const isBlocked = !allPrereqsDone(m) && !isCompleted;
@@ -444,12 +502,18 @@
           if(filter==='completed') show = isCompleted;
           if(filter==='blocked') show = isBlocked;
 
-          if(show) stack.appendChild(card);
+          if(show) {
+            const card = buildCard(m);
+            stack.appendChild(card);
+            hasVisibleCards = true;
+          }
         });
         
-        col.appendChild(title);
-        col.appendChild(stack);
-        board.appendChild(col);
+        if(hasVisibleCards) {
+          col.appendChild(title);
+          col.appendChild(stack);
+          board.appendChild(col);
+        }
       });
     }
 
@@ -460,17 +524,26 @@
         if(m) updateCardState(card,m);
       });
       const filter = document.getElementById('filter').value;
-      renderBoard(filter);
+      const searchTerm = document.getElementById('search').value;
+      renderBoard(filter, searchTerm);
     }
 
     // initial render
     document.getElementById('filter').addEventListener('change', (e)=>{
-      renderBoard(e.target.value);
+      refreshAll();
     });
+    
     document.getElementById('reset').addEventListener('click', ()=>{
       if(confirm('¿Restablecer todas las materias marcadas como cursadas?')){
-        cursadas = new Set(); save(); renderBoard(document.getElementById('filter').value);
+        cursadas = new Set(); 
+        save(); 
+        refreshAll();
       }
+    });
+
+    // search functionality
+    document.getElementById('search').addEventListener('input', (e)=>{
+      refreshAll();
     });
 
     // render first time
