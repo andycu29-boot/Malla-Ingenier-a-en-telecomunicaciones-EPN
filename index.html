@@ -8,10 +8,10 @@
     :root{
       --bg:#000;
       --text:#eaeaea;
-      --card-width:100px; /* Más pequeño */
-      --card-height:70px; /* Más pequeño */
-      --gap:4px; /* Reducido */
-      --small-font:8px; /* Más pequeño */
+      --card-width:110px;
+      --card-height:80px;
+      --gap:5px;
+      --small-font:8px;
       --graduacion-color: #d2b48c;
     }
     *{box-sizing:border-box;margin:0;padding:0}
@@ -21,12 +21,14 @@
       color:var(--text);
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
-      padding:8px; /* Reducido */
+      padding:10px;
       max-width:100vw;
       overflow-x:hidden;
       transition: background 0.3s ease;
       min-height: 100vh;
-      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     
     /* Estilos de fondo */
@@ -51,23 +53,31 @@
       --text: #eaeaea;
     }
 
+    .container {
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
     .header {
-      position: sticky;
-      top: 0;
+      width: 100%;
       background: var(--bg);
-      padding: 8px 0; /* Reducido */
+      padding: 10px 0;
       z-index: 100;
       border-bottom: 1px solid rgba(255,255,255,0.1);
+      text-align: center;
     }
     h1{
-      font-size:16px; /* Reducido */
-      margin:0 0 8px; /* Reducido */
+      font-size:18px;
+      margin:0 0 8px;
       text-align:center;
     }
     p.lead{
-      margin:0 0 8px; /* Reducido */
+      margin:0 0 10px;
       color:#bdbdbd;
-      font-size:11px; /* Reducido */
+      font-size:12px;
       text-align:center;
     }
 
@@ -75,49 +85,53 @@
     .board{
       display:grid;
       grid-template-columns:repeat(auto-fill, minmax(var(--card-width), 1fr));
-      gap:6px; /* Reducido */
-      padding-bottom:8px; /* Reducido */
+      gap:8px;
+      padding-bottom:10px;
+      width: 100%;
+      justify-items: center;
     }
     .semester{
       background:rgba(255,255,255,0.03);
-      border-radius:4px; /* Reducido */
-      padding:6px; /* Reducido */
+      border-radius:6px;
+      padding:8px;
       border:1px solid rgba(255,255,255,0.06);
+      width: fit-content;
     }
     .sem-title{
-      font-size:11px; /* Reducido */
-      margin:0 0 6px; /* Reducido */
+      font-size:12px;
+      margin:0 0 8px;
       color:#cfcfcf;
       font-weight:600;
       text-align:center;
-      padding:3px; /* Reducido */
+      padding:4px;
       background:rgba(255,255,255,0.08);
-      border-radius:3px; /* Reducido */
+      border-radius:4px;
     }
     .stack{
       display:flex;
       flex-direction:column;
       gap:var(--gap);
+      align-items: center;
     }
 
     /* card con toda la información */
     .card{
-      width:100%;
+      width:var(--card-width);
       min-height:var(--card-height);
-      border-radius:4px; /* Reducido */
+      border-radius:6px;
       display:flex;
       flex-direction:column;
       justify-content:space-between;
-      padding:4px; /* Reducido */
+      padding:6px;
       font-size:var(--small-font);
-      line-height:1.2; /* Ajustado */
+      line-height:1.3;
       cursor:pointer;
-      box-shadow:0 1px 0 rgba(255,255,255,0.04) inset, 0 2px 4px rgba(0,0,0,0.2); /* Reducido */
+      box-shadow:0 1px 0 rgba(255,255,255,0.04) inset, 0 4px 8px rgba(0,0,0,0.3);
       transition:all 0.12s ease;
       border:1px solid rgba(255,255,255,0.08);
       position:relative;
       overflow:hidden;
-      text-align: center; /* Centrado */
+      text-align: center;
     }
     .card.disabled{
       opacity:0.4;
@@ -126,7 +140,7 @@
       background:rgba(0,0,0,0.3) !important;
     }
     .card.completed{
-      outline:1px solid rgba(255,255,255,0.1); /* Reducido */
+      outline:2px solid rgba(255,255,255,0.1);
       filter:brightness(1.1);
     }
     .card.completed::after {
@@ -138,9 +152,9 @@
       bottom: 0;
       background: linear-gradient(
         to top left,
-        transparent calc(50% - 3px), /* Reducido */
+        transparent calc(50% - 4px),
         rgba(231, 76, 60, 0.95),
-        transparent calc(50% + 3px) /* Reducido */
+        transparent calc(50% + 4px)
       );
       transform: rotate(-10deg);
       z-index: 0;
@@ -162,23 +176,24 @@
     /* info de la materia */
     .card-name{
       font-weight:600;
-      font-size:10px; /* Reducido */
-      margin-bottom:2px; /* Reducido */
+      font-size:10px;
+      margin-bottom:3px;
       position:relative;
       z-index:1;
-      text-align: center; /* Centrado */
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-grow: 1; /* Ocupa espacio disponible */
+      flex-grow: 1;
+      text-align: center;
+      word-break: break-word;
     }
     .card-code{
       font-size:var(--small-font);
       color:rgba(0,0,0,0.7);
-      margin-bottom:3px; /* Reducido */
+      margin-bottom:4px;
       position:relative;
       z-index:1;
-      text-align: center; /* Centrado */
+      text-align: center;
     }
     .card-meta{
       display:flex;
@@ -192,9 +207,9 @@
     /* controls */
     .controls{
       display:flex;
-      gap:6px; /* Reducido */
+      gap:8px;
       align-items:center;
-      margin:6px 0 8px; /* Reducido */
+      margin:10px 0;
       flex-wrap:wrap;
       justify-content:center;
     }
@@ -202,10 +217,10 @@
       background:#222;
       color:var(--text);
       border:1px solid rgba(255,255,255,0.1);
-      padding:4px 8px; /* Reducido */
-      border-radius:4px; /* Reducido */
+      padding:6px 10px;
+      border-radius:6px;
       cursor:pointer;
-      font-size:11px; /* Reducido */
+      font-size:12px;
       transition:all 0.12s ease;
     }
     button:hover{background:#333}
@@ -220,42 +235,41 @@
       background:#222;
       color:var(--text);
       border:1px solid rgba(255,255,255,0.1);
-      padding:4px 6px; /* Reducido */
-      border-radius:4px; /* Reducido */
-      font-size:11px; /* Reducido */
+      padding:6px 8px;
+      border-radius:6px;
+      font-size:12px;
     }
     .search-container {
       width: 100%;
-      margin: 8px 0; /* Reducido */
+      max-width: 500px;
+      margin: 10px 0;
       display: flex;
       justify-content: center;
     }
     #search {
       width: 100%;
-      max-width: 350px; /* Reducido */
-      padding: 6px; /* Reducido */
-      border-radius:4px; /* Reducido */
+      padding: 8px;
+      border-radius:6px;
       border: 1px solid rgba(255,255,255,0.1);
       background: #222;
       color: var(--text);
-      font-size: 11px; /* Reducido */
     }
 
     /* Selector de fondos - Posición inferior derecha */
     .bg-selector {
       display: flex;
-      gap: 5px;
+      gap: 6px;
       position: fixed;
-      bottom: 10px;
-      right: 10px;
+      bottom: 15px;
+      right: 15px;
       background: rgba(0,0,0,0.7);
-      padding: 6px;
-      border-radius: 20px;
+      padding: 8px;
+      border-radius: 24px;
       z-index: 100;
     }
     .bg-option {
-      width: 20px; /* Más pequeño */
-      height: 20px; /* Más pequeño */
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
       cursor: pointer;
       border: 2px solid transparent;
@@ -286,62 +300,63 @@
     /* Resumen de progreso */
     .progress-summary {
       background: rgba(255,255,255,0.05);
-      border-radius: 4px; /* Reducido */
-      padding: 6px; /* Reducido */
-      margin: 8px 0; /* Reducido */
+      border-radius: 6px;
+      padding: 8px;
+      margin: 10px 0;
       border: 1px solid rgba(255,255,255,0.1);
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 4px; /* Reducido */
+      gap: 6px;
       text-align: center;
-      font-size: 10px; /* Reducido */
+      font-size: 11px;
+      width: 100%;
+      max-width: 500px;
     }
     .progress-summary h3 {
       grid-column: 1 / -1;
-      margin: 0 0 3px; /* Reducido */
-      font-size: 11px; /* Reducido */
+      margin: 0 0 4px;
+      font-size: 12px;
       color: #cfcfcf;
     }
     .progress-summary div {
-      font-size: 9px; /* Reducido */
+      font-size: 10px;
     }
     .progress-summary .value {
       font-weight: bold;
-      font-size: 11px; /* Reducido */
+      font-size: 12px;
       color: #f5d442;
-      margin-bottom: 1px; /* Reducido */
+      margin-bottom: 2px;
     }
 
     .legend{
       display:flex;
-      gap:6px; /* Reducido */
+      gap:8px;
       flex-wrap:wrap;
-      margin-top:8px; /* Reducido */
+      margin: 10px 0 50px;
       justify-content: center;
-      font-size: 10px; /* Reducido */
-      margin-bottom: 40px; /* Espacio para el selector de fondo */
+      font-size: 11px;
+      max-width: 500px;
     }
     .legend .item{
       display:flex;
-      gap:4px; /* Reducido */
+      gap:6px;
       align-items:center;
-      font-size:10px; /* Reducido */
+      font-size:11px;
       background:rgba(255,255,255,0.05);
-      padding:2px 4px; /* Reducido */
-      border-radius:2px; /* Reducido */
+      padding:3px 6px;
+      border-radius:3px;
       border:1px solid rgba(255,255,255,0.1);
     }
     .legend .sw{
-      width:10px; /* Reducido */
-      height:10px; /* Reducido */
+      width:12px;
+      height:12px;
       border-radius:2px;
     }
 
     /* responsive */
     @media (max-width:600px){
       :root{
-        --card-width:90px; /* Más pequeño */
-        --card-height:60px; /* Más pequeño */
+        --card-width:100px;
       }
       .controls {
         flex-direction: column;
@@ -349,76 +364,78 @@
       }
       .progress-summary {
         grid-template-columns: repeat(2, 1fr);
-        padding: 4px; /* Reducido */
+        padding: 6px;
       }
       .bg-selector {
-        bottom: 5px;
-        right: 5px;
-        padding: 4px;
+        bottom: 10px;
+        right: 10px;
+        padding: 6px;
       }
       .bg-option {
-        width: 16px; /* Más pequeño */
-        height: 16px; /* Más pequeño */
+        width: 18px;
+        height: 18px;
       }
     }
   </style>
 </head>
 <body class="black-bg">
-  <div class="header">
-    <h1>Malla Curricular - Ingeniería en Telecomunicaciones EPN</h1>
-    <p class="lead"></p>
-  </div>
-
-  <div class="search-container">
-    <input type="text" id="search" placeholder="Buscar materia por nombre o código...">
-  </div>
-
-  <div class="controls">
-    <button id="reset" class="reset-btn">Limpiar todo</button>
-    <div style="color:#bdbdbd;font-size:11px">Mostrar:</div>
-    <select id="filter">
-      <option value="all">Todas</option>
-      <option value="enabled">Habilitadas</option>
-      <option value="completed">Cursadas</option>
-      <option value="blocked">Bloqueadas</option>
-    </select>
-  </div>
-
-  <div class="board" id="board" aria-live="polite">
-    <!-- columns generadas por JS -->
-  </div>
-
-  <!-- Resumen de progreso compacto -->
-  <div class="progress-summary">
-    <h3>Progreso Académico</h3>
-    <div>
-      <div class="value" id="completed-courses">0</div>
-      <div>Ramos aprobados</div>
+  <div class="container">
+    <div class="header">
+      <h1>Malla Curricular - Ingeniería en Telecomunicaciones EPN</h1>
+      <p class="lead"></p>
     </div>
-    <div>
-      <div class="value" id="completion-percentage">0%</div>
-      <div>Porcentaje</div>
-    </div>
-    <div>
-      <div class="value" id="completed-credits">0</div>
-      <div>Créditos SCT</div>
-    </div>
-    <div>
-      <div class="value" id="completed-hours">0</div>
-      <div>Horas completadas</div>
-    </div>
-  </div>
 
-  <div style="margin-top:8px">
-    <strong style="font-size:11px; display: block; text-align: center;">Leyenda de Áreas:</strong>
-    <div class="legend">
-      <div class="item"><span class="sw" style="background:#f5d442"></span> Unidad Básica</div>
-      <div class="item"><span class="sw" style="background:#2b8ce6"></span> Unidad Profesional</div>
-      <div class="item"><span class="sw" style="background:#2bd46b"></span> Unidad de Integración</div>
-      <div class="item"><span class="sw" style="background:var(--graduacion-color)"></span> Requisitos Graduación</div>
-      <div class="item"><span class="sw" style="background:#ff9a2e"></span> Itinerario Radiocomunicación</div>
-      <div class="item"><span class="sw" style="background:#9fe9ff"></span> Itinerario Comunicación</div>
-      <div class="item"><span class="sw" style="background:#ffb6da"></span> Itinerario Telemática</div>
+    <div class="search-container">
+      <input type="text" id="search" placeholder="Buscar materia por nombre o código...">
+    </div>
+
+    <div class="controls">
+      <button id="reset" class="reset-btn">Limpiar todo</button>
+      <div style="color:#bdbdbd;font-size:12px">Mostrar:</div>
+      <select id="filter">
+        <option value="all">Todas</option>
+        <option value="enabled">Habilitadas</option>
+        <option value="completed">Cursadas</option>
+        <option value="blocked">Bloqueadas</option>
+      </select>
+    </div>
+
+    <div class="board" id="board" aria-live="polite">
+      <!-- columns generadas por JS -->
+    </div>
+
+    <!-- Resumen de progreso compacto -->
+    <div class="progress-summary">
+      <h3>Progreso Académico</h3>
+      <div>
+        <div class="value" id="completed-courses">0</div>
+        <div>Ramos aprobados</div>
+      </div>
+      <div>
+        <div class="value" id="completion-percentage">0%</div>
+        <div>Porcentaje</div>
+      </div>
+      <div>
+        <div class="value" id="completed-credits">0</div>
+        <div>Créditos SCT</div>
+      </div>
+      <div>
+        <div class="value" id="completed-hours">0</div>
+        <div>Horas completadas</div>
+      </div>
+    </div>
+
+    <div>
+      <strong style="font-size:12px; display: block; text-align: center;">Leyenda de Áreas:</strong>
+      <div class="legend">
+        <div class="item"><span class="sw" style="background:#f5d442"></span> Unidad Básica</div>
+        <div class="item"><span class="sw" style="background:#2b8ce6"></span> Unidad Profesional</div>
+        <div class="item"><span class="sw" style="background:#2bd46b"></span> Unidad de Integración</div>
+        <div class="item"><span class="sw" style="background:var(--graduacion-color)"></span> Requisitos Graduación</div>
+        <div class="item"><span class="sw" style="background:#ff9a2e"></span> Itinerario Radiocomunicación</div>
+        <div class="item"><span class="sw" style="background:#9fe9ff"></span> Itinerario Comunicación</div>
+        <div class="item"><span class="sw" style="background:#ffb6da"></span> Itinerario Telemática</div>
+      </div>
     </div>
   </div>
 
