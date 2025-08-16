@@ -3,16 +3,16 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Malla Curricular - Ing. Telecomunicaciones</title>
+  <title>Malla Curricular - Ing. Telecomunicaciones EPN</title>
   <style>
     :root{
       --bg:#000;
       --text:#eaeaea;
-      --card-width:140px;
-      --card-height:100px;
-      --gap:6px;
-      --small-font:10px;
-      --graduacion-color: #d2b48c; /* Color café claro para requisitos de graduación */
+      --card-width:100px; /* Más pequeño */
+      --card-height:70px; /* Más pequeño */
+      --gap:4px; /* Reducido */
+      --small-font:8px; /* Más pequeño */
+      --graduacion-color: #d2b48c;
     }
     *{box-sizing:border-box;margin:0;padding:0}
     body{
@@ -21,27 +21,53 @@
       color:var(--text);
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
-      padding:12px;
+      padding:8px; /* Reducido */
       max-width:100vw;
       overflow-x:hidden;
+      transition: background 0.3s ease;
+      min-height: 100vh;
+      position: relative;
     }
+    
+    /* Estilos de fondo */
+    body.black-bg {
+      background: #000;
+      --text: #eaeaea;
+    }
+    body.white-bg {
+      background: #fff;
+      --text: #333;
+    }
+    body.green-gradient-bg {
+      background: linear-gradient(135deg, #000 0%, #001a00 50%, #004d00 100%);
+      --text: #eaeaea;
+    }
+    body.pink-gradient-bg {
+      background: linear-gradient(135deg, #000 0%, #1a001a 50%, #4d004d 100%);
+      --text: #eaeaea;
+    }
+    body.purple-gradient-bg {
+      background: linear-gradient(135deg, #000 0%, #0a001a 50%, #2a004d 100%);
+      --text: #eaeaea;
+    }
+
     .header {
       position: sticky;
       top: 0;
       background: var(--bg);
-      padding: 10px 0;
+      padding: 8px 0; /* Reducido */
       z-index: 100;
       border-bottom: 1px solid rgba(255,255,255,0.1);
     }
     h1{
-      font-size:18px;
-      margin:0 0 10px;
+      font-size:16px; /* Reducido */
+      margin:0 0 8px; /* Reducido */
       text-align:center;
     }
     p.lead{
-      margin:0 0 12px;
+      margin:0 0 8px; /* Reducido */
       color:#bdbdbd;
-      font-size:12px;
+      font-size:11px; /* Reducido */
       text-align:center;
     }
 
@@ -49,24 +75,24 @@
     .board{
       display:grid;
       grid-template-columns:repeat(auto-fill, minmax(var(--card-width), 1fr));
-      gap:10px;
-      padding-bottom:12px;
+      gap:6px; /* Reducido */
+      padding-bottom:8px; /* Reducido */
     }
     .semester{
       background:rgba(255,255,255,0.03);
-      border-radius:6px;
-      padding:8px;
+      border-radius:4px; /* Reducido */
+      padding:6px; /* Reducido */
       border:1px solid rgba(255,255,255,0.06);
     }
     .sem-title{
-      font-size:12px;
-      margin:0 0 8px;
+      font-size:11px; /* Reducido */
+      margin:0 0 6px; /* Reducido */
       color:#cfcfcf;
       font-weight:600;
       text-align:center;
-      padding:4px;
+      padding:3px; /* Reducido */
       background:rgba(255,255,255,0.08);
-      border-radius:4px;
+      border-radius:3px; /* Reducido */
     }
     .stack{
       display:flex;
@@ -78,19 +104,20 @@
     .card{
       width:100%;
       min-height:var(--card-height);
-      border-radius:6px;
+      border-radius:4px; /* Reducido */
       display:flex;
       flex-direction:column;
       justify-content:space-between;
-      padding:8px;
-      font-size:11px;
-      line-height:1.3;
+      padding:4px; /* Reducido */
+      font-size:var(--small-font);
+      line-height:1.2; /* Ajustado */
       cursor:pointer;
-      box-shadow:0 1px 0 rgba(255,255,255,0.04) inset, 0 4px 8px rgba(0,0,0,0.3);
+      box-shadow:0 1px 0 rgba(255,255,255,0.04) inset, 0 2px 4px rgba(0,0,0,0.2); /* Reducido */
       transition:all 0.12s ease;
       border:1px solid rgba(255,255,255,0.08);
       position:relative;
       overflow:hidden;
+      text-align: center; /* Centrado */
     }
     .card.disabled{
       opacity:0.4;
@@ -99,10 +126,9 @@
       background:rgba(0,0,0,0.3) !important;
     }
     .card.completed{
-      outline:2px solid rgba(255,255,255,0.1);
+      outline:1px solid rgba(255,255,255,0.1); /* Reducido */
       filter:brightness(1.1);
     }
-    /* Diagonal roja más gruesa y visible para materias completadas */
     .card.completed::after {
       content: "";
       position: absolute;
@@ -112,9 +138,9 @@
       bottom: 0;
       background: linear-gradient(
         to top left,
-        transparent calc(50% - 5px),
+        transparent calc(50% - 3px), /* Reducido */
         rgba(231, 76, 60, 0.95),
-        transparent calc(50% + 5px)
+        transparent calc(50% + 3px) /* Reducido */
       );
       transform: rotate(-10deg);
       z-index: 0;
@@ -124,34 +150,40 @@
       top: -25%;
     }
 
-    /* area colors - colores originales modificados */
-    .area-unidad-basica{background: #f5d442; color:#1a1507} /* amarillo */
-    .area-unidad-profesional{background:#2b8ce6;color:white} /* azul */
-    .area-unidad-integracion{background:#2bd46b;color:#07320a} /* verde */
-    .area-requisitos-graduacion{background:var(--graduacion-color);color:#3a2a0f} /* café claro */
-    .area-itinerario-radio{background:#ff9a2e;color:#2b1200} /* naranja */
-    .area-itinerario-comunicacion{background:#9fe9ff;color:#003041} /* celeste */
-    .area-itinerario-telematica{background:#ffb6da;color:#3b0020} /* rosado */
+    /* area colors */
+    .area-unidad-basica{background: #f5d442; color:#1a1507}
+    .area-unidad-profesional{background:#2b8ce6;color:white}
+    .area-unidad-integracion{background:#2bd46b;color:#07320a}
+    .area-requisitos-graduacion{background:var(--graduacion-color);color:#3a2a0f}
+    .area-itinerario-radio{background:#ff9a2e;color:#2b1200}
+    .area-itinerario-comunicacion{background:#9fe9ff;color:#003041}
+    .area-itinerario-telematica{background:#ffb6da;color:#3b0020}
 
     /* info de la materia */
     .card-name{
       font-weight:600;
-      font-size:12px;
-      margin-bottom:4px;
+      font-size:10px; /* Reducido */
+      margin-bottom:2px; /* Reducido */
       position:relative;
       z-index:1;
+      text-align: center; /* Centrado */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-grow: 1; /* Ocupa espacio disponible */
     }
     .card-code{
-      font-size:10px;
+      font-size:var(--small-font);
       color:rgba(0,0,0,0.7);
-      margin-bottom:6px;
+      margin-bottom:3px; /* Reducido */
       position:relative;
       z-index:1;
+      text-align: center; /* Centrado */
     }
     .card-meta{
       display:flex;
       justify-content:space-between;
-      font-size:10px;
+      font-size:var(--small-font);
       margin-top:auto;
       position:relative;
       z-index:1;
@@ -160,9 +192,9 @@
     /* controls */
     .controls{
       display:flex;
-      gap:8px;
+      gap:6px; /* Reducido */
       align-items:center;
-      margin:8px 0 12px;
+      margin:6px 0 8px; /* Reducido */
       flex-wrap:wrap;
       justify-content:center;
     }
@@ -170,95 +202,146 @@
       background:#222;
       color:var(--text);
       border:1px solid rgba(255,255,255,0.1);
-      padding:6px 10px;
-      border-radius:6px;
+      padding:4px 8px; /* Reducido */
+      border-radius:4px; /* Reducido */
       cursor:pointer;
-      font-size:12px;
+      font-size:11px; /* Reducido */
       transition:all 0.12s ease;
     }
     button:hover{background:#333}
+    button.reset-btn {
+      background: #e74c3c;
+      color: white;
+    }
+    button.reset-btn:hover {
+      background: #c0392b;
+    }
     select{
       background:#222;
       color:var(--text);
       border:1px solid rgba(255,255,255,0.1);
-      padding:6px 8px;
-      border-radius:6px;
-      font-size:12px;
+      padding:4px 6px; /* Reducido */
+      border-radius:4px; /* Reducido */
+      font-size:11px; /* Reducido */
     }
     .search-container {
       width: 100%;
-      margin: 10px 0;
+      margin: 8px 0; /* Reducido */
       display: flex;
       justify-content: center;
     }
     #search {
       width: 100%;
-      max-width: 400px;
-      padding: 8px;
-      border-radius: 6px;
+      max-width: 350px; /* Reducido */
+      padding: 6px; /* Reducido */
+      border-radius:4px; /* Reducido */
       border: 1px solid rgba(255,255,255,0.1);
       background: #222;
       color: var(--text);
+      font-size: 11px; /* Reducido */
     }
 
-    /* Resumen de progreso - Más compacto */
+    /* Selector de fondos - Posición inferior derecha */
+    .bg-selector {
+      display: flex;
+      gap: 5px;
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(0,0,0,0.7);
+      padding: 6px;
+      border-radius: 20px;
+      z-index: 100;
+    }
+    .bg-option {
+      width: 20px; /* Más pequeño */
+      height: 20px; /* Más pequeño */
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.2s ease;
+    }
+    .bg-option:hover {
+      transform: scale(1.1);
+    }
+    .bg-option.selected {
+      border-color: var(--text);
+    }
+    .bg-option[data-bg="black"] {
+      background: #000;
+    }
+    .bg-option[data-bg="white"] {
+      background: #fff;
+    }
+    .bg-option[data-bg="green-gradient"] {
+      background: linear-gradient(135deg, #000 0%, #001a00 50%, #004d00 100%);
+    }
+    .bg-option[data-bg="pink-gradient"] {
+      background: linear-gradient(135deg, #000 0%, #1a001a 50%, #4d004d 100%);
+    }
+    .bg-option[data-bg="purple-gradient"] {
+      background: linear-gradient(135deg, #000 0%, #0a001a 50%, #2a004d 100%);
+    }
+
+    /* Resumen de progreso */
     .progress-summary {
       background: rgba(255,255,255,0.05);
-      border-radius: 6px;
-      padding: 8px;
-      margin: 12px 0;
+      border-radius: 4px; /* Reducido */
+      padding: 6px; /* Reducido */
+      margin: 8px 0; /* Reducido */
       border: 1px solid rgba(255,255,255,0.1);
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
+      gap: 4px; /* Reducido */
       text-align: center;
-      font-size: 11px;
+      font-size: 10px; /* Reducido */
     }
     .progress-summary h3 {
       grid-column: 1 / -1;
-      margin: 0 0 4px;
-      font-size: 12px;
+      margin: 0 0 3px; /* Reducido */
+      font-size: 11px; /* Reducido */
       color: #cfcfcf;
     }
     .progress-summary div {
-      font-size: 10px;
+      font-size: 9px; /* Reducido */
     }
     .progress-summary .value {
       font-weight: bold;
-      font-size: 12px;
+      font-size: 11px; /* Reducido */
       color: #f5d442;
-      margin-bottom: 2px;
+      margin-bottom: 1px; /* Reducido */
     }
 
     .legend{
       display:flex;
-      gap:8px;
+      gap:6px; /* Reducido */
       flex-wrap:wrap;
-      margin-top:12px;
+      margin-top:8px; /* Reducido */
       justify-content: center;
-      font-size: 11px;
+      font-size: 10px; /* Reducido */
+      margin-bottom: 40px; /* Espacio para el selector de fondo */
     }
     .legend .item{
       display:flex;
-      gap:6px;
+      gap:4px; /* Reducido */
       align-items:center;
-      font-size:11px;
+      font-size:10px; /* Reducido */
       background:rgba(255,255,255,0.05);
-      padding:3px 6px;
-      border-radius:3px;
+      padding:2px 4px; /* Reducido */
+      border-radius:2px; /* Reducido */
       border:1px solid rgba(255,255,255,0.1);
     }
     .legend .sw{
-      width:12px;
-      height:12px;
+      width:10px; /* Reducido */
+      height:10px; /* Reducido */
       border-radius:2px;
     }
 
     /* responsive */
     @media (max-width:600px){
       :root{
-        --card-width:120px;
-        --card-height:90px;
+        --card-width:90px; /* Más pequeño */
+        --card-height:60px; /* Más pequeño */
       }
       .controls {
         flex-direction: column;
@@ -266,15 +349,24 @@
       }
       .progress-summary {
         grid-template-columns: repeat(2, 1fr);
-        padding: 6px;
+        padding: 4px; /* Reducido */
+      }
+      .bg-selector {
+        bottom: 5px;
+        right: 5px;
+        padding: 4px;
+      }
+      .bg-option {
+        width: 16px; /* Más pequeño */
+        height: 16px; /* Más pequeño */
       }
     }
   </style>
 </head>
-<body>
+<body class="black-bg">
   <div class="header">
-    <h1>Malla Curricular - Ingeniería en Telecomunicaciones</h1>
-    <p class="lead">Haz clic en una asignatura para marcarla como cursada. Las asignaturas bloqueadas aparecerán atenuadas.</p>
+    <h1>Malla Curricular - Ingeniería en Telecomunicaciones EPN</h1>
+    <p class="lead"></p>
   </div>
 
   <div class="search-container">
@@ -282,8 +374,8 @@
   </div>
 
   <div class="controls">
-    <button id="reset">Restablecer</button>
-    <div style="color:#bdbdbd;font-size:12px">Mostrar:</div>
+    <button id="reset" class="reset-btn">Limpiar todo</button>
+    <div style="color:#bdbdbd;font-size:11px">Mostrar:</div>
     <select id="filter">
       <option value="all">Todas</option>
       <option value="enabled">Habilitadas</option>
@@ -317,8 +409,8 @@
     </div>
   </div>
 
-  <div style="margin-top:12px">
-    <strong style="font-size:12px; display: block; text-align: center;">Leyenda de Áreas:</strong>
+  <div style="margin-top:8px">
+    <strong style="font-size:11px; display: block; text-align: center;">Leyenda de Áreas:</strong>
     <div class="legend">
       <div class="item"><span class="sw" style="background:#f5d442"></span> Unidad Básica</div>
       <div class="item"><span class="sw" style="background:#2b8ce6"></span> Unidad Profesional</div>
@@ -328,6 +420,15 @@
       <div class="item"><span class="sw" style="background:#9fe9ff"></span> Itinerario Comunicación</div>
       <div class="item"><span class="sw" style="background:#ffb6da"></span> Itinerario Telemática</div>
     </div>
+  </div>
+
+  <!-- Selector de fondos - Posición inferior derecha -->
+  <div class="bg-selector">
+    <div class="bg-option selected" data-bg="black" title="Fondo negro"></div>
+    <div class="bg-option" data-bg="white" title="Fondo blanco"></div>
+    <div class="bg-option" data-bg="green-gradient" title="Degradado verde"></div>
+    <div class="bg-option" data-bg="pink-gradient" title="Degradado rosado"></div>
+    <div class="bg-option" data-bg="purple-gradient" title="Degradado morado"></div>
   </div>
 
   <script>
@@ -455,6 +556,7 @@
 
     /* estado de cursadas (persistencia localStorage) */
     const STORAGE_KEY = 'malla_telecom_cursadas_v10';
+    const BG_STORAGE_KEY = 'malla_telecom_bg_v1';
     let cursadas = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'));
 
     function save(){
@@ -598,6 +700,19 @@
       document.getElementById('completed-hours').textContent = horasCompletadas;
     }
 
+    function changeBackground(bgType) {
+      document.body.className = bgType + '-bg';
+      localStorage.setItem(BG_STORAGE_KEY, bgType);
+      
+      // Actualizar selección visual
+      document.querySelectorAll('.bg-option').forEach(option => {
+        option.classList.remove('selected');
+        if(option.dataset.bg === bgType) {
+          option.classList.add('selected');
+        }
+      });
+    }
+
     function refreshAll(){
       document.querySelectorAll('.card').forEach(card=>{
         const id = Number(card.dataset.id);
@@ -627,6 +742,17 @@
     document.getElementById('search').addEventListener('input', (e)=>{
       refreshAll();
     });
+
+    // background selector functionality
+    document.querySelectorAll('.bg-option').forEach(option => {
+      option.addEventListener('click', () => {
+        changeBackground(option.dataset.bg);
+      });
+    });
+
+    // Cargar fondo guardado
+    const savedBg = localStorage.getItem(BG_STORAGE_KEY) || 'black';
+    changeBackground(savedBg);
 
     // render first time
     renderBoard('all');
