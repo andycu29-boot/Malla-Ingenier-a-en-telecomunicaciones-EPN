@@ -26,13 +26,13 @@
       overflow-x:hidden;
       transition: background 0.3s ease;
       display: grid;
-      grid-template-columns: 1fr auto;
       grid-template-areas: 
         "header header"
-        "legend progress"
+        "progress ."
         "search search"
         "controls controls"
         "board board"
+        "legend legend"
         "theme theme";
       gap: 12px;
     }
@@ -260,7 +260,9 @@
       text-align: center;
       font-size: 11px;
       height: fit-content;
+      margin-left: auto;
       margin-top: 10px;
+      width: fit-content;
     }
     .progress-summary h3 {
       grid-column: 1 / -1;
@@ -278,15 +280,15 @@
       margin-bottom: 2px;
     }
 
-    /* Leyenda - Parte superior izquierda */
+    /* Leyenda - Parte inferior */
     .legend{
       grid-area: legend;
       display:flex;
-      flex-direction: column;
-      gap:6px;
-      margin-top:10px;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:12px;
+      justify-content: center;
       font-size: 11px;
-      align-items: flex-start;
     }
     .legend .item{
       display:flex;
@@ -355,11 +357,11 @@
       body {
         grid-template-areas: 
           "header header"
-          "legend legend"
           "progress progress"
           "search search"
           "controls controls"
           "board board"
+          "legend legend"
           "theme theme";
       }
       .controls {
@@ -367,13 +369,7 @@
         align-items: stretch;
       }
       .progress-summary {
-        grid-template-columns: repeat(2, 1fr);
-        padding: 6px;
-      }
-      .legend {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
+        margin: 10px auto;
       }
       .bg-selector {
         bottom: 10px;
@@ -392,17 +388,6 @@
   <div class="header">
     <h1>Malla Curricular - Ingeniería en Telecomunicaciones EPN</h1>
     <p class="lead"></p>
-  </div>
-
-  <!-- Leyenda en parte superior izquierda -->
-  <div class="legend">
-    <div class="item"><span class="sw" style="background:#f5d442"></span> Básica</div>
-    <div class="item"><span class="sw" style="background:#2b8ce6"></span> Profesional</div>
-    <div class="item"><span class="sw" style="background:#2bd46b"></span> Integración</div>
-    <div class="item"><span class="sw" style="background:var(--graduacion-color)"></span> Graduación</div>
-    <div class="item"><span class="sw" style="background:#ff9a2e"></span> Radiocom.</div>
-    <div class="item"><span class="sw" style="background:#9fe9ff"></span> Comunicación</div>
-    <div class="item"><span class="sw" style="background:#ffb6da"></span> Telemática</div>
   </div>
 
   <!-- Progreso en parte derecha -->
@@ -443,6 +428,17 @@
 
   <div class="board" id="board" aria-live="polite">
     <!-- columns generadas por JS -->
+  </div>
+
+  <!-- Leyenda en parte inferior -->
+  <div class="legend">
+    <div class="item"><span class="sw" style="background:#f5d442"></span> Básica</div>
+    <div class="item"><span class="sw" style="background:#2b8ce6"></span> Profesional</div>
+    <div class="item"><span class="sw" style="background:#2bd46b"></span> Integración</div>
+    <div class="item"><span class="sw" style="background:var(--graduacion-color)"></span> Graduación</div>
+    <div class="item"><span class="sw" style="background:#ff9a2e"></span> Radiocom.</div>
+    <div class="item"><span class="sw" style="background:#9fe9ff"></span> Comunicación</div>
+    <div class="item"><span class="sw" style="background:#ffb6da"></span> Telemática</div>
   </div>
 
   <!-- Selector de fondos en posición inferior derecha -->
@@ -537,251 +533,4 @@
       {id:62,name:'Itinerario Avanzado',codigo:'TELD900',horas:96,creditos:2,area:'Unidad Profesional',prereqs:[51]},
       {id:63,name:'Prácticas Profesionales',codigo:'PRLD105',horas:240,creditos:5,area:'Unidad Profesional',prereqs:[]},
       {id:64,name:'Práctica de Servicio Comunitario',codigo:'PSCD202',horas:96,creditos:2,area:'Unidad Profesional',prereqs:[]},
-      {id:65,name:'Marco Regulatorio de Telecomunicaciones',codigo:'TELD941',horas:48,creditos:1,area:'Unidad Profesional',prereqs:[48]},
-      {id:66,name:'Trabajo de Integración Curricular / Examen Complexivo',codigo:'TITD201',horas:240,creditos:5,area:'Unidad de Integración',prereqs:[]},
-      {id:67,name:'Ecología y Ambiente',codigo:'AMBD900',horas:0,creditos:0,area:'Requisitos Para Graduación',prereqs:[]},
-      {id:68,name:'Componentes Activos de Radiofrecuencia',codigo:'TELD901',horas:0,creditos:0,area:'Itinerario Radiocomunicación',prereqs:[59]},
-      {id:69,name:'Técnicas Avanzadas de Clasificación de Señales',codigo:'TELD902',horas:0,creditos:0,area:'Itinerario Comunicación',prereqs:[60]},
-      {id:70,name:'Tecnologías Avanzadas en Redes de Datos',codigo:'TELD903',horas:0,creditos:0,area:'Itinerario Telemática',prereqs:[61]}
-    ];
-
-    /* semestres organizados */
-    const semestres = [
-      {title:'SEMESTRE 1', ids:[1,2,3,4,5,6,7]},
-      {title:'SEMESTRE 2', ids:[8,9,10,11,12,13,14,15,16,17]},
-      {title:'SEMESTRE 3', ids:[18,19,20,21,22,23,24]},
-      {title:'SEMESTRE 4', ids:[25,26,27,28,29,30]},
-      {title:'SEMESTRE 5', ids:[31,32,33,34,35,36,38]},
-      {title:'SEMESTRE 6', ids:[39,40,41,42,43,37]},
-      {title:'SEMESTRE 7', ids:[44,45,46,47,48,49,50]},
-      {title:'SEMESTRE 8', ids:[51,52,53,54,55,56,57,58,59,60,61]},
-      {title:'SEMESTRE 9', ids:[62,63,64,65,66,67,68,69,70]},
-    ];
-
-    /* mapa rápido para acceder por id */
-    const mapa = {};
-    materias.forEach(m=>mapa[m.id]=m);
-
-    /* area -> css class */
-    function areaClass(area){
-      switch(area){
-        case 'Unidad Básica': return 'area-unidad-basica';
-        case 'Unidad Profesional': return 'area-unidad-profesional';
-        case 'Unidad de Integración': return 'area-unidad-integracion';
-        case 'Requisitos Para Graduación': return 'area-requisitos-graduacion';
-        case 'Itinerario Radiocomunicación': return 'area-itinerario-radio';
-        case 'Itinerario Comunicación': return 'area-itinerario-comunicacion';
-        case 'Itinerario Telemática': return 'area-itinerario-telematica';
-        default: return 'area-unidad-profesional';
-      }
-    }
-
-    /* estado de cursadas (persistencia localStorage) */
-    const STORAGE_KEY = 'malla_telecom_cursadas_v10';
-    const BG_STORAGE_KEY = 'malla_telecom_bg_v1';
-    let cursadas = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'));
-
-    function save(){
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(cursadas)));
-      updateProgressSummary();
-    }
-
-    function allPrereqsDone(m){
-      if(!m.prereqs || m.prereqs.length===0) return true;
-      return m.prereqs.every(pid=>cursadas.has(pid));
-    }
-
-    function buildCard(m){
-      const div = document.createElement('div');
-      div.className = 'card '+ areaClass(m.area);
-      div.dataset.id = m.id;
-
-      // Nombre completo de la materia - Centrado
-      const name = document.createElement('div');
-      name.className = 'card-name';
-      name.textContent = m.name;
-
-      // Código de la materia
-      const code = document.createElement('div');
-      code.className = 'card-code';
-      code.textContent = m.codigo;
-
-      // Metadatos (horas y créditos)
-      const meta = document.createElement('div');
-      meta.className = 'card-meta';
-      meta.innerHTML = `
-        <span>${m.horas}h</span>
-        <span>${m.creditos}cr</span>
-      `;
-
-      div.appendChild(name);
-      div.appendChild(code);
-      div.appendChild(meta);
-
-      // initial state
-      updateCardState(div, m);
-
-      div.addEventListener('click', (e)=>{
-        if(div.classList.contains('disabled')) return;
-        const id = Number(div.dataset.id);
-        if(cursadas.has(id)){
-          cursadas.delete(id);
-        } else {
-          cursadas.add(id);
-        }
-        save();
-        refreshAll();
-      });
-
-      return div;
-    }
-
-    function updateCardState(cardElem, m){
-      const id = m.id;
-      cardElem.classList.remove('disabled','completed');
-      if(cursadas.has(id)){
-        cardElem.classList.add('completed');
-      } else if(!allPrereqsDone(m)){
-        cardElem.classList.add('disabled');
-      }
-    }
-
-    function renderBoard(filter='all', searchTerm=''){
-      const board = document.getElementById('board');
-      board.innerHTML='';
-      semestres.forEach(sem=>{
-        const col = document.createElement('div');
-        col.className='semester';
-        
-        const title = document.createElement('div');
-        title.className='sem-title';
-        title.textContent = sem.title;
-        
-        const stack = document.createElement('div');
-        stack.className='stack';
-        
-        let hasVisibleCards = false;
-        
-        sem.ids.forEach(id=>{
-          const m = mapa[id];
-          if(!m) return;
-          
-          // apply search filter
-          const matchesSearch = searchTerm === '' || 
-            m.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-            m.codigo.toLowerCase().includes(searchTerm.toLowerCase());
-          
-          if(!matchesSearch) return;
-          
-          // apply completion filter
-          const isCompleted = cursadas.has(id);
-          const isEnabled = allPrereqsDone(m) && !isCompleted;
-          const isBlocked = !allPrereqsDone(m) && !isCompleted;
-
-          let show=true;
-          if(filter==='enabled') show = isEnabled;
-          if(filter==='completed') show = isCompleted;
-          if(filter==='blocked') show = isBlocked;
-
-          if(show) {
-            const card = buildCard(m);
-            stack.appendChild(card);
-            hasVisibleCards = true;
-          }
-        });
-        
-        if(hasVisibleCards) {
-          col.appendChild(title);
-          col.appendChild(stack);
-          board.appendChild(col);
-        }
-      });
-    }
-
-    function updateProgressSummary() {
-      const totalMaterias = materias.length;
-      const materiasCompletadas = Array.from(cursadas).length;
-      const porcentaje = Math.round((materiasCompletadas / totalMaterias) * 100);
-      
-      // Calcular créditos y horas completadas
-      let creditosCompletados = 0;
-      let horasCompletadas = 0;
-      
-      Array.from(cursadas).forEach(id => {
-        const materia = mapa[id];
-        if (materia) {
-          creditosCompletados += materia.creditos || 0;
-          horasCompletadas += materia.horas || 0;
-        }
-      });
-      
-      // Actualizar el DOM
-      document.getElementById('completed-courses').textContent = materiasCompletadas;
-      document.getElementById('completion-percentage').textContent = `${porcentaje}%`;
-      document.getElementById('completed-credits').textContent = creditosCompletados;
-      document.getElementById('completed-hours').textContent = horasCompletadas;
-    }
-
-    function changeBackground(bgType) {
-      document.body.className = bgType + '-bg';
-      localStorage.setItem(BG_STORAGE_KEY, bgType);
-      
-      // Actualizar selección visual
-      document.querySelectorAll('.bg-option').forEach(option => {
-        option.classList.remove('selected');
-        if(option.dataset.bg === bgType) {
-          option.classList.add('selected');
-        }
-      });
-    }
-
-    function refreshAll(){
-      document.querySelectorAll('.card').forEach(card=>{
-        const id = Number(card.dataset.id);
-        const m = mapa[id];
-        if(m) updateCardState(card,m);
-      });
-      const filter = document.getElementById('filter').value;
-      const searchTerm = document.getElementById('search').value;
-      renderBoard(filter, searchTerm);
-      updateProgressSummary();
-    }
-
-    // initial render
-    document.getElementById('filter').addEventListener('change', (e)=>{
-      refreshAll();
-    });
-    
-    document.getElementById('reset').addEventListener('click', ()=>{
-      if(confirm('¿Restablecer todas las materias marcadas como cursadas?')){
-        cursadas = new Set(); 
-        save(); 
-        refreshAll();
-      }
-    });
-
-    // search functionality
-    document.getElementById('search').addEventListener('input', (e)=>{
-      refreshAll();
-    });
-
-    // background selector functionality
-    document.querySelectorAll('.bg-option').forEach(option => {
-      option.addEventListener('click', () => {
-        changeBackground(option.dataset.bg);
-      });
-    });
-
-    // Cargar fondo guardado
-    const savedBg = localStorage.getItem(BG_STORAGE_KEY) || 'black';
-    changeBackground(savedBg);
-
-    // render first time
-    renderBoard('all');
-    updateProgressSummary();
-
-    // expose for dev console
-    window.__malla = {materias, semestres, mapa, cursadas};
-  </script>
-</body>
-</html>
+      {id:65,name:'Marco Regu
