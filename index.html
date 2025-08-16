@@ -12,6 +12,7 @@
       --card-height:100px;
       --gap:6px;
       --small-font:10px;
+      --graduacion-color: #d2b48c; /* Color café claro para requisitos de graduación */
     }
     *{box-sizing:border-box;margin:0;padding:0}
     body{
@@ -127,7 +128,7 @@
     .area-unidad-basica{background: #f5d442; color:#1a1507} /* amarillo */
     .area-unidad-profesional{background:#2b8ce6;color:white} /* azul */
     .area-unidad-integracion{background:#2bd46b;color:#07320a} /* verde */
-    .area-requisitos-graduacion{background:#ff9a2e;color:#2b1200} /* cambiado de rojo a naranja */
+    .area-requisitos-graduacion{background:var(--graduacion-color);color:#3a2a0f} /* café claro */
     .area-itinerario-radio{background:#ff9a2e;color:#2b1200} /* naranja */
     .area-itinerario-comunicacion{background:#9fe9ff;color:#003041} /* celeste */
     .area-itinerario-telematica{background:#ffb6da;color:#3b0020} /* rosado */
@@ -200,27 +201,57 @@
       color: var(--text);
     }
 
+    /* Resumen de progreso - Más compacto */
+    .progress-summary {
+      background: rgba(255,255,255,0.05);
+      border-radius: 6px;
+      padding: 8px;
+      margin: 12px 0;
+      border: 1px solid rgba(255,255,255,0.1);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      text-align: center;
+      font-size: 11px;
+    }
+    .progress-summary h3 {
+      grid-column: 1 / -1;
+      margin: 0 0 4px;
+      font-size: 12px;
+      color: #cfcfcf;
+    }
+    .progress-summary div {
+      font-size: 10px;
+    }
+    .progress-summary .value {
+      font-weight: bold;
+      font-size: 12px;
+      color: #f5d442;
+      margin-bottom: 2px;
+    }
+
     .legend{
       display:flex;
       gap:8px;
       flex-wrap:wrap;
       margin-top:12px;
       justify-content: center;
+      font-size: 11px;
     }
     .legend .item{
       display:flex;
       gap:6px;
       align-items:center;
-      font-size:12px;
+      font-size:11px;
       background:rgba(255,255,255,0.05);
-      padding:4px 8px;
-      border-radius:4px;
+      padding:3px 6px;
+      border-radius:3px;
       border:1px solid rgba(255,255,255,0.1);
     }
     .legend .sw{
-      width:14px;
-      height:14px;
-      border-radius:3px;
+      width:12px;
+      height:12px;
+      border-radius:2px;
     }
 
     /* responsive */
@@ -232,6 +263,10 @@
       .controls {
         flex-direction: column;
         align-items: stretch;
+      }
+      .progress-summary {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 6px;
       }
     }
   </style>
@@ -261,13 +296,34 @@
     <!-- columns generadas por JS -->
   </div>
 
+  <!-- Resumen de progreso compacto -->
+  <div class="progress-summary">
+    <h3>Progreso Académico</h3>
+    <div>
+      <div class="value" id="completed-courses">0</div>
+      <div>Ramos aprobados</div>
+    </div>
+    <div>
+      <div class="value" id="completion-percentage">0%</div>
+      <div>Porcentaje</div>
+    </div>
+    <div>
+      <div class="value" id="completed-credits">0</div>
+      <div>Créditos SCT</div>
+    </div>
+    <div>
+      <div class="value" id="completed-hours">0</div>
+      <div>Horas completadas</div>
+    </div>
+  </div>
+
   <div style="margin-top:12px">
     <strong style="font-size:12px; display: block; text-align: center;">Leyenda de Áreas:</strong>
     <div class="legend">
       <div class="item"><span class="sw" style="background:#f5d442"></span> Unidad Básica</div>
       <div class="item"><span class="sw" style="background:#2b8ce6"></span> Unidad Profesional</div>
       <div class="item"><span class="sw" style="background:#2bd46b"></span> Unidad de Integración</div>
-      <div class="item"><span class="sw" style="background:#ff9a2e"></span> Requisitos Graduación</div>
+      <div class="item"><span class="sw" style="background:var(--graduacion-color)"></span> Requisitos Graduación</div>
       <div class="item"><span class="sw" style="background:#ff9a2e"></span> Itinerario Radiocomunicación</div>
       <div class="item"><span class="sw" style="background:#9fe9ff"></span> Itinerario Comunicación</div>
       <div class="item"><span class="sw" style="background:#ffb6da"></span> Itinerario Telemática</div>
@@ -398,11 +454,12 @@
     }
 
     /* estado de cursadas (persistencia localStorage) */
-    const STORAGE_KEY = 'malla_telecom_cursadas_v9';
+    const STORAGE_KEY = 'malla_telecom_cursadas_v10';
     let cursadas = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'));
 
     function save(){
       localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(cursadas)));
+      updateProgressSummary();
     }
 
     function allPrereqsDone(m){
@@ -517,6 +574,30 @@
       });
     }
 
+    function updateProgressSummary() {
+      const totalMaterias = materias.length;
+      const materiasCompletadas = Array.from(cursadas).length;
+      const porcentaje = Math.round((materiasCompletadas / totalMaterias) * 100);
+      
+      // Calcular créditos y horas completadas
+      let creditosCompletados = 0;
+      let horasCompletadas = 0;
+      
+      Array.from(cursadas).forEach(id => {
+        const materia = mapa[id];
+        if (materia) {
+          creditosCompletados += materia.creditos || 0;
+          horasCompletadas += materia.horas || 0;
+        }
+      });
+      
+      // Actualizar el DOM
+      document.getElementById('completed-courses').textContent = materiasCompletadas;
+      document.getElementById('completion-percentage').textContent = `${porcentaje}%`;
+      document.getElementById('completed-credits').textContent = creditosCompletados;
+      document.getElementById('completed-hours').textContent = horasCompletadas;
+    }
+
     function refreshAll(){
       document.querySelectorAll('.card').forEach(card=>{
         const id = Number(card.dataset.id);
@@ -526,6 +607,7 @@
       const filter = document.getElementById('filter').value;
       const searchTerm = document.getElementById('search').value;
       renderBoard(filter, searchTerm);
+      updateProgressSummary();
     }
 
     // initial render
@@ -548,6 +630,7 @@
 
     // render first time
     renderBoard('all');
+    updateProgressSummary();
 
     // expose for dev console
     window.__malla = {materias, semestres, mapa, cursadas};
